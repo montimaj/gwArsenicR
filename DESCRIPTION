@@ -1,0 +1,14 @@
+Package: gwqual
+Type: Package
+Title: Groundwater Quality Data Imputation and Regression Analysis
+Version: 0.1.0
+Author: Dr. Sayantan Majumdar (DRI), Dr. Ryan G. Smith (CSU), Dr. Matthew O. Gribble (UCSF)
+Maintainer: Dr. Sayantan Majumdar <sayantan.majumdar@dri.edu>
+Description: This package generates imputed arsenic category assignments under 
+ multinomial probability distributions, and then runs regression analysis for each 
+ imputation and finally, combines these estimates.
+License: MIT
+Encoding: UTF-8
+Imports: Amelia,data.table,tidyverse,lme4,rms,broom.mixed,boxr,dplyr
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
