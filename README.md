@@ -157,17 +157,6 @@ $OEGEST
 [ FAIL 0 | WARN 0 | SKIP 0 | PASS 22 ] Done!
 ```
 
-### Continuous Integration
-
-The package is designed to work with CI/CD pipelines. The tests can be run automatically using:
-
-```yaml
-# Example GitHub Actions workflow
-- name: Run tests
-  run: |
-    Rscript -e "devtools::test()"
-```
-
 ### Testing Best Practices
 
 When developing or modifying the package:
