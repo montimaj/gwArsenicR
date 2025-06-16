@@ -91,7 +91,7 @@ If you use gwArsenicR in your research, please cite it. A paper describing the p
   url = {https://github.com/montimaj/gwArsenicR},
 }
 ```
-<img src="Readme_Figures/UCSF_Logo_21_Navy_300dpi_RGB.png" height="55"/> &nbsp; <img src="Readme_Figures/DRITaglineLogoTransparentBackground.png" height="55"/> &nbsp; <img src="Readme_Figures/CSU-Signature-C-357.png" height="65"/> &nbsp;  <img src="Readme_Figures/USGS_logo.png" height="55"/> &nbsp; <img src="Readme_Figures/brand-uci-edu-primarylogo-UC-Irvine.svg" height="55"/> &nbsp; <img src="Readme_Figures/NIH_Master_Logo_Vertical_2Color.png" height="55"/>
+<img src="Readme_Figures/UCSF_Logo_21_Navy_300dpi_RGB.png" height="35"/> &nbsp; <img src="Readme_Figures/DRITaglineLogoTransparentBackground.png" height="35"/> &nbsp; <img src="Readme_Figures/CSU-Signature-C-357.png" height="45"/> &nbsp;  <img src="Readme_Figures/USGS_logo.png" height="35"/> &nbsp; <img src="Readme_Figures/brand-uci-edu-primarylogo-UC-Irvine.svg" height="35"/> &nbsp; <img src="Readme_Figures/NIH_Master_Logo_Vertical_2Color.png" height="35"/>
 
 ## References
 Bulka, C. M., Bryan, M. S., Lombard, M. A., Bartell, S. M., Jones, D. K., Bradley, P. M., ... & Argos, M. (2022). Arsenic in private well water and birth outcomes in the United States. _Environment International, 163_, 107176. https://doi.org/10.1016/j.envint.2022.107176
