@@ -1,8 +1,9 @@
 # Load the testthat library
 library(testthat)
 library(devtools)
-document()
-build()
+# document()
+# build()
+# install()
 library(gwArsenicR)
 
 # Source the helper function to create dummy data

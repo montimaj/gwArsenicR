@@ -78,6 +78,106 @@ The package's primary functionality is exposed through a single main function:
 See the [vignettes/gwArsenicR-vignette.Rmd](vignettes/gwArsenicR-vignette.Rmd) for example usage using dummy data. You can run this Rmd file using the following command.
 ```Rscript -e "rmarkdown::render('vignettes/gwArsenicR-vignette.Rmd')"``` or use VS Code preview.
 
+## Testing
+
+The package includes comprehensive tests to ensure reliability and correctness. The test suite validates the main functionality, data processing, and statistical computations.
+
+### Running Tests
+
+**Run all tests:**
+```bash
+cd /path/to/gwArsenicR
+Rscript -e "devtools::test()"
+```
+
+**Run specific test file:**
+```bash
+Rscript -e "testthat::test_file('tests/testthat/test-analysis.R')"
+```
+
+**Run tests without rebuilding the package (faster):**
+```bash
+Rscript -e "devtools::load_all(); testthat::test_file('tests/testthat/test-analysis.R')"
+```
+
+### Test Structure
+
+The main test file `tests/testthat/test-analysis.R` includes:
+
+1. **Setup and Data Generation**: Creates temporary dummy data files that mimic the required input formats:
+   - USGS arsenic probability data with multinomial probabilities
+   - EPA arsenic data with lognormal parameters  
+   - Individual-level birth/health outcome data
+
+2. **Function Execution**: Tests the main `perform_sensitivity_analysis()` function with:
+   - Multiple imputation (2 draws for fast testing)
+   - Mixed-effects regression models
+   - Proper parameter validation
+
+3. **Result Validation**: Verifies that:
+   - Results are returned as a properly structured list
+   - Each target outcome has corresponding results
+   - Required columns are present (q.mi, se.mi, p.value, etc.)
+   - No NA/NaN/Inf values in critical statistics
+   - Output CSV files are created
+   - Results contain expected number of arsenic category effects
+
+4. **Cleanup**: Automatically removes temporary files after testing
+
+### Test Coverage
+
+The tests validate:
+- **Data Loading**: Proper reading of USGS, EPA, and birth data files
+- **Multiple Imputation**: Generation of multiple datasets with plausible arsenic exposures
+- **Statistical Modeling**: Mixed-effects regression model fitting
+- **Results Pooling**: Application of Rubin's Rules for multiple imputation
+- **Output Generation**: Creation of structured results and CSV files
+- **Error Handling**: Graceful handling of missing data and invalid inputs
+
+### Example Test Output
+
+A successful test run will show:
+```
+══ Testing test-analysis.R ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+[ FAIL 0 | WARN 0 | SKIP 0 | PASS 1 ]
+--- Pooled Analysis Results ---
+$BWT
+       q.mi    se.mi  statistic   conf.low conf.high   p.value
+1 -23.64268 26.44322 -0.8940925  -75.50193  28.21657 0.3713803
+2 -36.99748 34.73086 -1.0652626 -105.11008  31.11511 0.2868861
+
+$OEGEST
+        q.mi     se.mi statistic   conf.low conf.high   p.value
+1 0.06880128 0.3155980 0.2180029 -0.5501354 0.6877380 0.8274492
+2 0.03409167 0.1153912 0.2954442 -0.1922084 0.2603917 0.7676853
+
+-----------------------------
+[ FAIL 0 | WARN 0 | SKIP 0 | PASS 3 ][1] "Checking results for target: BWT"
+[ FAIL 0 | WARN 0 | SKIP 0 | PASS 12 ][1] "Checking results for target: OEGEST"
+[ FAIL 0 | WARN 0 | SKIP 0 | PASS 22 ] Done!
+```
+
+### Continuous Integration
+
+The package is designed to work with CI/CD pipelines. The tests can be run automatically using:
+
+```yaml
+# Example GitHub Actions workflow
+- name: Run tests
+  run: |
+    Rscript -e "devtools::test()"
+```
+
+### Testing Best Practices
+
+When developing or modifying the package:
+
+1. **Run tests frequently** during development
+2. **Add new tests** for new functionality
+3. **Use small datasets** in tests for speed (ndraws = 2)
+4. **Test edge cases** such as missing data or unusual parameter values
+5. **Validate statistical correctness** of pooled results
+
 
 ## Citation
 If you use gwArsenicR in your research, please cite it. A paper describing the package is currently under review at the Journal of Open Source Software (JOSS).
