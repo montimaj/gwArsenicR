@@ -1,0 +1,249 @@
+---
+title: "Using gwArsenicR to Model Health Effects of Groundwater Arsenic Exposure"
+author: "Sayantan Majumdar, Matthew O. Gribble, Ryan G. Smith, Melissa A. Lombard, and Scott M. Bartell"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using gwArsenicR to Model Health Effects of Groundwater Arsenic Exposure}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+```
+
+## Introduction
+
+Welcome to the `gwArsenicR` package vignette. This document provides a comprehensive guide to using the package for estimating arsenic exposure from private well water and assessing its association with health outcomes.
+
+The core methodology implemented in this package is based on the approaches used in foundational epidemiological studies by [Bulka et al. (2022)](https://doi.org/10.1016/j.envint.2022.107176) and [Lombard et al. (2021)](https://doi.org/10.1021/acs.est.0c05239).
+
+This vignette will cover:
+
+1.  The conceptual background of the statistical model.
+2.  The required data formats for the analysis.
+3.  A complete, step-by-step example from data preparation to results interpretation.
+
+## Conceptual Framework
+
+The primary challenge in studying the health effects of arsenic in private wells is the uncertainty in exposure assessment. Private wells are not federally regulated, and direct measurements for large populations are often unavailable. `gwArsenicR` addresses this by implementing a multi-stage approach:
+
+1.  **Probabilistic Exposure Modeling**: The package combines two sources of arsenic prediction data:
+    * **USGS Models**: Machine learning models (Lombard et al., 2021) that provide a multinomial probability for arsenic concentration falling into one of three categories (`<5`, `5-10`, `>10` µg/L) for grid cells across the U.S.
+    * **EPA Data**: County-level estimates of arsenic concentrations from public supply wells.
+    These are combined, weighted by the proportion of the population using private vs. public wells, to create a county-specific probability distribution of arsenic exposure.
+
+2.  **Multiple Imputation**: Because we don't know the true arsenic exposure for each individual, we treat it as missing data. The package uses a multiple imputation framework to create `n` complete datasets (`ndraws`). In each dataset, a plausible arsenic exposure category is assigned to each county based on the probability distribution derived in the previous step.
+
+3.  **Regression Analysis and Pooling**: A regression model (typically a linear mixed-effects model) is fitted to each of the `n` imputed datasets. The results (coefficients and standard errors) from these models are then pooled using **Rubin's Rules** to produce a single set of estimates that properly accounts for the uncertainty introduced by the imputation process.
+
+## Data Requirements
+
+The `perform_sensitivity_analysis()` function requires three main data inputs.
+
+### 1. USGS Arsenic Probability Data (`as_usgs_prob_csv`)
+
+A CSV file containing the multinomial probability of arsenic levels from the USGS model for each raster grid cell.
+
+* **Required Columns**:
+    * `RFC3_C1v2`, `RFC3_C2v2`, `RFC3_C3v2`: Numeric probabilities for the three arsenic categories. These must sum to 1 for each row.
+    * `Wells_2010`: Numeric population of well users for each raster cell.
+    * `GEOID10`: A 5-digit character or numeric county identifier (FIPS code).
+
+### 2. EPA Arsenic Data (`as_epa_prob_csv`)
+
+A CSV file containing the EPA model data.
+
+* **Required Columns**:
+    * `EPA_AS_meanlog`: Numeric mean (on a log scale) of the arsenic concentration.
+    * `PWELL_private_pct`: Numeric percentage of the population on private wells (from 0 to 100).
+    * `GEOID10`: A 5-digit county identifier (FIPS code) to link with the USGS data.
+
+### 3. Birth Data (`birth_data_txt`)
+
+A text file (typically tab-separated) containing individual-level health outcome and covariate data.
+
+* **Required Columns**:
+    * `FIPS`: A 5-digit county identifier to link with the arsenic data.
+    * A column for each health outcome (e.g., `BWT` for birth weight).
+    * Columns for all covariates included in the regression formula (e.g., `MAGE_R`, `smoke`, `MRSTATE`).
+
+## A Complete Walkthrough
+
+Let's walk through a full example.
+
+### Step 1: Setup
+
+First, load the necessary libraries.
+
+```{r}
+library(gwArsenicR)
+library(lme4) # For the model formula structure
+library(rms)  # For rcs() in the model formula
+```
+
+### Step 2: Generate Example Data
+
+For this vignette to be self-contained, we'll first define and then use a helper function to generate dummy data files. In a real analysis, you would provide the paths to your own data files.
+
+```{r, echo=FALSE}
+# This helper function creates the necessary dummy data files for the example.
+# We define it here but hide the code block in the rendered vignette for clarity.
+create_dummy_data <- function(
+  file_dir = "example_data",
+  num_rows = 500, # Raster-level data
+  num_births = 2000, # Individual-level data
+  seed = 12345
+) {
+  set.seed(seed)
+  if (!dir.exists(file_dir)) {
+    dir.create(file_dir, recursive = TRUE)
+  }
+
+  # --- Common Geographic Identifiers ---
+  county_ids <- sprintf("%05d", 1:100)
+  geoid10 <- sample(county_ids, num_rows, replace = TRUE)
+  birth_fips <- sample(county_ids, num_births, replace = TRUE)
+
+  # --- 1. USGS Arsenic Probability Data ---
+  usgs_prob_values <- t(apply(
+    matrix(stats::runif(num_rows * 3), ncol = 3), 1, function(x) x / sum(x)
+  ))
+  dummy_usgs_df <- data.frame(
+    RFC3_C1v2 = usgs_prob_values[, 1],
+    RFC3_C2v2 = usgs_prob_values[, 2],
+    RFC3_C3v2 = usgs_prob_values[, 3],
+    Wells_2010 = sample(50:500, num_rows, replace = TRUE),
+    GEOID10 = geoid10
+  )
+  dummy_usgs_csv <- file.path(file_dir, "dummy_usgs_arsenic.csv")
+  data.table::fwrite(dummy_usgs_df, dummy_usgs_csv)
+
+  # --- 2. EPA Arsenic Data ---
+  dummy_epa_df <- data.frame(
+    EPA_AS_meanlog = stats::runif(num_rows, 0.5, 1.5),
+    PWELL_private_pct = stats::runif(num_rows, min = 1, max = 99),
+    GEOID10 = geoid10
+  )
+  dummy_epa_csv <- file.path(file_dir, "dummy_epa_arsenic.csv")
+  data.table::fwrite(dummy_epa_df, dummy_epa_csv)
+
+  # --- 3. Birth Data ---
+  births_df <- data.frame(
+    MAGE_R = sample(18:45, num_births, replace = TRUE),
+    MRACEHISP_F = factor(sample(c("White", "Black", "Hispanic", "Other"), num_births, replace = TRUE)),
+    MEDUC_2 = sample(0:1, num_births, replace = TRUE),
+    MEDUC_3 = sample(0:1, num_births, replace = TRUE),
+    MEDUC_4 = sample(0:1, num_births, replace = TRUE),
+    smoke = sample(0:1, num_births, replace = TRUE),
+    RUCC = sample(1:9, num_births, replace = TRUE),
+    RUCC_F = factor(sample(1:9, num_births, replace = TRUE)),
+    pm = stats::rnorm(num_births, mean = 8, sd = 2),
+    DMAR_1 = sample(0:1, num_births, replace = TRUE),
+    FIPS = birth_fips,
+    MRSTATE = factor(sample(state.abb, num_births, replace = TRUE)),
+    BWT = round(stats::rnorm(num_births, mean = 3400, sd = 450)),
+    OEGEST = round(stats::rnorm(num_births, mean = 40, sd = 2))
+  )
+  dummy_births_txt <- file.path(file_dir, "dummy_births.txt")
+  data.table::fwrite(births_df, dummy_births_txt, sep = "\t")
+
+  return(list(usgs = dummy_usgs_csv, epa = dummy_epa_csv, births = dummy_births_txt))
+}
+```{r, echo=TRUE}
+# Generate the dummy data files and store their paths
+dummy_files <- create_dummy_data()
+```
+
+### Step 3: Define Analysis Parameters
+
+Next, define all the parameters for the analysis, including the regression formula.
+
+```{r}
+ndraws <- 10
+output_dir <- "analysis_results"
+targets <- c("BWT", "OEGEST") # Birth Weight and Gestational Age
+as_cat_label <- c("As<5", "As5-10", "As10+")
+drop_as_cat_label_reg <- "As<5" # Use <5 ug/L as the reference category
+as_level_col <- "AsLevel"
+
+# Define the regression formula
+# This is a complex formula provided as an example. It models the outcome as a
+# function of the imputed Arsenic Level, with adjustments for various
+# covariates. It includes a random effect for county (FIPS) nested within state
+# (MRSTATE) to account for spatial clustering.
+regression_formula <- paste0(
+  "~ as.factor(", as_level_col, ") + ",
+  "rms::rcs(MAGE_R, parms = 3) + ",
+  "as.factor(MRACEHISP_F) + ",
+  "MEDUC_2 + MEDUC_3 + MEDUC_4 + ",
+  "as.factor(RUCC_F) + DMAR_1 + smoke + pm + ",
+  "(1 | MRSTATE / FIPS)"
+)
+```
+
+### Step 4: Run the Analysis
+
+With all parameters defined, call the main function `perform_sensitivity_analysis()`.
+
+```{r, results='hide', message=TRUE, warning=TRUE}
+# This chunk may take a moment to run
+results <- perform_sensitivity_analysis(
+  ndraws = ndraws,
+  as_usgs_prob_csv = dummy_files$usgs,
+  as_epa_prob_csv = dummy_files$epa,
+  birth_data_txt = dummy_files$births,
+  regression_formula = regression_formula,
+  output_dir = output_dir,
+  targets = targets,
+  as_cat_label = as_cat_label,
+  drop_as_cat_label_reg = drop_as_cat_label_reg,
+  as_level_col = as_level_col,
+  epa_lognormal_sdlog = 1.2 # Example of user-defined sdlog
+)
+```
+
+### Step 5: Interpret the Results
+
+The `results` object is a list where each element corresponds to a health outcome target. The element itself is a data frame containing the pooled results from the regression models.
+
+Let's examine the results for Birth Weight (`BWT`).
+
+```{r}
+bwt_results <- results$BWT
+knitr::kable(bwt_results, caption = "Pooled Regression Results for Birth Weight (BWT)")
+```
+
+* **term**: The regression model term, indicating the arsenic exposure category being compared to the reference level.
+* **q.mi**: The pooled point estimate (e.g., the mean difference in birth weight). This is the main effect estimate.
+* **se.mi**: The pooled standard error for the point estimate, which combines the within-imputation and between-imputation variance.
+* **statistic**: The t-statistic, calculated as `q.mi / se.mi`.
+* **conf.low** & **conf.high**: The lower and upper bounds of the 95% confidence interval for the effect estimate.
+* **p.value**: The p-value associated with the t-statistic.
+
+From this table, you can assess the magnitude, direction, and statistical significance of the association between different levels of arsenic exposure and the health outcome.
+
+### Step 6: Cleanup
+
+Finally, remove the dummy data directory.
+
+```{r}
+unlink("example_data", recursive = TRUE)
+unlink("analysis_results", recursive = TRUE)
+```
+
+---
+
+## References
+
+Bulka, C. M., Bryan, M. S., Lombard, M. A., Bartell, S. M., Jones, D. K., Bradley, P. M., ... & Argos, M. (2022). Arsenic in private well water and birth outcomes in the United States. *Environment International*, 163, 107176. [https://doi.org/10.1016/j.envint.2022.107176](https://doi.org/10.1016/j.envint.2022.107176)
+
+Lombard, M. A., Bryan, M. S., Jones, D. K., Bulka, C., Bradley, P. M., Backer, L. C., ... & Ayotte, J. D. (2021). Machine learning models of arsenic in private wells throughout the conterminous United States as a tool for exposure assessment in human health studies. *Environmental science & technology*, 55(8), 5012-5023. [https://doi.org/10.1021/acs.est.0c05239](https://doi.org/10.1021/acs.est.0c05239)
+
+Wickham, H., & Bryan, J. (2023). *R Packages* (2nd ed.). O'Reilly Media. [https://r-pkgs.org/](https://r-pkgs.org/)
