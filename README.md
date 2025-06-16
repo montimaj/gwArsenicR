@@ -1,6 +1,8 @@
 # gwArsenicR
 An R package for modeling and estimating arsenic exposure from groundwater, based on epidemiological studies and existing concentration models.
 
+[![Build and Test](https://github.com/montimaj/gwArsenicR/actions/workflows/r.yml/badge.svg)](https://github.com/montimaj/gwArsenicR/actions/workflows/r.yml)
+
 **Principal Investigator**: [Dr. Matthew O. Gribble](https://profiles.ucsf.edu/matthew.gribble) [matt.gribble@ucsf.edu]
 
 **Co-Investigators**: [Dr. Sayantan Majumdar](https://www.dri.edu/directory/sayantan-majumdar/) [sayantan.majumdar@dri.edu], [Dr. Ryan G. Smith](https://www.engr.colostate.edu/ce/ryan-g-smith/) [ryan.g.smith@colostate.edu]
