@@ -23,9 +23,7 @@ authors:
     affiliation: 4
   - name: Matthew O. Gribble
     orcid: 0000-0002-1614-2981
-    affiliation: 5
-  
-  
+    affiliation: 5  
 affiliations:
   - name: Division of Hydrologic Sciences, Desert Research Institute, Reno, NV, USA
     index: 1
