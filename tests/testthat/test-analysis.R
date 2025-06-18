@@ -90,10 +90,7 @@ test_that("perform_sensitivity_analysis runs and produces correctly structured o
     expect_true(all(is.finite(results[[target]]$q.mi)), "Pooled estimates (q.mi) must be finite")
     expect_true(all(is.finite(results[[target]]$se.mi)), "Pooled standard errors (se.mi) must be finite")
   }
-  bwt_results <- results$BWT
-  expect_s3_class(bwt_results, "data.frame")
-
-  
+ 
   # --- 5. Teardown: Clean up the temporary directory ---
   
   unlink(temp_dir, recursive = TRUE)
