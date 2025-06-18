@@ -12,28 +12,30 @@ authors:
     orcid: 0000-0002-3539-0147
     affiliation: 1
     corresponding: true
-  - name: Matthew O. Gribble
-    orcid: 0000-0002-1614-2981
-    affiliation: 2
-  - name: Ryan G. Smith
-    orcid: 0000-0002-3747-6868
-    affiliation: 3
-  - name: Melissa A. Lombard
-    orcid: 0000-0001-5924-6556
-    affiliation: 4
   - name: Scott M. Bartell
     orcid: 0000-0001-7797-2906
+    affiliation: 2
+  - name: Melissa A. Lombard
+    orcid: 0000-0001-5924-6556
+    affiliation: 3
+  - name: Ryan G. Smith
+    orcid: 0000-0002-3747-6868
+    affiliation: 4
+  - name: Matthew O. Gribble
+    orcid: 0000-0002-1614-2981
     affiliation: 5
+  
+  
 affiliations:
   - name: Division of Hydrologic Sciences, Desert Research Institute, Reno, NV, USA
     index: 1
-  - name: Division of Occupational, Environmental, and Climate Medicine, Department of Medicine, University of California, San Francisco, CA, USA
-    index: 2
-  - name: Department of Civil and Environmental Engineering, Colorado State University, Fort Collins, CO, USA
-    index: 3
-  - name: New England Water Science Center, U.S. Geological Survey, Pembroke, NH, USA
-    index: 4
   - name: Joe C. Wen School of Population & Public Health, University of California, Irvine, CA, USA
+    index: 2 
+  - name: New England Water Science Center, U.S. Geological Survey, Pembroke, NH, USA
+    index: 3
+  - name: Department of Civil and Environmental Engineering, Colorado State University, Fort Collins, CO, USA
+    index: 4
+  - name: Division of Occupational, Environmental, and Climate Medicine, Department of Medicine, University of California, San Francisco, CA, USA
     index: 5
 date: 16 June 2025
 bibliography: paper.bib
@@ -80,6 +82,6 @@ Ultimately, gwArsenicR empowers a wider research community to contribute to our 
 
 # Acknowledgments
 
-This work was supported by the National Institutes of Health (NIH). We thank the authors of the original studies for their foundational work.
+This work was supported by the National Heart, Lung, and Blood Institute (R21HL159574) and funding from the United States Geological Survey’s John Wesley Powell Center for Analysis and Synthesis.
 
 # References
