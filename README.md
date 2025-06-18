@@ -176,7 +176,7 @@ If you use gwArsenicR in your research, please cite it. A paper describing the p
 ```
 @Misc{,
   title = {gwArsenicR: An R package for modeling and estimating arsenic exposure from groundwater},
-  author = {Sayantan Majumdar and Matthew O. Gribble and Ryan G. Smith and Melissa A. Lombard and Scott M. Bartell},
+  author = {Sayantan Majumdar and Scott M. Bartell and Melissa A. Lombard and Ryan G. Smith and Matthew O. Gribble},
   year = {2025},
   note = {R package version 0.1.0. Under review in the Journal of Open Source Software.},
   url = {https://github.com/montimaj/gwArsenicR},

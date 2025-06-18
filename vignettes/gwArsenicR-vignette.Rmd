@@ -1,6 +1,6 @@
 ---
 title: "Using gwArsenicR to Model Health Effects of Groundwater Arsenic Exposure"
-author: "Sayantan Majumdar, Matthew O. Gribble, Ryan G. Smith, Melissa A. Lombard, and Scott M. Bartell"
+author: "Sayantan Majumdar, Scott M. Bartell, Melissa A. Lombard, Ryan G. Smith, and Matthew O. Gribble"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
