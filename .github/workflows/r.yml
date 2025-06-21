@@ -106,9 +106,9 @@ jobs:
             
             # Test main function exists
             stopifnot(exists("perform_sensitivity_analysis"))
-            cat("✅ All tests completed successfully!\n")
+            cat("All tests completed successfully!\n")
           }, error = function(e) {
-            cat("❌ Test failed with error:\n")
+            cat("Test failed with error:\n")
             print(e)
             quit(status = 1)
           })
