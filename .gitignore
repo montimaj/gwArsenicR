@@ -50,3 +50,7 @@ rsconnect/
 
 .DS_Store
 
+# temp dirs
+analysis_results/
+test_output/
+

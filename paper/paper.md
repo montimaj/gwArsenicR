@@ -35,7 +35,7 @@ affiliations:
     index: 4
   - name: Division of Occupational, Environmental, and Climate Medicine, Department of Medicine, University of California, San Francisco, CA, USA
     index: 5
-date: 16 June 2025
+date: 21 June 2025
 bibliography: paper.bib
 ---
 
@@ -58,14 +58,31 @@ gwArsenicR directly addresses this need by packaging the entire analytical pipel
 
 By providing this accessible tool, gwArsenicR lowers the barrier to entry for conducting high-quality research on the health impacts of groundwater contaminants, promoting reproducibility and wider application of these state-of-the-art methods in environmental epidemiology.
 
-# Design and Features
+# Design and Implementation
 
-The design of gwArsenicR prioritizes ease of use, flexibility, and statistical rigor.
+## Software Architecture
 
-* **Modular Architecture**: The package is centered around a primary function, perform\_sensitivity\_analysis(), which orchestrates the entire workflow. This function calls internal helpers for specific tasks, such as the regression\_analysis() function, which handles model fitting and the pooling of results. This modularity makes the code base easier to maintain and extend.  
-* **Flexible Parameterization**: Users have control over key aspects of the analysis. They can specify the number of imputation draws (ndraws), define the health outcomes (targets) and covariates through a standard R formula (regression\_formula), and adjust the standard deviation of the lognormal distribution (epa\_lognormal\_sdlog) for the EPA data, allowing for tailored sensitivity analyses.  
-* **Efficient Data Handling**: The package leverages the data.table package for fast and memory-efficient loading and processing of large datasets, which is crucial when working with national-scale health and environmental data.  
-* **Statistically Robust Modeling**: gwArsenicR uses the lme4 package to fit linear mixed-effects models, allowing researchers to properly account for hierarchical data structures (e.g., individuals within counties, counties within states). The use of Amelia \[@Amelia-2011\] ensures that results from the multiple imputations are pooled correctly according to Rubin's Rules.
+gwArsenicR follows a modular design philosophy centered around the main exported function `perform_sensitivity_analysis()`, which orchestrates the complete analytical workflow. The package architecture consists of four main modules:
+
+* **Data Loading Module** (`data-loading.R`): Handles import and preprocessing of USGS probability data, EPA lognormal parameters, and health outcome datasets with comprehensive input validation.
+* **Imputation Module** (`imputation.R`): Implements multiple imputation for arsenic exposure levels and optional MICE \[@mice-2011\] imputation for missing covariates.
+* **Regression Module** (`regression.R`): Fits linear mixed-effects models using lme4 \[@lme4-2015\] and pools results according to Rubin's Rules using Amelia \[@Amelia-2011\].
+* **Utilities Module** (`utils.R`): Provides data formatting, validation, and helper functions.
+
+## Key Features and Capabilities
+
+**Flexible Data Integration**: The package accommodates the different probability structures of USGS and EPA data by converting EPA lognormal parameters to multinomial probabilities compatible with USGS discrete probability categories. Population-weighted averaging creates unified exposure probability distributions that reflect the actual water source usage patterns in each geographic area.
+
+**Robust Multiple Imputation**: gwArsenicR implements a two-stage imputation strategy. First, it performs probabilistic assignment of arsenic exposure categories based on the integrated probability distributions. Second, it optionally implements MICE \[@mice-2011\] for missing demographic and health covariates, ensuring that all sources of uncertainty are properly propagated through the analysis.
+
+**Hierarchical Modeling**: The package leverages lme4 \[@lme4-2015\] to fit linear mixed-effects models that account for the hierarchical structure typical of population health data (e.g., individuals nested within counties, counties within states). This approach provides more accurate standard errors and better accounts for geographic clustering.
+
+**Statistical Rigor**: Results from multiple imputed datasets are pooled using Rubin's Rules \[@Rubin-1987\], which properly combines point estimates and accounts for both within-imputation and between-imputation variance. This ensures that confidence intervals and p-values correctly reflect the uncertainty introduced by the imputation process.
+
+**Performance Optimization**: The package uses data.table \[@data.table-2025\] for efficient handling of large datasets and implements vectorized operations for probability calculations, making it practical for national-scale epidemiological studies.
+
+**Quality Assurance**: gwArsenicR includes comprehensive testing with >95% code coverage, automated continuous integration across multiple R versions and operating systems, and extensive input validation to prevent common user errors.
+
 
 # **Research Enabled by gwArsenicR**
 

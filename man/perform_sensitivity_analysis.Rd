@@ -12,6 +12,7 @@ perform_sensitivity_analysis(
   regression_formula,
   output_dir,
   targets = c("OEGEST", "BWT"),
+  impute_vars = NULL,
   as_cat_label = c("As<5", "As5-10", "As10+"),
   drop_as_cat_label_reg = c("As<5"),
   columns_to_select = NULL,
@@ -24,28 +25,37 @@ perform_sensitivity_analysis(
   epa_as_col = "EPA_AS_meanlog",
   epa_lognormal_sdlog = 1,
   epa_pwell_col = "PWELL_private_pct",
-  seed = 12345
+  seed = 12345,
+  mice_m = 1,
+  mice_maxit = 5,
+  mice_method = "pmm",
+  mice_covs = c("RUCC", "pm")
 )
 }
 \arguments{
-\item{ndraws}{An integer specifying the number of imputed datasets to generate.}
+\item{ndraws}{An integer specifying the number of imputed datasets to
+generate.}
 
 \item{as_usgs_prob_csv}{A file path to the CSV containing USGS model-based
 multinomial probabilities of arsenic levels for private wells.}
 
 \item{as_epa_prob_csv}{A file path to the CSV containing EPA model-based
-lognormal parameters for public wells and the percentage of private well users.}
+lognormal parameters for public wells and the percentage of private well
+users.}
 
 \item{birth_data_txt}{A file path to the text file containing the birth data.}
 
-\item{regression_formula}{A string or formula object for the regression model.}
+\item{regression_formula}{A string or formula object for the regression
+model.}
 
-\item{output_dir}{A file path to the directory where output files will be saved.}
+\item{output_dir}{A file path to the directory where output files will be
+saved.}
 
-\item{targets}{A character vector of the dependent variables (health outcomes)
-for the regression analysis.}
+\item{targets}{A character vector of the dependent variables (health
+outcomes) for the regression analysis.}
 
-\item{as_cat_label}{A character vector of labels for the arsenic concentration categories.}
+\item{as_cat_label}{A character vector of labels for the arsenic
+concentration categories.}
 
 \item{drop_as_cat_label_reg}{A character vector of arsenic categories to be
 used as the reference level in the regression.}
@@ -59,14 +69,14 @@ Rural-Urban Continuum Code.}
 \item{geod_col}{A character string specifying the column name for the
 Geographic Identifier (e.g., county FIPS code) in the arsenic data.}
 
-\item{as_conc_cols}{A character vector of column names from the USGS data for
-the arsenic concentration probabilities.}
+\item{as_conc_cols}{A character vector of column names from the USGS data
+for the arsenic concentration probabilities.}
 
-\item{pop_well_col}{A character string specifying the column name from the USGS
-data for the population of well users.}
+\item{pop_well_col}{A character string specifying the column name from the
+USGS data for the population of well users.}
 
-\item{birth_county_col}{A character string specifying the column name for the
-birth county FIPS code in the birth data.}
+\item{birth_county_col}{A character string specifying the column name for
+the birth county FIPS code in the birth data.}
 
 \item{as_level_col}{A character string for the name of the imputed arsenic
 level column.}
@@ -77,15 +87,28 @@ lognormal meanlog parameter.}
 \item{epa_lognormal_sdlog}{A numeric value for the standard deviation of the
 lognormal distribution for the EPA data. Defaults to 1.0.}
 
-\item{epa_pwell_col}{A character string for the column name of the percentage of
-private well users.}
+\item{epa_pwell_col}{A character string for the column name of the
+percentage of private well users.}
 
 \item{seed}{An integer for setting the random number generator seed for
 reproducibility.}
+
+\item{mice_m}{An integer for the number of multiple imputations for
+covariates. Defaults to 1.}
+
+\item{mice_maxit}{An integer for the maximum number of iterations for mice.
+Defaults to 5.}
+
+\item{mice_method}{A character string specifying the imputation method for
+covariates. Defaults to "pmm" (predictive mean matching).}
+
+\item{mice_covs}{A character vector of column names to be used as
+covariates in the mice imputation process. Defaults to a set of common
+covariates. Make sure these columns exist in the birth data.}
 }
 \value{
-A list of data frames, each containing the pooled regression results for a
-target health outcome.
+A list of data frames, each containing the pooled regression results
+for a target health outcome.
 }
 \description{
 This function performs a sensitivity analysis to assess the impact of arsenic

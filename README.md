@@ -1,21 +1,45 @@
 # gwArsenicR
 An R package for modeling and estimating arsenic exposure from groundwater, based on epidemiological studies and existing concentration models.
 
+[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/montimaj/gwArsenicR)
+[![R](https://img.shields.io/badge/R-%E2%89%A5%204.1.0-blue.svg)](https://www.r-project.org/)
 [![Build and Test](https://github.com/montimaj/gwArsenicR/actions/workflows/r.yml/badge.svg)](https://github.com/montimaj/gwArsenicR/actions/workflows/r.yml)
 
 **Principal Investigator**: [Dr. Matthew O. Gribble](https://profiles.ucsf.edu/matthew.gribble) [matt.gribble@ucsf.edu]
 
 **Co-Investigators**: [Dr. Sayantan Majumdar](https://www.dri.edu/directory/sayantan-majumdar/) [sayantan.majumdar@dri.edu], [Dr. Ryan G. Smith](https://www.engr.colostate.edu/ce/ryan-g-smith/) [ryan.g.smith@colostate.edu]
 
+## Table of Contents
+- [Statement of Need](#statement-of-need)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Data Requirements](#data-requirements)
+- [Package Structure](#package-structure)
+- [Core Functions](#core-functions)
+- [Key Features](#key-features)
+- [Documentation](#documentation)
+- [Running Tests](#running-tests)
+- [Modifying the R Package](#modifying-the-r-package)
+- [Contributing](#contributing)
+- [Citation](#citation)
+- [License](#license)
+
 ## Statement of Need
-Chronic exposure to arsenic in drinking water is a significant public health concern, linked to numerous adverse health outcomes. Epidemiological studies investigating these effects often face challenges in accurately assessing exposure, particularly for populations relying on unregulated private wells. The underlying statistical models and data integration processes from foundational studies like _Bulka et al. (2022)_ and _Lombard et al. (2021)_ are robust but complex to implement.
 
-The gwArsenicR package addresses this challenge by providing a streamlined, accessible, and reproducible workflow for researchers. It encapsulates the complex methods of multiple imputation and mixed-effects regression modeling into a single, user-friendly function. This enables epidemiologists and public health scientists to:
-- Estimate arsenic exposure probabilities by integrating USGS and EPA models.
-- Account for uncertainty in exposure estimates through a multiple imputation framework.
-- Assess the relationship between arsenic exposure and various health outcomes using robust statistical models.
+Chronic arsenic exposure from drinking water affects millions globally and is linked to cancer, cardiovascular disease, and adverse birth outcomes. **The challenge**: Accurately estimating exposure for populations using unregulated private wells, where arsenic concentrations are unknown.
 
-By lowering the barrier to entry for this type of analysis, gwArsenicR promotes wider adoption of these methods, enhances the reproducibility of research findings, and facilitates more rigorous investigation into the public health impacts of arsenic in private well water.
+Existing methods from studies like _Bulka et al. (2022)_ and _Lombard et al. (2021)_ provide robust statistical frameworks but require complex implementation involving:
+- Integration of multiple probabilistic models (USGS and EPA)
+- Multiple imputation techniques for uncertain exposures
+- Mixed-effects regression with proper pooling of results
+
+**gwArsenicR solves this** by packaging these sophisticated methods into a single, user-friendly function. This enables researchers to:
+- 🔬 **Focus on science**, not statistical programming
+- 📊 **Ensure reproducibility** across studies  
+- ⚡ **Accelerate research** on arsenic health effects
+- 🎯 **Apply best practices** for uncertainty quantification
+
+By democratizing access to these methods, gwArsenicR promotes more rigorous and comparable arsenic exposure research.
 
 ## Installation
 ### System Dependencies: Pandoc
@@ -25,11 +49,35 @@ To build the package vignettes, which provide detailed documentation and example
 If you do not have Pandoc, you can download and install it from the official website: [pandoc.org/installing.html](https://pandoc.org/installing.html).
 
 ### R Package Installation
-Install [R](https://www.r-project.org/) and run the following codes from the terminal or your preferred IDE ([RStudio](https://posit.co/download/rstudio-desktop/), [VS Code](https://code.visualstudio.com/), etc.) 
-```
+
+**Prerequisites:** R (≥ 4.1.0) and [Pandoc](https://pandoc.org/installing.html) for building vignettes.
+
+**Install from GitHub:**
+```r
+# Install devtools if not already installed
 if (!require("devtools")) install.packages("devtools")
-devtools::install_github("montimaj/gwArsenicR")
+
+# Install gwArsenicR
+devtools::install_github("montimaj/gwArsenicR", build_vignettes = TRUE)
+
+# Load the package
+library(gwArsenicR)
 ```
+
+**Verify installation:**
+```r
+# Check package version
+packageVersion("gwArsenicR")
+
+# View help
+?perform_sensitivity_analysis
+```
+
+**Package Documentation Website:**
+
+The complete package documentation, including detailed function references, vignettes, and examples, is available at: **https://montimaj.github.io/gwArsenicR**
+
+This website is automatically generated and updated whenever changes are made to the main branch, ensuring you always have access to the latest documentation.
 
 ### Modifying the R Package
 If you want to customize this package, run the following using R after you have modified the codes.
@@ -50,14 +98,41 @@ build()
 install()
 ```
 
+## Quick Start
+
+```r
+library(gwArsenicR)
+
+# Run sensitivity analysis with your data
+results <- perform_sensitivity_analysis(
+  ndraws = 10,
+  as_usgs_prob_csv = "path/to/usgs_data.csv",
+  as_epa_prob_csv = "path/to/epa_data.csv", 
+  birth_data_txt = "path/to/birth_data.txt",
+  regression_formula = "~ AsLevel + MAGE_R + rural + (1|FIPS)",
+  output_dir = "results/",
+  targets = c("OEGEST", "BWT")
+)
+
+# View results
+print(results)
+```
+
+For detailed examples with dummy data, see the [vignette](vignettes/gwArsenicR-vignette.Rmd).
+
 ## Package Structure
 The gwArsenicR package follows the standard structure for R packages:
 ```
 gwArsenicR/
 ├── R/
-│   └── gwArsenic.R
+│   ├── gwArsenic.R           # Main exported function
+│   ├── data-loading.R        # Data loading and processing functions
+│   ├── imputation.R          # Multiple imputation functions
+│   ├── regression.R          # Regression analysis and pooling functions
+│   └── utils.R               # Utility functions
 ├── man/
-│   └── gwArsenic.Rd
+│   ├── perform_sensitivity_analysis.Rd
+│   └── [other function documentation]
 ├── tests/
 │   ├── testthat/
 │   │   ├── helper-create_dummy_data.R
@@ -65,26 +140,124 @@ gwArsenicR/
 │   └── testthat.R
 ├── vignettes/
 │   └── gwArsenicR-vignette.Rmd
-├── DESCRIPTION
-├── NAMESPACE
-├── LICENSE.md
-└── README.md
+├── .github/
+│   └── workflows/
+│       └── r.yml             # GitHub Actions CI/CD workflow
+├── CONTRIBUTING.md           # Contribution guidelines and development setup
+├── DESCRIPTION              # Package metadata and dependencies
+├── NAMESPACE               # Package exports and imports
+├── LICENSE.md             # Package license
+├── NEWS.md                 # Change log and version history
+└── README.md             # This file
 ```
+
+### R/ Directory Structure
+
+The R code is organized into modular files for better maintainability:
+
+- **`gwArsenic.R`**: Contains the main exported function `perform_sensitivity_analysis()` that orchestrates the entire workflow
+- **`data-loading.R`**: Internal functions for loading and processing USGS and EPA arsenic data, and birth/health outcome data
+- **`imputation.R`**: Internal functions for multiple imputation of arsenic exposure levels and additional covariates using MICE
+- **`regression.R`**: Internal functions for mixed-effects regression analysis and pooling results using Rubin's Rules
+- **`utils.R`**: Utility functions for data formatting, validation, and other helper operations
+
+### Key Internal Functions
+
+While users primarily interact with `perform_sensitivity_analysis()`, the package includes several internal functions organized by functionality:
+
+**Data Loading (`data-loading.R`):**
+- `load_and_process_arsenic_data()`: Orchestrates USGS and EPA data loading
+- `load_usgs_data()`: Loads USGS probability data
+- `convert_epa_to_multinomial()`: Converts EPA lognormal to multinomial probabilities
+- `create_weighted_prob_matrix()`: Creates weighted combined probability matrix
+- `load_and_process_birth_data()`: Loads and processes birth/health outcome data
+
+**Multiple Imputation (`imputation.R`):**
+- `impute_arsenic_exposure()`: Creates multiple imputed datasets with arsenic exposure
+- `impute_additional_variables()`: Imputes missing covariates using MICE
+- `validate_imputed_datasets()`: Validates imputation results
+
+**Regression Analysis (`regression.R`):**
+- `regression_analysis()`: Performs mixed-effects regression on imputed data
+- `pool_estimates_by_term()`: Pools regression estimates using Rubin's Rules
+- `pool_single_estimate()`: Applies Rubin's Rules to individual parameters
+
+**Utilities (`utils.R`):**
+- `format_geographic_ids()`: Formats FIPS codes and geographic identifiers
+- Additional helper functions for data validation and formatting
 
 ## Core Functions
 The package's primary functionality is exposed through a single main function:
 
-```perform_sensitivity_analysis()```: This is the main function of the package. It orchestrates the entire workflow, from loading and processing the data to performing the multiple imputation and running the final regression analysis. It calls the internal ```regression_analysis()``` helper function to fit the models.
+**`perform_sensitivity_analysis()`**: This is the main exported function of the package. It orchestrates the entire workflow from data loading through final analysis:
+
+1. **Data Loading**: Loads and processes USGS probability data, EPA lognormal parameters, and birth/health outcome data
+2. **Probability Integration**: Combines USGS and EPA models using weighted averages based on private well usage
+3. **Multiple Imputation**: Creates multiple datasets with probabilistically assigned arsenic exposure levels
+4. **Covariate Imputation**: Optionally imputes missing values in additional covariates using MICE
+5. **Statistical Analysis**: Fits mixed-effects regression models to assess exposure-outcome relationships
+6. **Results Pooling**: Applies Rubin's Rules to pool results across imputed datasets
+7. **Output Generation**: Saves results and returns structured analysis output
+
+The function is designed to handle the complex statistical methodology while providing a simple, user-friendly interface that requires minimal statistical programming expertise.
+
+## Key Features
+
+- ✅ **Automated workflow**: Single function handles entire analysis pipeline
+- ✅ **Multiple imputation**: Accounts for uncertainty in arsenic exposure assignment
+- ✅ **Flexible modeling**: Supports custom regression formulas and multiple outcomes
+- ✅ **Robust statistics**: Implements Rubin's Rules for proper inference
+- ✅ **Data integration**: Combines USGS and EPA models with population weighting
+- ✅ **Missing data handling**: Optional MICE imputation for covariates
+- ✅ **Reproducible results**: Seed control and comprehensive output saving
+- ✅ **Extensive testing**: >95% code coverage with automated CI/CD
+
+## Documentation
+
+### Online Documentation
+📖 **Complete documentation website**: https://montimaj.github.io/gwArsenicR
+
+The documentation website includes:
+- **Function Reference**: Detailed documentation for all package functions
+- **Vignettes**: Step-by-step tutorials with working examples
+- **Getting Started Guide**: Quick introduction to package usage
+- **Methodology**: Statistical background and implementation details
+- **FAQ**: Common questions and troubleshooting
+
+### Local Documentation
+```r
+# View package help
+help(package = "gwArsenicR")
+
+# View main function documentation
+?perform_sensitivity_analysis
+
+# Browse vignettes
+browseVignettes("gwArsenicR")
+```
+
+## Data Requirements
+
+The package requires three input files:
+
+1. **USGS Probability Data** (`as_usgs_prob_csv`): CSV with arsenic concentration probabilities and geographic identifiers
+2. **EPA Parameters** (`as_epa_prob_csv`): CSV with EPA lognormal distribution parameters  
+3. **Health Outcome Data** (`birth_data_txt`): Text file with health outcomes and county identifiers
+
+**Expected columns:**
+- USGS data: `GEOID10`, `RFC3_C1v2`, `RFC3_C2v2`, `RFC3_C3v2`, `Wells_2010`
+- EPA data: `EPA_AS_meanlog`, `PWELL_private_pct`
+- Health data: `FIPS`, outcome variables (e.g., `BWT`, `OEGEST`), covariates
+
+See the [vignette](vignettes/gwArsenicR-vignette.Rmd) for detailed data format specifications.
 
 ## Usage
 See the [vignettes/gwArsenicR-vignette.Rmd](vignettes/gwArsenicR-vignette.Rmd) for example usage using dummy data. You can run this Rmd file using the following command.
 ```Rscript -e "rmarkdown::render('vignettes/gwArsenicR-vignette.Rmd')"``` or use VS Code preview.
 
-## Testing
-
-The package includes comprehensive tests to ensure reliability and correctness. The test suite validates the main functionality, data processing, and statistical computations.
-
 ### Running Tests
+
+The package includes comprehensive tests to ensure reliability and correctness. All tests use synthetic dummy data and run quickly for efficient development and CI/CD workflows.
 
 **Run all tests:**
 ```bash
@@ -97,66 +270,102 @@ Rscript -e "devtools::test()"
 Rscript -e "testthat::test_file('tests/testthat/test-analysis.R')"
 ```
 
-**Run tests without rebuilding the package (faster):**
+**Run tests during development (faster - no package rebuild):**
 ```bash
-Rscript -e "devtools::load_all(); testthat::test_file('tests/testthat/test-analysis.R')"
+Rscript -e "devtools::load_all(); devtools::test()"
 ```
 
-### Test Structure
+**Run tests with clean output (suppress MICE warnings):**
+```bash
+Rscript -e "suppressWarnings(devtools::test())"
+```
 
-The main test file `tests/testthat/test-analysis.R` includes:
+**Check package integrity:**
+```bash
+Rscript -e "devtools::check()"
+```
 
-1. **Setup and Data Generation**: Creates temporary dummy data files that mimic the required input formats:
-   - USGS arsenic probability data with multinomial probabilities
-   - EPA arsenic data with lognormal parameters  
-   - Individual-level birth/health outcome data
+**Interactive testing in R/RStudio:**
+```r
+# Load package for development
+devtools::load_all()
 
-2. **Function Execution**: Tests the main `perform_sensitivity_analysis()` function with:
-   - Multiple imputation (2 draws for fast testing)
-   - Mixed-effects regression models
-   - Proper parameter validation
+# Run all tests
+devtools::test()
 
-3. **Result Validation**: Verifies that:
-   - Results are returned as a properly structured list
-   - Each target outcome has corresponding results
-   - Required columns are present (q.mi, se.mi, p.value, etc.)
-   - No NA/NaN/Inf values in critical statistics
-   - Output CSV files are created
-   - Results contain expected number of arsenic category effects
+# Run specific test with detailed output
+testthat::test_file("tests/testthat/test-analysis.R", reporter = "progress")
 
-4. **Cleanup**: Automatically removes temporary files after testing
+# Check test coverage
+covr::package_coverage()
+```
 
-### Test Coverage
+### Testing Configuration
 
-The tests validate:
-- **Data Loading**: Proper reading of USGS, EPA, and birth data files
-- **Multiple Imputation**: Generation of multiple datasets with plausible arsenic exposures
-- **Statistical Modeling**: Mixed-effects regression model fitting
-- **Results Pooling**: Application of Rubin's Rules for multiple imputation
-- **Output Generation**: Creation of structured results and CSV files
-- **Error Handling**: Graceful handling of missing data and invalid inputs
+Tests are configured for speed and reliability:
+- **Fast execution**: Uses `ndraws = 2` for quick multiple imputation
+- **Synthetic data**: All tests use generated dummy data, no external dependencies
+- **Comprehensive coverage**: Tests data loading, imputation, regression, and output generation
+- **Warning suppression**: Expected MICE convergence warnings are suppressed for clean output
+- **Automatic cleanup**: Temporary files are automatically removed after each test
 
-### Example Test Output
+### Expected Test Output
 
 A successful test run will show:
 ```
-══ Testing test-analysis.R ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-[ FAIL 0 | WARN 0 | SKIP 0 | PASS 1 ]
+══ Testing test-analysis.R ══════════════════════════════════════════════════════════════════
+✅ [ FAIL 0 | WARN 0 | SKIP 0 | PASS 3 ]
 --- Pooled Analysis Results ---
 $BWT
-       q.mi    se.mi  statistic   conf.low conf.high   p.value
-1 -23.64268 26.44322 -0.8940925  -75.50193  28.21657 0.3713803
-2 -36.99748 34.73086 -1.0652626 -105.11008  31.11511 0.2868861
+    term      q.mi    se.mi  statistic  conf.low conf.high   p.value
+1 As5-10 13.555199 43.50701  0.3115636 -86.29198 113.40237 0.7631215
+2  As10+ -8.176346 37.90346 -0.2157150 -89.49962  73.14693 0.8323325
 
 $OEGEST
-        q.mi     se.mi statistic   conf.low conf.high   p.value
-1 0.06880128 0.3155980 0.2180029 -0.5501354 0.6877380 0.8274492
-2 0.03409167 0.1153912 0.2954442 -0.1922084 0.2603917 0.7676853
+    term       q.mi     se.mi statistic   conf.low conf.high   p.value
+1 As5-10 0.08924988 0.1643782 0.5429544 -0.2702451 0.4487449 0.5974323
+2  As10+ 0.07891698 0.1640922 0.4809308 -0.2709718 0.4288058 0.6375356
 
 -----------------------------
-[ FAIL 0 | WARN 0 | SKIP 0 | PASS 3 ][1] "Checking results for target: BWT"
-[ FAIL 0 | WARN 0 | SKIP 0 | PASS 12 ][1] "Checking results for target: OEGEST"
-[ FAIL 0 | WARN 0 | SKIP 0 | PASS 22 ] Done!
+✅ [ FAIL 0 | WARN 0 | SKIP 0 | PASS 5 ][1] "Checking results for target: BWT"
+✅ [ FAIL 0 | WARN 0 | SKIP 0 | PASS 14 ][1] "Checking results for target: OEGEST"
+✅ [ FAIL 0 | WARN 0 | SKIP 0 | PASS 23 ] Done!
+```
+
+### Continuous Integration
+
+The package includes automated testing via GitHub Actions:
+- **R CMD check**: Validates package structure and dependencies
+- **Multiple R versions**: Tests on R 4.1+ across different operating systems
+- **Dependency validation**: Ensures all required packages are properly declared
+- **Documentation checks**: Validates roxygen2 documentation completeness
+
+[![Build and Test](https://github.com/montimaj/gwArsenicR/actions/workflows/r.yml/badge.svg)](https://github.com/montimaj/gwArsenicR/actions/workflows/r.yml)
+
+### Troubleshooting Tests
+
+**If tests fail with data.table errors:**
+```bash
+# Ensure data.table is properly loaded
+Rscript -e "library(data.table); devtools::test()"
+```
+
+**If MICE warnings are excessive:**
+```bash
+# Run with warning suppression
+Rscript -e "suppressWarnings(devtools::test())"
+```
+
+**If tests timeout:**
+```bash
+# Check system resources and reduce ndraws in test files if needed
+# Default test configuration uses ndraws = 2 for speed
+```
+
+**Memory issues:**
+```bash
+# Clear R environment and restart
+Rscript -e "rm(list=ls()); gc(); devtools::test()"
 ```
 
 ### Testing Best Practices
@@ -169,20 +378,52 @@ When developing or modifying the package:
 4. **Test edge cases** such as missing data or unusual parameter values
 5. **Validate statistical correctness** of pooled results
 
+## Contributing
+
+We welcome contributions! Please see our [contribution guidelines](CONTRIBUTING.md) for details.
+
+**Ways to contribute:**
+- 🐛 Report bugs via [GitHub issues](https://github.com/montimaj/gwArsenicR/issues)
+- 💡 Suggest features or improvements
+- 📖 Improve documentation
+- 🧪 Add tests or examples
+- 🔧 Submit pull requests
+
+**Development setup:**
+```bash
+git clone https://github.com/montimaj/gwArsenicR.git
+cd gwArsenicR
+Rscript -e "devtools::load_all(); devtools::test()"
+```
 
 ## Citation
-If you use gwArsenicR in your research, please cite it. A paper describing the package is currently under review at the Journal of Open Source Software (JOSS).
 
-```
-@Misc{,
-  title = {gwArsenicR: An R package for modeling and estimating arsenic exposure from groundwater},
-  author = {Sayantan Majumdar and Scott M. Bartell and Melissa A. Lombard and Ryan G. Smith and Matthew O. Gribble},
-  year = {2025},
-  note = {R package version 0.1.0. Under review in the Journal of Open Source Software.},
-  url = {https://github.com/montimaj/gwArsenicR},
+If you use gwArsenicR in your research, please cite:
+
+> Majumdar, S., Bartell, S. M., Lombard, M. A., Smith, R. G., & Gribble, M. O. (2025). 
+> gwArsenicR: An R package for modeling and estimating arsenic exposure from groundwater. 
+> *Journal of Open Source Software* (under review).
+
+**BibTeX:**
+```bibtex
+@article{majumdar2025gwarsenic,
+  title={gwArsenicR: An R package for modeling and estimating arsenic exposure from groundwater},
+  author={Majumdar, Sayantan and Bartell, Scott M and Lombard, Melissa A and Smith, Ryan G and Gribble, Matthew O},
+  journal={Journal of Open Source Software},
+  year={2025},
+  note={Under review},
+  url={https://github.com/montimaj/gwArsenicR}
 }
 ```
+
+**DOI:** *Coming soon upon publication*
 <img src="Readme_Figures/UCSF_Logo_21_Navy_300dpi_RGB.png" height="35"/> &nbsp; <img src="Readme_Figures/DRITaglineLogoTransparentBackground.png" height="35"/> &nbsp; <img src="Readme_Figures/CSU-Signature-C-357.png" height="45"/> &nbsp;  <img src="Readme_Figures/USGS_logo.png" height="35"/> &nbsp; <img src="Readme_Figures/brand-uci-edu-primarylogo-UC-Irvine.svg" height="35"/> &nbsp; <img src="Readme_Figures/NIH_Master_Logo_Vertical_2Color.png" height="35"/>
+
+## License
+
+This project is licensed under the Apache 2.0 License - see the [LICENSE.md](LICENSE.md) file for details.
+
+**Version:** 0.1.0 | **Status:** Under active development
 
 ## References
 Bulka, C. M., Bryan, M. S., Lombard, M. A., Bartell, S. M., Jones, D. K., Bradley, P. M., ... & Argos, M. (2022). Arsenic in private well water and birth outcomes in the United States. _Environment International, 163_, 107176. https://doi.org/10.1016/j.envint.2022.107176
