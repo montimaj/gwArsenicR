@@ -417,6 +417,7 @@ If you use gwArsenicR in your research, please cite:
 ```
 
 **DOI:** *Coming soon upon publication*
+
 <img src="Readme_Figures/UCSF_Logo_21_Navy_300dpi_RGB.png" height="35"/> &nbsp; <img src="Readme_Figures/DRITaglineLogoTransparentBackground.png" height="35"/> &nbsp; <img src="Readme_Figures/CSU-Signature-C-357.png" height="45"/> &nbsp;  <img src="Readme_Figures/USGS_logo.png" height="35"/> &nbsp; <img src="Readme_Figures/brand-uci-edu-primarylogo-UC-Irvine.svg" height="35"/> &nbsp; <img src="Readme_Figures/NIH_Master_Logo_Vertical_2Color.png" height="35"/>
 
 ## License
