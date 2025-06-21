@@ -3,7 +3,10 @@ An R package for modeling and estimating arsenic exposure from groundwater, base
 
 [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/montimaj/gwArsenicR)
 [![R](https://img.shields.io/badge/R-%E2%89%A5%204.1.0-blue.svg)](https://www.r-project.org/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 [![Build and Test](https://github.com/montimaj/gwArsenicR/actions/workflows/r.yml/badge.svg)](https://github.com/montimaj/gwArsenicR/actions/workflows/r.yml)
+[![Downloads](https://img.shields.io/github/downloads/montimaj/gwArsenicR/total.svg)](https://github.com/montimaj/gwArsenicR/releases)
 
 **Principal Investigator**: [Dr. Matthew O. Gribble](https://profiles.ucsf.edu/matthew.gribble) [matt.gribble@ucsf.edu]
 
