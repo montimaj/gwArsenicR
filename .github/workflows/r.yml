@@ -169,6 +169,8 @@ jobs:
             any::covr
             any::testthat
             any::devtools
+            any::DT
+            any::htmltools
           needs: coverage
 
       - name: Test coverage

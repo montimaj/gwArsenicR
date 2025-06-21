@@ -64,6 +64,15 @@ devtools::install_github("montimaj/gwArsenicR", build_vignettes = TRUE)
 library(gwArsenicR)
 ```
 
+**For development and testing (includes coverage tools):**
+```r
+# Install additional development dependencies
+install.packages(c("devtools", "testthat", "covr", "DT", "htmltools"))
+
+# Install gwArsenicR
+devtools::install_github("montimaj/gwArsenicR", build_vignettes = TRUE)
+```
+
 **Verify installation:**
 ```r
 # Check package version
@@ -287,6 +296,10 @@ Rscript -e "devtools::check()"
 
 **Interactive testing in R/RStudio:**
 ```r
+# Install coverage dependencies if needed
+if (!require("DT")) install.packages("DT")
+if (!require("htmltools")) install.packages("htmltools")
+
 # Load package for development
 devtools::load_all()
 
@@ -296,8 +309,12 @@ devtools::test()
 # Run specific test with detailed output
 testthat::test_file("tests/testthat/test-analysis.R", reporter = "progress")
 
-# Check test coverage
+# Check test coverage (requires DT and htmltools)
 covr::package_coverage()
+
+# Generate HTML coverage report
+cov <- covr::package_coverage()
+covr::report(cov, file = "coverage-report.html")
 ```
 
 ### Testing Configuration
