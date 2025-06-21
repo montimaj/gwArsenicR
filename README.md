@@ -11,7 +11,6 @@ An R package for modeling and estimating arsenic exposure from groundwater, base
 
 <!-- Build Status -->
 [![Build and Test](https://github.com/montimaj/gwArsenicR/actions/workflows/r.yml/badge.svg)](https://github.com/montimaj/gwArsenicR/actions/workflows/r.yml)
-[![R CMD Check](https://github.com/montimaj/gwArsenicR/actions/workflows/r.yml/badge.svg?label=R-CMD-check)](https://github.com/montimaj/gwArsenicR/actions/workflows/r.yml)
 
 <!-- Quality Metrics -->
 [![Test Coverage](https://img.shields.io/badge/coverage-%3E95%25-brightgreen.svg)](https://github.com/montimaj/gwArsenicR/actions/workflows/r.yml)
