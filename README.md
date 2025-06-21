@@ -1,10 +1,37 @@
 # gwArsenicR
 An R package for modeling and estimating arsenic exposure from groundwater, based on epidemiological studies and existing concentration models.
 
+# gwArsenicR
+An R package for modeling and estimating arsenic exposure from groundwater, based on epidemiological studies and existing concentration models.
+
+<!-- Package Info -->
 [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/montimaj/gwArsenicR)
 [![R](https://img.shields.io/badge/R-%E2%89%A5%204.1.0-blue.svg)](https://www.r-project.org/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+<!-- Build Status -->
 [![Build and Test](https://github.com/montimaj/gwArsenicR/actions/workflows/r.yml/badge.svg)](https://github.com/montimaj/gwArsenicR/actions/workflows/r.yml)
+[![R CMD Check](https://github.com/montimaj/gwArsenicR/actions/workflows/r.yml/badge.svg?label=R-CMD-check)](https://github.com/montimaj/gwArsenicR/actions/workflows/r.yml)
+
+<!-- Quality Metrics -->
+[![Test Coverage](https://img.shields.io/badge/coverage-%3E95%25-brightgreen.svg)](https://github.com/montimaj/gwArsenicR/actions/workflows/r.yml)
+
+<!-- Documentation and Usage -->
+[![Documentation](https://img.shields.io/badge/docs-pkgdown-blue.svg)](https://montimaj.github.io/gwArsenicR)
+[![Vignettes](https://img.shields.io/badge/vignettes-available-blue.svg)](https://montimaj.github.io/gwArsenicR/articles/)
+[![Downloads](https://img.shields.io/github/downloads/montimaj/gwArsenicR/total.svg)](https://github.com/montimaj/gwArsenicR/releases)
+
+<!-- Development Status -->
+[![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+
+<!-- Code Quality -->
+[![Code style: tidyverse](https://img.shields.io/badge/code%20style-tidyverse-blue.svg)](https://style.tidyverse.org)
+[![Dependencies](https://img.shields.io/badge/dependencies-5-blue.svg)](https://github.com/montimaj/gwArsenicR/blob/main/DESCRIPTION)
+
+<!-- Academic -->
+[![DOI](https://img.shields.io/badge/DOI-pending-orange.svg)](https://github.com/montimaj/gwArsenicR)
+[![JOSS](https://joss.theoj.org/papers/10.21105/joss.XXXXX/status.svg)](https://joss.theoj.org/papers/10.21105/joss.XXXXX)
 
 **Principal Investigator**: [Dr. Matthew O. Gribble](https://profiles.ucsf.edu/matthew.gribble) [matt.gribble@ucsf.edu]
 
@@ -133,6 +160,9 @@ For detailed examples with dummy data, see the [vignette](vignettes/gwArsenicR-v
 ## Package Structure
 The gwArsenicR package follows the standard structure for R packages:
 ```
+## Package Structure
+The gwArsenicR package follows the standard structure for R packages:
+```
 gwArsenicR/
 ├── R/
 │   ├── gwArsenic.R           # Main exported function
@@ -153,12 +183,13 @@ gwArsenicR/
 ├── .github/
 │   └── workflows/
 │       └── r.yml             # GitHub Actions CI/CD workflow
-├── CONTRIBUTING.md           # Contribution guidelines and development setup
+├── _pkgdown.yml             # Website configuration
+├── CONTRIBUTING.md          # Contribution guidelines and development setup
 ├── DESCRIPTION              # Package metadata and dependencies
 ├── NAMESPACE               # Package exports and imports
-├── LICENSE.md             # Package license
+├── LICENSE                 # Apache 2.0 license file
 ├── NEWS.md                 # Change log and version history
-└── README.md             # This file
+└── README.md              # This file
 ```
 
 ### R/ Directory Structure

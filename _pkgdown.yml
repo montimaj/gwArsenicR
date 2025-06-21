@@ -1,0 +1,42 @@
+url: https://montimaj.github.io/gwArsenicR
+template:
+  bootstrap: 5
+  theme: flatly
+  
+navbar:
+  structure:
+    left: [home, reference, articles, tutorials, news]
+    right: [search, github]
+  components:
+    github:
+      icon: fab-github
+      href: https://github.com/montimaj/gwArsenicR
+
+reference:
+  - title: "Main Functions"
+    desc: "Core functions for arsenic exposure analysis"
+    contents:
+    - perform_sensitivity_analysis
+  
+  - title: "Utility Functions"
+    desc: "Helper functions and data processing"
+    contents:
+    - starts_with("util")
+    - starts_with("helper")
+
+articles:
+  - title: "Getting Started"
+    navbar: ~
+    contents:
+    - gwArsenicR-vignette
+
+authors:
+  Sayantan Majumdar:
+    href: https://www.dri.edu/directory/sayantan-majumdar/
+  Matthew O. Gribble:
+    href: https://profiles.ucsf.edu/matthew.gribble
+  Ryan G. Smith:
+    href: https://www.engr.colostate.edu/ce/ryan-g-smith/
+
+development:
+  mode: auto
