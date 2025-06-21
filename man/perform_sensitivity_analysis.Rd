@@ -52,46 +52,51 @@ model.}
 saved.}
 
 \item{targets}{A character vector of the dependent variables (health
-outcomes) for the regression analysis.}
+outcomes) for the regression analysis. Defaults to c("OEGEST", "BWT").}
+
+\item{impute_vars}{A character vector of column names to be imputed using
+MICE. If NULL, no additional imputation is performed. Defaults to NULL.}
 
 \item{as_cat_label}{A character vector of labels for the arsenic
-concentration categories.}
+concentration categories. Defaults to c("As<5", "As5-10", "As10+").}
 
 \item{drop_as_cat_label_reg}{A character vector of arsenic categories to be
-used as the reference level in the regression.}
+used as the reference level in the regression. Defaults to c("As<5").}
 
 \item{columns_to_select}{A character vector of column names to be selected
 from the birth data. If NULL, all columns are used.}
 
 \item{rucc_col}{A character string specifying the column name for the
-Rural-Urban Continuum Code.}
+Rural-Urban Continuum Code. Defaults to "RUCC".}
 
 \item{geod_col}{A character string specifying the column name for the
-Geographic Identifier (e.g., county FIPS code) in the arsenic data.}
+Geographic Identifier (e.g., county FIPS code) in the arsenic data.
+Defaults to "GEOID10".}
 
 \item{as_conc_cols}{A character vector of column names from the USGS data
-for the arsenic concentration probabilities.}
+for the arsenic concentration probabilities. Defaults to
+c("RFC3_C1v2", "RFC3_C2v2", "RFC3_C3v2").}
 
 \item{pop_well_col}{A character string specifying the column name from the
-USGS data for the population of well users.}
+USGS data for the population of well users. Defaults to "Wells_2010".}
 
 \item{birth_county_col}{A character string specifying the column name for
-the birth county FIPS code in the birth data.}
+the birth county FIPS code in the birth data. Defaults to "FIPS".}
 
 \item{as_level_col}{A character string for the name of the imputed arsenic
-level column.}
+level column. Defaults to "AsLevel".}
 
 \item{epa_as_col}{A character string for the column name of the EPA arsenic
-lognormal meanlog parameter.}
+lognormal meanlog parameter. Defaults to "EPA_AS_meanlog".}
 
 \item{epa_lognormal_sdlog}{A numeric value for the standard deviation of the
 lognormal distribution for the EPA data. Defaults to 1.0.}
 
 \item{epa_pwell_col}{A character string for the column name of the
-percentage of private well users.}
+percentage of private well users. Defaults to "PWELL_private_pct".}
 
 \item{seed}{An integer for setting the random number generator seed for
-reproducibility.}
+reproducibility. Defaults to 12345.}
 
 \item{mice_m}{An integer for the number of multiple imputations for
 covariates. Defaults to 1.}
@@ -103,8 +108,8 @@ Defaults to 5.}
 covariates. Defaults to "pmm" (predictive mean matching).}
 
 \item{mice_covs}{A character vector of column names to be used as
-covariates in the mice imputation process. Defaults to a set of common
-covariates. Make sure these columns exist in the birth data.}
+covariates in the mice imputation process. Defaults to c("RUCC", "pm").
+Make sure these columns exist in the birth data.}
 }
 \value{
 A list of data frames, each containing the pooled regression results
@@ -117,4 +122,34 @@ from USGS (private wells) and EPA (public wells) models to create a
 probabilistic model of arsenic exposure, weighted by the proportion of the
 population using each water source. It then uses multiple imputation to
 generate a series of datasets with imputed arsenic levels.
+}
+\examples{
+\dontrun{
+# Basic usage with minimal parameters
+results <- perform_sensitivity_analysis(
+  ndraws = 10,
+  as_usgs_prob_csv = "usgs_arsenic_probs.csv",
+  as_epa_prob_csv = "epa_arsenic_params.csv",
+  birth_data_txt = "birth_outcomes.txt",
+  regression_formula = "~ AsLevel + maternal_age + (1|county)",
+  output_dir = "results/",
+  targets = c("birth_weight", "gestational_age")
+)
+
+# Advanced usage with custom parameters and MICE imputation
+results <- perform_sensitivity_analysis(
+  ndraws = 100,
+  as_usgs_prob_csv = "data/usgs_probs.csv",
+  as_epa_prob_csv = "data/epa_params.csv",
+  birth_data_txt = "data/births.txt",
+  regression_formula = "~ AsLevel + MAGE_R + rural + (1|FIPS)",
+  output_dir = "sensitivity_results/",
+  targets = c("OEGEST", "BWT"),
+  impute_vars = c("MAGE_R", "education"),
+  mice_m = 5,
+  mice_maxit = 10,
+  seed = 42
+)
+}
+
 }
