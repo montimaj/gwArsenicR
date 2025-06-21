@@ -53,7 +53,7 @@ An R package for modeling and estimating arsenic exposure from groundwater, base
 
 ## Statement of Need
 
-Chronic arsenic exposure from drinking water affects millions globally and is linked to cancer, cardiovascular disease, and adverse birth outcomes. **The challenge**: Accurately estimating exposure for populations using unregulated private wells, where arsenic concentrations are unknown.
+gwArsenicR is an R package that provides a streamlined workflow for epidemiologists and public health researchers to estimate arsenic exposure from private and public well water and to assess its association with various health outcomes. The package implements a sophisticated statistical approach that combines geospatial arsenic prediction models with a multiple imputation framework to account for exposure uncertainty. The core functionality integrates predicted arsenic concentration probabilities from U.S. Geological Survey (USGS) models for private wells with U.S. Environmental Protection Agency (EPA) data for public water systems. It then uses a weighting scheme based on the proportion of the population served by each water source to create a unified, county-level exposure probability distribution. By encapsulating these complex methodologies into a single, user-friendly function, gwArsenicR makes this type of analysis more accessible, reproducible, and standardized.
 
 Existing methods from studies like _Bulka et al. (2022)_ and _Lombard et al. (2021)_ provide robust statistical frameworks but require complex implementation involving:
 - Integration of multiple probabilistic models (USGS and EPA)
