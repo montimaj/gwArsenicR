@@ -202,7 +202,10 @@ jobs:
 
           # Print all filenames in the coverage object for debugging
           cat("Files in coverage report:\n")
-          all_files <- unique(sapply(full_cov, function(x) x$filename))
+          all_files <- unique(sapply(full_cov, function(x) {
+            if (!is.null(x$filename)) x$filename else NA
+          }))
+          all_files <- all_files[!is.na(all_files)]  # Remove NA values
           print(all_files)
           
           # Find the index of the coverage entry for R/gwArsenic.R
