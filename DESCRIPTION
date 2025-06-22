@@ -45,7 +45,6 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
-    covr,
     DT,
     htmltools
 VignetteBuilder: knitr
