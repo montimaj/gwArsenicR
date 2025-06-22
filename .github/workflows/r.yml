@@ -178,26 +178,7 @@ jobs:
             any::DT
             any::htmltools
           needs: coverage
-
-      - name: Verify test file existence
-        run: |
-          cat("Verifying existence of test files...\n")
-          test_dir <- "tests/testthat"
-          if (!dir.exists(test_dir)) {
-            cat("❌ ERROR: Test directory '", test_dir, "' not found.\n")
-            quit(status = 1)
-          }
-          cat("✅ Test directory found. Listing contents:\n")
-          print(list.files(test_dir))
           
-          target_file <- file.path(test_dir, "test-gwArsenic.R")
-          if (!file.exists(target_file)) {
-            cat("❌ ERROR: Target test file '", target_file, "' not found.\n")
-            quit(status = 1)
-          }
-          cat("✅ Target test file 'test-gwArsenic.R' found.\n")
-        shell: Rscript {0}
-
       - name: Test coverage
         run: |
           # Load package first
@@ -216,16 +197,18 @@ jobs:
           cat("\n=== Overall Package Coverage ===\n")
           print(full_cov)
           
-          # Safely filter the coverage object for gwArsenic.R
+          # Safely filter the coverage object for the SOURCE file gwArsenic.R
           cat("\nFiltering for gwArsenic.R specifically...\n")
           
           # A coverage object is a list; we filter it based on the filename attribute
+          # of the SOURCE file (in R/), not the TEST file (in tests/).
           gwarsenic_cov_list <- Filter(function(x) {
-            !is.null(x$filename) && grepl("test-gwArsenic.R$", x$filename)
+            !is.null(x$filename) && grepl("gwArsenic\\.R$", x$filename)
           }, full_cov)
           
           if (length(gwarsenic_cov_list) == 0) {
-            cat("❌ ERROR: test-gwArsenic.R not found in coverage results\n")
+            cat("❌ ERROR: gwArsenic.R not found in coverage results.\n")
+            cat("This means the tests did not generate any coverage for this file.\n")
             cat("Available files in coverage report:\n")
             all_files <- unique(sapply(full_cov, function(x) x$filename))
             print(all_files)
