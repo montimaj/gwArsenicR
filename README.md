@@ -1,9 +1,6 @@
 # gwArsenicR
 An R package for modeling and estimating arsenic exposure from groundwater, based on epidemiological studies and existing concentration models.
 
-# gwArsenicR
-An R package for modeling and estimating arsenic exposure from groundwater, based on epidemiological studies and existing concentration models.
-
 <!-- Package Info -->
 [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/montimaj/gwArsenicR)
 [![R](https://img.shields.io/badge/R-%E2%89%A5%204.1.0-blue.svg)](https://www.r-project.org/)
