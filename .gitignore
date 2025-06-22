@@ -53,4 +53,6 @@ rsconnect/
 # temp dirs
 analysis_results/
 test_output/
+scripts/lib/
+lib/
 

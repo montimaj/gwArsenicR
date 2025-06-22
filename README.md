@@ -156,47 +156,59 @@ For detailed examples with dummy data, see the [vignette](vignettes/gwArsenicR-v
 ## Package Structure
 The gwArsenicR package follows the standard structure for R packages:
 ```
-## Package Structure
-The gwArsenicR package follows the standard structure for R packages:
-```
 gwArsenicR/
 ├── R/
-│   ├── gwArsenic.R           # Main exported function
-│   ├── data-loading.R        # Data loading and processing functions
-│   ├── imputation.R          # Multiple imputation functions
-│   ├── regression.R          # Regression analysis and pooling functions
-│   └── utils.R               # Utility functions
+│   └── gwArsenic.R           # Main exported function and all package code
 ├── man/
 │   ├── perform_sensitivity_analysis.Rd
 │   └── [other function documentation]
 ├── tests/
 │   ├── testthat/
-│   │   ├── helper-create_dummy_data.R
-│   │   └── test-analysis.R
-│   └── testthat.R
+│   │   ├── helper-create_dummy_data.R  # Test helper functions
+│   │   └── test-gwArsenic.R            # Comprehensive test suite
+│   └── testthat.R                      # Test runner
+├── scripts/
+│   └── test_coverage_local.R           # Local coverage testing script
 ├── vignettes/
-│   └── gwArsenicR-vignette.Rmd
+│   └── gwArsenicR-vignette.Rmd         # Package tutorial and examples
 ├── .github/
 │   └── workflows/
-│       └── r.yml             # GitHub Actions CI/CD workflow
-├── _pkgdown.yml             # Website configuration
-├── CONTRIBUTING.md          # Contribution guidelines and development setup
-├── DESCRIPTION              # Package metadata and dependencies
-├── NAMESPACE               # Package exports and imports
-├── LICENSE                 # Apache 2.0 license file
-├── NEWS.md                 # Change log and version history
-└── README.md              # This file
+│       └── r.yml                       # CI/CD pipeline with coverage
+├── _pkgdown.yml                        # Website configuration
+├── CONTRIBUTING.md                     # Contribution guidelines
+├── DESCRIPTION                         # Package metadata and dependencies
+├── NAMESPACE                           # Package exports and imports
+├── LICENSE                             # Apache 2.0 license file
+├── NEWS.md                             # Change log and version history
+└── README.md                           # README file
 ```
 
 ### R/ Directory Structure
 
-The R code is organized into modular files for better maintainability:
+The package uses a **monolithic architecture** where all functionality is contained in a single, well-organized R file:
 
-- **`gwArsenic.R`**: Contains the main exported function `perform_sensitivity_analysis()` that orchestrates the entire workflow
-- **`data-loading.R`**: Internal functions for loading and processing USGS and EPA arsenic data, and birth/health outcome data
-- **`imputation.R`**: Internal functions for multiple imputation of arsenic exposure levels and additional covariates using MICE
-- **`regression.R`**: Internal functions for mixed-effects regression analysis and pooling results using Rubin's Rules
-- **`utils.R`**: Utility functions for data formatting, validation, and other helper operations
+- **`gwArsenic.R`**: Contains all package functions including:
+  - `perform_sensitivity_analysis()` - Main exported function
+  - Data loading and processing functions
+  - Multiple imputation functions using MICE
+  - Mixed-effects regression analysis functions
+  - Utility and validation functions
+
+This approach provides several advantages:
+- **Simplified maintenance**: All related code in one location
+- **Easier debugging**: Complete workflow visible in single file
+- **Reduced complexity**: No cross-file dependencies
+- **Better performance**: Reduced package loading overhead
+
+### Testing Infrastructure
+
+The package includes comprehensive testing and coverage tools:
+
+- **`tests/testthat/test-gwArsenic.R`**: Main test suite with >95% code coverage
+- **`tests/testthat/helper-create_dummy_data.R`**: Creates synthetic data for testing
+- **`tests/testthat.R`**: Standard R package test runner
+- **`scripts/test_coverage_local.R`**: Local coverage analysis script
+- **`.github/workflows/r.yml`**: Automated CI/CD with coverage reporting
 
 ### Key Internal Functions
 
@@ -219,7 +231,8 @@ While users primarily interact with `perform_sensitivity_analysis()`, the packag
 - `pool_estimates_by_term()`: Pools regression estimates using Rubin's Rules
 - `pool_single_estimate()`: Applies Rubin's Rules to individual parameters
 
-**Utilities (`utils.R`):**
+**Utilities:**
+- `validate_inputs()`: Input validation and error checking
 - `format_geographic_ids()`: Formats FIPS codes and geographic identifiers
 - Additional helper functions for data validation and formatting
 
@@ -338,11 +351,8 @@ devtools::test()
 testthat::test_file("tests/testthat/test-gwArsenic.R", reporter = "progress")
 
 # Check test coverage (requires DT and htmltools)
-covr::package_coverage()
-
-# Generate HTML coverage report
-cov <- covr::package_coverage()
-covr::report(cov, file = "coverage-report.html")
+```
+Rscript scripts/test_coverage_local.R
 ```
 
 ### Testing Configuration

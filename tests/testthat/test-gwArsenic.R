@@ -269,11 +269,11 @@ test_that("validate_inputs validates file existence", {
   # Create temporary files for testing
   temp_dir <- tempfile(pattern = "test_validation_")
   dir.create(temp_dir)
-  
+
   birth_file <- file.path(temp_dir, "birth.txt")
   usgs_file <- file.path(temp_dir, "usgs.csv")
   epa_file <- file.path(temp_dir, "epa.csv")
-  
+
   # Create the files
   writeLines("test", birth_file)
   writeLines("test", usgs_file)
@@ -286,6 +286,29 @@ test_that("validate_inputs validates file existence", {
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file
     )
+  )
+
+  # Test when the EPA file does not exist
+  unlink(epa_file)  # Remove EPA file
+  expect_error(
+    gwArsenicR:::validate_inputs(
+      birth_data_txt = birth_file,
+      as_usgs_prob_csv = usgs_file,
+      as_epa_prob_csv = epa_file
+    ),
+    paste("File does not exist:", epa_file)
+  )
+
+  # Test when the USGS file does not exist
+  writeLines("test", epa_file)  # Restore EPA file
+  unlink(usgs_file)  # Remove USGS file
+  expect_error(
+    gwArsenicR:::validate_inputs(
+      birth_data_txt = birth_file,
+      as_usgs_prob_csv = usgs_file,
+      as_epa_prob_csv = epa_file
+    ),
+    paste("File does not exist:", usgs_file)
   )
 
   unlink(temp_dir, recursive = TRUE)
@@ -702,6 +725,17 @@ test_that("validate_inputs validates MICE parameters", {
     "mice_m must be a positive integer"
   )
 
+  # Test non-numeric mice_m
+  expect_error(
+    gwArsenicR:::validate_inputs(
+      birth_data_txt = birth_file,
+      as_usgs_prob_csv = usgs_file,
+      as_epa_prob_csv = epa_file,
+      mice_m = "ten"
+    ),
+    "mice_m must be a single numeric value"
+  )
+
   # Test large mice_m (should warn)
   expect_warning(
     gwArsenicR:::validate_inputs(
@@ -724,6 +758,16 @@ test_that("validate_inputs validates MICE parameters", {
     "mice_maxit must be a positive integer"
   )
 
+  expect_error(
+    gwArsenicR:::validate_inputs(
+      birth_data_txt = birth_file,
+      as_usgs_prob_csv = usgs_file,
+      as_epa_prob_csv = epa_file,
+      mice_maxit = "three"
+    ),
+    "mice_maxit must be a single numeric value"
+  )
+
   # Test invalid mice_method
   expect_error(
     gwArsenicR:::validate_inputs(
@@ -733,6 +777,17 @@ test_that("validate_inputs validates MICE parameters", {
       mice_method = "invalid_method"
     ),
     "mice_method must be one of"
+  )
+
+  # Test non-character mice_method
+  expect_error(
+    gwArsenicR:::validate_inputs(
+      birth_data_txt = birth_file,
+      as_usgs_prob_csv = usgs_file,
+      as_epa_prob_csv = epa_file,
+      mice_method = 123
+    ),
+    "mice_method must be a single character string"
   )
 
   # Test valid mice_method
@@ -781,6 +836,16 @@ test_that("validate_inputs validates numeric parameters", {
     "epa_lognormal_sdlog must be positive"
   )
 
+  expect_error(
+    gwArsenicR:::validate_inputs(
+      birth_data_txt = birth_file,
+      as_usgs_prob_csv = usgs_file,
+      as_epa_prob_csv = epa_file,
+      epa_lognormal_sdlog = "one"
+    ),
+    "epa_lognormal_sdlog must be a single numeric value"
+  )
+
   # Test large epa_lognormal_sdlog (should warn)
   expect_warning(
     gwArsenicR:::validate_inputs(
@@ -801,6 +866,16 @@ test_that("validate_inputs validates numeric parameters", {
       seed = 123.45
     ),
     "seed must be an integer"
+  )
+
+  expect_error(
+    gwArsenicR:::validate_inputs(
+      birth_data_txt = birth_file,
+      as_usgs_prob_csv = usgs_file,
+      as_epa_prob_csv = epa_file,
+      seed = "forty-two"
+    ),
+    "seed must be a single numeric value"
   )
 
   unlink(temp_dir, recursive = TRUE)
@@ -1309,6 +1384,181 @@ test_that("Function validates AsLevel requirement through main interface", {
       output_dir = tempdir()
     ),
     "regression_formula must include 'AsLevel' as a factor variable"
+  )
+
+  unlink(temp_dir, recursive = TRUE)
+})
+
+# Add this test to your test-gwArsenic.R file in the validation section
+
+test_that("Function handles arsenic category reference dropping edge cases", {
+  temp_dir <- tempfile(pattern = "test_arsenic_ref_")
+  dir.create(temp_dir)
+
+  dummy_files <- create_dummy_data(file_dir = temp_dir)
+
+  # Test dropping all available arsenic categories as reference
+  # This should trigger:
+  # "Cannot drop all arsenic categories as reference levels."
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      as_cat_label = c("Low", "Medium", "High"),
+      drop_as_cat_label_reg = c("Low", "Medium", "High"),  # Drop all categories
+      output_dir = tempdir()
+    ),
+    "Cannot drop all arsenic categories as reference levels"
+  )
+
+  # Test with data that only has one unique arsenic category
+  # First, create a birth dataset with only one arsenic level
+  birth_data <- data.table::fread(dummy_files$births, header = TRUE)
+  birth_data$AsLevel <- "Low"  # Set all to the same category
+
+  # Write the modified data back
+  single_category_file <- file.path(temp_dir, "single_category_births.txt")
+  data.table::fwrite(birth_data, single_category_file, sep = "\t")
+
+  # Test with single category that gets dropped
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = single_category_file,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      as_cat_label = c("Low"),
+      drop_as_cat_label_reg = c("Low"),  # Drop the only category
+      output_dir = tempdir()
+    ),
+    "Cannot drop all arsenic categories as reference levels"
+  )
+
+  # Test edge case: data has categories but after filtering, none remain
+  # Create data with two categories
+  birth_data_two <- data.table::fread(dummy_files$births, header = TRUE)
+  birth_data_two$AsLevel <- sample(
+    c("Low", "Medium"),
+    nrow(birth_data_two),
+    replace = TRUE
+  )
+
+  two_category_file <- file.path(temp_dir, "two_category_births.txt")
+  data.table::fwrite(birth_data_two, two_category_file, sep = "\t")
+
+  # Drop both available categories
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = two_category_file,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      as_cat_label = c("Low", "Medium"),
+      drop_as_cat_label_reg = c("Low", "Medium"),  # Drop both categories
+      output_dir = tempdir()
+    ),
+    "Cannot drop all arsenic categories as reference levels"
+  )
+
+  # Test valid case: have multiple categories and only drop some
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = two_category_file,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      as_cat_label = c("Low", "Medium"),
+      # Only drop one category, leaving "Medium"
+      drop_as_cat_label_reg = c("Low"),
+      output_dir = tempdir()
+    ),
+    "incorrect number of probabilities"
+  )
+
+  unlink(temp_dir, recursive = TRUE)
+})
+
+test_that("Function validates arsenic category data consistency", {
+  temp_dir <- tempfile(pattern = "test_arsenic_data_")
+  dir.create(temp_dir)
+
+  dummy_files <- create_dummy_data(file_dir = temp_dir)
+
+  # Test when specified as_cat_label doesn't match data categories
+  # Load the birth data to see what categories are actually present
+  birth_data <- data.table::fread(dummy_files$births, header = TRUE)
+
+  # Specify categories that don't exist in the data
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      # Categories not in data
+      as_cat_label = c("NonExistent1", "NonExistent2"),
+      output_dir = tempdir()
+    ),
+    # This might trigger a different error depending on your validation logic
+    # Adjust the error message to match your actual implementation
+    "All values in drop_as_cat_label_reg must be present in as_cat_label"
+  )
+
+  # Test dropping categories that don't exist in as_cat_label
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      drop_as_cat_label_reg = c("NonExistentCategory"),
+      # Try to drop non-existent category
+      output_dir = tempdir()
+    ),
+    "All values in drop_as_cat_label_reg must be present in as_cat_label"
+  )
+
+  # Test if drop_as_cat_label_reg is a character vector
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      drop_as_cat_label_reg = 123,  # Invalid type
+      output_dir = tempdir()
+    ),
+    "drop_as_cat_label_reg must be a character vector"
+  )
+
+  # Test if as_cat_label has NA or empty values
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      as_cat_label = c("Low", NA, "High"),  # Contains NA
+      output_dir = tempdir()
+    ),    "as_cat_label cannot contain NA or empty values"
   )
 
   unlink(temp_dir, recursive = TRUE)
