@@ -296,7 +296,7 @@ test_that("validate_inputs validates file existence", {
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file
     ),
-    paste("File does not exist:", epa_file)
+    "File does not exist.*epa\\.csv"
   )
 
   # Test when the USGS file does not exist
@@ -308,7 +308,7 @@ test_that("validate_inputs validates file existence", {
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file
     ),
-    paste("File does not exist:", usgs_file)
+    "File does not exist.*usgs\\.csv"
   )
 
   unlink(temp_dir, recursive = TRUE)
@@ -398,7 +398,7 @@ test_that("validate_inputs validates ndraws parameter", {
 test_that("validate_inputs validates regression_formula parameter", {
   temp_dir <- tempfile(pattern = "test_formula_")
   dir.create(temp_dir)
-  
+
   # Create temporary files
   birth_file <- file.path(temp_dir, "birth.txt")
   usgs_file <- file.path(temp_dir, "usgs.csv")
@@ -488,7 +488,7 @@ test_that("validate_inputs validates regression_formula parameter", {
 test_that("validate_inputs validates targets parameter", {
   temp_dir <- tempfile(pattern = "test_targets_")
   dir.create(temp_dir)
-  
+
   # Create temporary files
   birth_file <- file.path(temp_dir, "birth.txt")
   usgs_file <- file.path(temp_dir, "usgs.csv")
@@ -636,7 +636,7 @@ test_that("validate_inputs validates impute_vars parameter", {
 test_that("validate_inputs validates output_dir parameter", {
   temp_dir <- tempfile(pattern = "test_output_dir_")
   dir.create(temp_dir)
-  
+
   # Create temporary files
   birth_file <- file.path(temp_dir, "birth.txt")
   usgs_file <- file.path(temp_dir, "usgs.csv")
@@ -695,7 +695,7 @@ test_that("validate_inputs validates output_dir parameter", {
 test_that("validate_inputs validates MICE parameters", {
   temp_dir <- tempfile(pattern = "test_mice_")
   dir.create(temp_dir)
-  
+
   # Create temporary files
   birth_file <- file.path(temp_dir, "birth.txt")
   usgs_file <- file.path(temp_dir, "usgs.csv")
@@ -806,7 +806,7 @@ test_that("validate_inputs validates MICE parameters", {
 test_that("validate_inputs validates numeric parameters", {
   temp_dir <- tempfile(pattern = "test_numeric_")
   dir.create(temp_dir)
-  
+
   # Create temporary files
   birth_file <- file.path(temp_dir, "birth.txt")
   usgs_file <- file.path(temp_dir, "usgs.csv")

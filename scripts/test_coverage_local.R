@@ -79,8 +79,6 @@ cov <- full_cov
 class(cov) <- class(full_cov)
 attr(cov, "package") <- attr(full_cov, "package")
 attr(cov, "relative") <- attr(full_cov, "relative")
-coverage_pct <- covr::percent_coverage(cov)
-cat(sprintf("📊 gwArsenic.R Coverage: %.1f%%\n\n", coverage_pct))
 
 # Generate HTML report for gwArsenic.R only
 cat("=== Generating gwArsenic.R Coverage Report ===\n")
@@ -122,6 +120,12 @@ tryCatch({
 })
 
 # Create a focused summary file
+coverage_pct <- covr::percent_coverage(gwarsenic_only_cov)
+cat(sprintf("📊 gwArsenic.R Coverage: %.1f%%\n\n", coverage_pct))
+total_lines <- length(cov)
+uncovered_lines <- ceiling(
+  total_lines - coverage_pct / 100 * total_lines
+)
 coverage_summary <- data.frame(
   File = "gwArsenic.R",
   Coverage = sprintf("%.1f%%", coverage_pct),
@@ -135,7 +139,8 @@ coverage_summary <- data.frame(
     "❌ INSUFFICIENT"
   },
   Target = "≥85%",
-  Total_Lines = length(cov),
+  Uncovered_Lines = uncovered_lines,
+  Total_Lines = total_lines,
   stringsAsFactors = FALSE
 )
 
