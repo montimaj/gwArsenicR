@@ -155,6 +155,11 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'  # Only on main branch
+    
+    permissions:
+      contents: write  # Add write permission for committing badge updates
+      pull-requests: write
+      
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
@@ -378,12 +383,6 @@ jobs:
             any::roxygen2
             any::devtools
             any::pkgdown
-
-      - name: Set git config
-        run: |
-          # Set git config for potential commits
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
 
       - name: Check documentation
         run: |          
