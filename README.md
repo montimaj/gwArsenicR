@@ -351,7 +351,6 @@ devtools::test()
 testthat::test_file("tests/testthat/test-gwArsenic.R", reporter = "progress")
 
 # Check test coverage (requires DT and htmltools)
-```
 Rscript scripts/test_coverage_local.R
 ```
 
