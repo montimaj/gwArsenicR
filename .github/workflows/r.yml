@@ -259,7 +259,7 @@ jobs:
             Coverage = sprintf("%.1f%%", coverage_pct),
             Status = if(coverage_pct >= 85) "✅ EXCELLENT" else if(coverage_pct >= 75) "✅ GOOD" else if(coverage_pct >= 65) "⚠️ NEEDS IMPROVEMENT" else "❌ INSUFFICIENT",
             Target = "≥85%",
-            Uncovered_Lines = length(uncovered_lines),
+            Covered_Lines = sum(cov[["n"]]),
             Total_Lines = length(cov),
             stringsAsFactors = FALSE
           )
