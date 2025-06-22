@@ -184,28 +184,43 @@ jobs:
           # Load package first to make its functions available
           devtools::load_all(".", quiet = FALSE)
           
-          # Directly generate coverage for the specific source file R/gwArsenic.R.
-          # covr will run the tests in tests/testthat to calculate coverage for this file.
-          cat("Generating coverage for R/gwArsenic.R...\n")
-          
-          source_file <- "R/gwArsenic.R"
-          test_file <- "tests/testthat/test-gwArsenic.R"
-          
-          if (!file.exists(source_file)) {
-            cat("❌ ERROR: Source file '", source_file, "' not found.\n")
-            quit(status = 1)
-          }
-          
-          # Use file_coverage to target the specific source file.
-          # It will automatically run the tests in tests/testthat.
-          cov <- covr::file_coverage(
-            source_files = source_file,
-            test_files = test_file
+          # Use package_coverage to ensure the full testthat environment,
+          # including helper files, is loaded correctly.
+          cat("Generating coverage for the entire package...\n")
+          full_cov <- covr::package_coverage(
+            type = "tests",
+            path = ".",
+            clean = TRUE
           )
           
-          # Print the resulting coverage object for debugging
-          cat("\n=== Coverage Object for gwArsenic.R ===\n")
-          print(cov)
+          # Print overall coverage for debugging purposes
+          cat("\n=== Overall Package Coverage ===\n")
+          print(full_cov)
+          
+          # Now, filter the full coverage report to isolate gwArsenic.R
+          cat("\nFiltering for gwArsenic.R specifically...\n")
+          
+          # Find the index of the coverage entry for R/gwArsenic.R
+          gwarsenic_index <- which(sapply(full_cov, function(x) x$filename == "R/gwArsenic.R"))
+
+          if (length(gwarsenic_index) == 0) {
+            cat("❌ ERROR: R/gwArsenic.R not found in coverage results.\n")
+            cat("Available files in coverage report:\n")
+            all_files <- unique(sapply(full_cov, function(x) x$filename))
+            print(all_files)
+            quit(status = 1)
+          }
+
+          # Directly assign the coverage object for R/gwArsenic.R
+          gwarsenic_cov_list <- full_cov[gwarsenic_index]
+          
+          # Re-create a valid coverage object from the filtered list.
+          cov <- gwarsenic_cov_list
+          class(cov) <- class(full_cov)
+          attr(cov, "package") <- attr(full_cov, "package")
+          attr(cov, "relative") <- attr(full_cov, "relative")
+          
+          cat("Successfully filtered coverage for gwArsenic.R\n")
           
           # Calculate and print coverage percentage
           coverage_pct <- covr::percent_coverage(cov)
@@ -263,6 +278,14 @@ jobs:
             covr::codecov(coverage = cov, flags = "gwArsenic")
           }
         shell: Rscript {0}
+
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@v4  # Updated from v3
+        with:
+          name: gwArsenic-coverage-reports
+          path: |
+            gwArsenic-coverage.html
+            gwArsenic-coverage-summary.csv
 
   # Enhanced documentation validation
   docs:
