@@ -1,7 +1,7 @@
 url: https://montimaj.github.io/gwArsenicR
 template:
   bootstrap: 5
-  theme: flatly
+  bootswatch: flatly  # Changed from 'theme' to 'bootswatch'
   
 navbar:
   structure:
