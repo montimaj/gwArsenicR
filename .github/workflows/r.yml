@@ -184,25 +184,30 @@ jobs:
           # Load package first
           devtools::load_all(".", quiet = FALSE)
           
-          # Generate coverage ONLY for gwArsenic.R
-          cat("Generating coverage for gwArsenic.R specifically...\n")
+          # Generate coverage for the entire package first (this will load helpers properly)
+          cat("Generating package coverage...\n")
+          full_cov <- covr::package_coverage(
+            type = "tests",
+            path = ".",
+            clean = TRUE
+          )
           
-          # Find the gwArsenic.R file path
-          gwarsenic_path <- file.path("R", "gwArsenic.R")
+          # Filter to get only gwArsenic.R coverage
+          cat("Filtering for gwArsenic.R specifically...\n")
+          file_coverage_list <- covr::file_coverage(full_cov)
           
-          if (!file.exists(gwarsenic_path)) {
-            cat("ERROR: gwArsenic.R not found at expected path:", gwarsenic_path, "\n")
-            cat("Available R files:\n")
-            r_files <- list.files("R", pattern = "\\.R$", full.names = TRUE)
-            print(r_files)
+          # Find gwArsenic.R in the coverage results
+          gwarsenic_files <- file_coverage_list[grepl("gwArsenic\\.R$", names(file_coverage_list))]
+          
+          if (length(gwarsenic_files) == 0) {
+            cat("ERROR: gwArsenic.R not found in coverage results\n")
+            cat("Available files:\n")
+            print(names(file_coverage_list))
             quit(status = 1)
           }
           
-          # Generate coverage for just gwArsenic.R
-          cov <- covr::file_coverage(
-            source_files = gwarsenic_path,
-            test_files = "tests/testthat/test-gwArsenic.R"
-          )
+          # Get the gwArsenic.R coverage
+          cov <- gwarsenic_files[[1]]
           
           # Print detailed coverage summary
           print(cov)
@@ -217,12 +222,12 @@ jobs:
           # Show uncovered lines specifically
           uncovered_lines <- covr::zero_coverage(cov)
           if (length(uncovered_lines) > 0) {
-            cat("\nUncovered lines in gwArsenic.R:\n")
+            cat("\n⚠️ Uncovered lines in gwArsenic.R:\n")
             for (line_info in uncovered_lines) {
               cat(sprintf("  Line %d: %s\n", line_info$line, trimws(line_info$value)))
             }
           } else {
-            cat("\nAll lines in gwArsenic.R are covered!\n")
+            cat("\n✅ All lines in gwArsenic.R are covered!\n")
           }
           
           # Check coverage by function within gwArsenic.R
@@ -302,91 +307,6 @@ jobs:
             )
           }
         shell: Rscript {0}
-
-      - name: Upload gwArsenic.R coverage reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gwArsenic-coverage-report
-          path: |
-            gwArsenic-coverage.html
-            gwArsenic-coverage-summary.csv
-
-      - name: Comment gwArsenic.R coverage on PR
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            
-            try {
-              if (fs.existsSync('gwArsenic-coverage-summary.csv')) {
-                const summary = fs.readFileSync('gwArsenic-coverage-summary.csv', 'utf8');
-                const lines = summary.split('\n').filter(line => line.trim());
-                
-                if (lines.length >= 2) {
-                  const data = lines[1].split(',');
-                  const coverage = data[1];
-                  const status = data[2];
-                  const uncoveredLines = data[4];
-                  
-                  let statusEmoji = "📊";
-                  if (status.includes("EXCELLENT")) statusEmoji = "🎉";
-                  else if (status.includes("GOOD")) statusEmoji = "👍";
-                  else if (status.includes("IMPROVEMENT")) statusEmoji = "⚠️";
-                  else if (status.includes("INSUFFICIENT")) statusEmoji = "❌";
-                  
-                  const comment = `## ${statusEmoji} gwArsenic.R Test Coverage Report
-                  
-                  | Metric | Value |
-                  |--------|-------|
-                  | **Coverage** | ${coverage} |
-                  | **Status** | ${status} |
-                  | **Target** | ≥85% |
-                  | **Uncovered Lines** | ${uncoveredLines} |
-                  
-                  ### 🎯 Quality Gates
-                  - 🟢 **Excellent**: ≥85% coverage
-                  - 🟡 **Good**: ≥75% coverage  
-                  - 🟠 **Needs Improvement**: ≥65% coverage
-                  - 🔴 **Insufficient**: <65% coverage (fails CI)
-                  
-                  ### 📈 Focus Areas
-                  Since **gwArsenic.R** contains the core analysis functions, high test coverage is critical for:
-                  - Input validation (validate_inputs function)
-                  - Main analysis workflow (perform_sensitivity_analysis)
-                  - Error handling and edge cases
-                  - Data processing and imputation steps
-                  
-                  📊 [View Detailed Coverage Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-                  `;
-                  
-                  github.rest.issues.createComment({
-                    issue_number: context.issue.number,
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    body: comment
-                  });
-                } else {
-                  throw new Error('Coverage summary format unexpected');
-                }
-              } else {
-                github.rest.issues.createComment({
-                  issue_number: context.issue.number,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: '⚠️ gwArsenic.R coverage report could not be generated. Check the [workflow logs](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.'
-                });
-              }
-            } catch (error) {
-              console.log('gwArsenic.R coverage comment error:', error);
-              github.rest.issues.createComment({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: '⚠️ Could not process gwArsenic.R coverage results. Check the [workflow logs](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.'
-              });
-            }
 
   # Enhanced documentation validation
   docs:
