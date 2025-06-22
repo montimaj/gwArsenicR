@@ -189,7 +189,7 @@ jobs:
           cat("Generating package coverage...\n")
           full_cov <- covr::package_coverage(
             type = "tests",
-            path = ".",
+            path = "./tests/testthat/",
             clean = TRUE
           )
           
