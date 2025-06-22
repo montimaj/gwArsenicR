@@ -199,9 +199,14 @@ jobs:
           
           # Now, filter the full coverage report to isolate gwArsenic.R
           cat("\nFiltering for gwArsenic.R specifically...\n")
+
+          # Print all filenames in the coverage object for debugging
+          cat("Files in coverage report:\n")
+          all_files <- unique(sapply(full_cov, function(x) x$filename))
+          print(all_files)
           
           # Find the index of the coverage entry for R/gwArsenic.R
-          gwarsenic_index <- which(sapply(full_cov, function(x) x$filename == "R/gwArsenic.R"))
+          gwarsenic_index <- which(sapply(full_cov, function(x) !is.null(x$filename) && x$filename == "R/gwArsenic.R"))
 
           if (length(gwarsenic_index) == 0) {
             cat("❌ ERROR: R/gwArsenic.R not found in coverage results.\n")
