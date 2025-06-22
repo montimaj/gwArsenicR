@@ -201,8 +201,7 @@ jobs:
           # Generate coverage for just gwArsenic.R
           cov <- covr::file_coverage(
             source_files = gwarsenic_path,
-            test_files = "tests/testthat/test-gwArsenic.R",
-            quiet = FALSE
+            test_files = "tests/testthat/test-gwArsenic.R"
           )
           
           # Print detailed coverage summary
@@ -218,12 +217,12 @@ jobs:
           # Show uncovered lines specifically
           uncovered_lines <- covr::zero_coverage(cov)
           if (length(uncovered_lines) > 0) {
-            cat("\n⚠️ Uncovered lines in gwArsenic.R:\n")
+            cat("\nUncovered lines in gwArsenic.R:\n")
             for (line_info in uncovered_lines) {
               cat(sprintf("  Line %d: %s\n", line_info$line, trimws(line_info$value)))
             }
           } else {
-            cat("\n✅ All lines in gwArsenic.R are covered!\n")
+            cat("\nAll lines in gwArsenic.R are covered!\n")
           }
           
           # Check coverage by function within gwArsenic.R
