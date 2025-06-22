@@ -204,7 +204,7 @@ jobs:
           cat("Available files in coverage report:\n")
           for (i in seq_along(full_cov)) {
             file_info <- full_cov[[i]]
-            print('File index:', i, 'Filename:', file_info)
+            cat(sprintf("File index: %d, Filename: %s\n", i, file_info))
           }
           
           # Find the index of the coverage entry for R/gwArsenic.R
