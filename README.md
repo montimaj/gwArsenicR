@@ -30,7 +30,7 @@ An R package for modeling and estimating arsenic exposure from groundwater, base
 
 <!-- Academic -->
 [![DOI](https://img.shields.io/badge/DOI-pending-orange.svg)](https://github.com/montimaj/gwArsenicR)
-[![JOSS](https://joss.theoj.org/papers/10.21105/joss.XXXXX/status.svg)](https://joss.theoj.org/papers/10.21105/joss.XXXXX)
+<!-- [![JOSS](https://joss.theoj.org/papers/10.21105/joss.XXXXX/status.svg)](https://joss.theoj.org/papers/10.21105/joss.XXXXX) -->
 
 **Principal Investigator**: [Dr. Matthew O. Gribble](https://profiles.ucsf.edu/matthew.gribble) [matt.gribble@ucsf.edu]
 
@@ -307,7 +307,7 @@ Rscript -e "devtools::test()"
 
 **Run specific test file:**
 ```bash
-Rscript -e "testthat::test_file('tests/testthat/test-analysis.R')"
+Rscript -e "testthat::test_file('tests/testthat/test-gwArsenic.R')"
 ```
 
 **Run tests during development (faster - no package rebuild):**
@@ -338,7 +338,7 @@ devtools::load_all()
 devtools::test()
 
 # Run specific test with detailed output
-testthat::test_file("tests/testthat/test-analysis.R", reporter = "progress")
+testthat::test_file("tests/testthat/test-gwArsenic.R", reporter = "progress")
 
 # Check test coverage (requires DT and htmltools)
 covr::package_coverage()
@@ -361,8 +361,8 @@ Tests are configured for speed and reliability:
 
 A successful test run will show:
 ```
-══ Testing test-analysis.R ══════════════════════════════════════════════════════════════════
-✅ [ FAIL 0 | WARN 0 | SKIP 0 | PASS 3 ]
+══ Testing test-gwArsenic.R ══════════════════════════════════════════════════════════════════
+✅[ FAIL 0 | WARN 0 | SKIP 0 | PASS 3 ]
 --- Pooled Analysis Results ---
 $BWT
     term      q.mi    se.mi  statistic  conf.low conf.high   p.value
@@ -375,9 +375,9 @@ $OEGEST
 2  As10+ 0.07891698 0.1640922 0.4809308 -0.2709718 0.4288058 0.6375356
 
 -----------------------------
-✅ [ FAIL 0 | WARN 0 | SKIP 0 | PASS 5 ][1] "Checking results for target: BWT"
-✅ [ FAIL 0 | WARN 0 | SKIP 0 | PASS 14 ][1] "Checking results for target: OEGEST"
-✅ [ FAIL 0 | WARN 0 | SKIP 0 | PASS 23 ] Done!
+✅[ FAIL 0 | WARN 0 | SKIP 0 | PASS 5 ][1] "Checking results for target: BWT"
+✅[ FAIL 0 | WARN 0 | SKIP 0 | PASS 14 ][1] "Checking results for target: OEGEST"
+✅[ FAIL 0 | WARN 0 | SKIP 0 | PASS 123 ] Done!
 ```
 
 ### Continuous Integration

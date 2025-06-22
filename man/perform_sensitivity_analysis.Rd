@@ -6,11 +6,11 @@
 \usage{
 perform_sensitivity_analysis(
   ndraws = 10,
-  as_usgs_prob_csv,
-  as_epa_prob_csv,
-  birth_data_txt,
-  regression_formula,
-  output_dir,
+  as_usgs_prob_csv = NULL,
+  as_epa_prob_csv = NULL,
+  birth_data_txt = NULL,
+  regression_formula = NULL,
+  output_dir = "sensitivity_results/",
   targets = c("OEGEST", "BWT"),
   impute_vars = NULL,
   as_cat_label = c("As<5", "As5-10", "As10+"),

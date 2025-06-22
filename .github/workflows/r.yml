@@ -94,8 +94,14 @@ jobs:
           
           # Run tests with better error capture
           tryCatch({
-            cat("Running analysis-specific tests...\n")
-            devtools::test(filter = "analysis", reporter = "summary")
+            cat("Running test-gwArsenic.R specifically...\n")
+            if (file.exists("tests/testthat/test-gwArsenic.R")) {
+              testthat::test_file("tests/testthat/test-gwArsenic.R", reporter = "summary")
+              cat("test-gwArsenic.R completed successfully!\n")
+            } else {
+              cat("Warning: test-gwArsenic.R not found, trying filter approach...\n")
+              devtools::test(filter = "gwArsenic", reporter = "summary")
+            }
             
             cat("Running full test suite...\n")
             devtools::test(reporter = "summary")
@@ -122,9 +128,9 @@ jobs:
             tryCatch({
               rmarkdown::render("vignettes/gwArsenicR-vignette.Rmd", 
                               output_dir = tempdir())
-              cat("✅ Vignette rendered successfully!\n")
+              cat("Vignette rendered successfully!\n")
             }, error = function(e) {
-              cat("❌ Vignette rendering failed:\n")
+              cat("Vignette rendering failed:\n")
               print(e)
               quit(status = 1)
             })
@@ -188,29 +194,140 @@ jobs:
           coverage_pct <- covr::percent_coverage(cov)
           cat(sprintf("Total coverage: %.1f%%\n", coverage_pct))
           
-          # Save coverage report
+          # Get specific coverage for gwArsenic.R
+          file_coverage <- covr::file_coverage(cov)
+          gwarsenic_coverage <- file_coverage[grepl("gwArsenic\\.R$", names(file_coverage))]
+          
+          if (length(gwarsenic_coverage) > 0) {
+            gwarsenic_pct <- covr::percent_coverage(gwarsenic_coverage[[1]])
+            cat(sprintf("gwArsenic.R coverage: %.1f%%\n", gwarsenic_pct))
+            
+            # Show detailed line-by-line coverage for gwArsenic.R
+            cat("\n=== gwArsenic.R Coverage Details ===\n")
+            gwarsenic_detail <- covr::tally_coverage(gwarsenic_coverage[[1]])
+            print(gwarsenic_detail)
+            
+            # Check if gwArsenic.R meets coverage requirements
+            if (gwarsenic_pct < 85) {
+              cat(sprintf("WARNING: gwArsenic.R coverage %.1f%% is below recommended 85%%\n", gwarsenic_pct))
+            } else {
+              cat(sprintf("GOOD: gwArsenic.R coverage %.1f%% meets requirements\n", gwarsenic_pct))
+            }
+          } else {
+            cat("WARNING: Could not find gwArsenic.R in coverage report\n")
+            cat("Available files:\n")
+            print(names(file_coverage))
+          }
+          
+          # Show coverage by function for key functions
+          cat("\n=== Function Coverage ===\n")
+          func_coverage <- covr::function_coverage(cov)
+          key_functions <- c("perform_sensitivity_analysis", "validate_inputs", "setup_analysis")
+          
+          for (func_name in key_functions) {
+            func_cov <- func_coverage[grepl(func_name, names(func_coverage))]
+            if (length(func_cov) > 0) {
+              func_pct <- covr::percent_coverage(func_cov[[1]])
+              cat(sprintf("%s: %.1f%%\n", func_name, func_pct))
+            } else {
+              cat(sprintf("%s: NOT FOUND\n", func_name))
+            }
+          }
+          
+          # Generate detailed HTML report
+          cat("\n=== Generating Coverage Reports ===\n")
           covr::report(cov, file = "coverage-report.html")
           
-          # Fail if coverage is too low (adjust threshold as needed)
+          # Generate a summary file for gwArsenic.R specifically
+          if (length(gwarsenic_coverage) > 0) {
+            gwarsenic_report <- covr::report(gwarsenic_coverage[[1]], file = "gwArsenic-coverage.html")
+          }
+          
+          # Create a coverage summary file
+          coverage_summary <- data.frame(
+            File = c("Total Package", "gwArsenic.R"),
+            Coverage = c(
+              sprintf("%.1f%%", coverage_pct),
+              if(length(gwarsenic_coverage) > 0) sprintf("%.1f%%", gwarsenic_pct) else "N/A"
+            ),
+            Status = c(
+              if(coverage_pct >= 80) "PASS" else "FAIL",
+              if(length(gwarsenic_coverage) > 0 && gwarsenic_pct >= 85) "PASS" else "NEEDS IMPROVEMENT"
+            ),
+            stringsAsFactors = FALSE
+          )
+          
+          cat("\n=== Coverage Summary ===\n")
+          print(coverage_summary)
+          
+          # Write summary to file
+          write.csv(coverage_summary, "coverage-summary.csv", row.names = FALSE)
+          
+          # Fail if overall coverage is too low
           if (coverage_pct < 80) {
-            cat(sprintf("❌ Coverage %.1f%% is below minimum 80%%\n", coverage_pct))
+            cat(sprintf("FAIL: Overall coverage %.1f%% is below minimum 80%%\n", coverage_pct))
             quit(status = 1)
           }
           
-          cat(sprintf("✅ Coverage %.1f%% meets requirements\n", coverage_pct))
-          
+          # Warn if gwArsenic.R coverage is low (but don't fail)
+          if (length(gwarsenic_coverage) > 0 && gwarsenic_pct < 85) {
+            cat(sprintf("WARNING: gwArsenic.R coverage %.1f%% is below recommended 85%%\n", gwarsenic_pct))
+          }
+
+          cat(sprintf("SUCCESS: Overall coverage %.1f%% meets requirements\n", coverage_pct))
+
           # Upload to codecov if token available
           if (Sys.getenv("CODECOV_TOKEN") != "") {
+            cat("Uploading to codecov...\n")
             covr::codecov(coverage = cov)
           }
         shell: Rscript {0}
 
       - name: Upload coverage reports
         if: always()
-        uses: actions/upload-artifact@v4  # Updated from v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: coverage-report.html
+          path: |
+            coverage-report.html
+            gwArsenic-coverage.html
+            coverage-summary.csv
+
+      - name: Comment coverage on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            try {
+              const summary = fs.readFileSync('coverage-summary.csv', 'utf8');
+              const lines = summary.split('\n');
+              const totalCov = lines[1].split(',')[1];
+              const gwArsenicCov = lines[2].split(',')[1];
+              
+              const comment = `## Test Coverage Report
+              
+              | File | Coverage | Status |
+              |------|----------|--------|
+              | **Total Package** | ${totalCov} | ${lines[1].split(',')[2]} |
+              | **gwArsenic.R** | ${gwArsenicCov} | ${lines[2].split(',')[2]} |
+              
+              ### Key Points:
+              - **gwArsenic.R** is the main analysis file and should have high coverage
+              - Target: Overall ≥80%, gwArsenic.R ≥85%
+              - [Detailed Coverage Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+              `;
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            } catch (error) {
+              console.log('Could not post coverage comment:', error);
+            }
 
   # Enhanced documentation validation
   docs:
@@ -244,14 +361,14 @@ jobs:
           # Verify no uncommitted changes to documentation
           status_output <- system("git status --porcelain", intern = TRUE)
           if (length(status_output) > 0) {
-            cat("❌ Documentation is out of date. Please run devtools::document()\n")
+            cat("Documentation is out of date. Please run devtools::document()\n")
             cat("Changed files:\n")
             system("git status")
             system("git diff")
             quit(status = 1)
           }
           
-          cat("✅ Documentation is up to date!\n")
+          cat("Documentation is up to date!\n")
         shell: Rscript {0}
 
   # pkgdown site generation
