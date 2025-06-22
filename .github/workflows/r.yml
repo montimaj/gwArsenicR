@@ -184,7 +184,8 @@ jobs:
           # Load package first
           devtools::load_all(".", quiet = FALSE)
           
-          # Generate coverage for the entire package first (this will load helpers properly)
+          # Generate coverage for the entire package. This is the correct way to
+          # ensure the testthat environment and helper files are loaded properly.
           cat("Generating package coverage...\n")
           full_cov <- covr::package_coverage(
             type = "tests",
@@ -192,64 +193,63 @@ jobs:
             clean = TRUE
           )
           
-          # Filter to get only gwArsenic.R coverage
-          cat("Filtering for gwArsenic.R specifically...\n")
-          file_coverage_list <- covr::file_coverage(full_cov)
+          # Print overall coverage for debugging purposes
+          cat("\n=== Overall Package Coverage ===\n")
+          print(full_cov)
           
-          # Find gwArsenic.R in the coverage results
-          gwarsenic_files <- file_coverage_list[grepl("gwArsenic\\.R$", names(file_coverage_list))]
+          # Safely filter the coverage object for gwArsenic.R
+          cat("\nFiltering for gwArsenic.R specifically...\n")
           
-          if (length(gwarsenic_files) == 0) {
-            cat("ERROR: gwArsenic.R not found in coverage results\n")
-            cat("Available files:\n")
-            print(names(file_coverage_list))
+          # A coverage object is a list; we filter it based on the filename attribute
+          gwarsenic_cov_list <- Filter(function(x) {
+            !is.null(x$filename) && grepl("gwArsenic\\.R$", x$filename)
+          }, full_cov)
+          
+          if (length(gwarsenic_cov_list) == 0) {
+            cat("❌ ERROR: gwArsenic.R not found in coverage results\n")
+            cat("Available files in coverage report:\n")
+            all_files <- unique(sapply(full_cov, function(x) x$filename))
+            print(all_files)
             quit(status = 1)
           }
           
-          # Get the gwArsenic.R coverage
-          cov <- gwarsenic_files[[1]]
+          # Re-create a valid coverage object from the filtered list.
+          # This is crucial for other covr functions to work correctly.
+          cov <- gwarsenic_cov_list
+          class(cov) <- class(full_cov)
+          attr(cov, "package") <- attr(full_cov, "package")
+          attr(cov, "relative") <- attr(full_cov, "relative")
           
-          # Print detailed coverage summary
-          print(cov)
+          # Now, 'cov' is a valid coverage object containing only gwArsenic.R data
+          cat("Successfully filtered coverage for gwArsenic.R\n")
+          
+          # Calculate and print coverage percentage
           coverage_pct <- covr::percent_coverage(cov)
-          cat(sprintf("gwArsenic.R coverage: %.1f%%\n", coverage_pct))
+          cat(sprintf("\n📊 gwArsenic.R Coverage: %.1f%%\n", coverage_pct))
           
           # Show detailed line-by-line coverage
           cat("\n=== gwArsenic.R Coverage Details ===\n")
-          coverage_detail <- covr::tally_coverage(cov)
-          print(coverage_detail)
-          
-          # Show uncovered lines specifically
           uncovered_lines <- covr::zero_coverage(cov)
           if (length(uncovered_lines) > 0) {
-            cat("\n⚠️ Uncovered lines in gwArsenic.R:\n")
-            for (line_info in uncovered_lines) {
+            cat(sprintf("⚠️ %d Uncovered lines in gwArsenic.R:\n", length(uncovered_lines)))
+            # Display a sample of uncovered lines
+            sample_size <- min(10, length(uncovered_lines))
+            for (i in 1:sample_size) {
+              line_info <- uncovered_lines[[i]]
               cat(sprintf("  Line %d: %s\n", line_info$line, trimws(line_info$value)))
             }
-          } else {
-            cat("\n✅ All lines in gwArsenic.R are covered!\n")
-          }
-          
-          # Check coverage by function within gwArsenic.R
-          cat("\n=== Function Coverage in gwArsenic.R ===\n")
-          func_coverage <- covr::function_coverage(cov)
-          
-          if (length(func_coverage) > 0) {
-            for (i in seq_along(func_coverage)) {
-              func_name <- names(func_coverage)[i]
-              func_pct <- covr::percent_coverage(func_coverage[[i]])
-              status <- if (func_pct >= 80) "✅" else "⚠️"
-              cat(sprintf("%s %-30s: %.1f%%\n", status, func_name, func_pct))
+            if (length(uncovered_lines) > sample_size) {
+              cat(sprintf("  ... and %d more\n", length(uncovered_lines) - sample_size))
             }
           } else {
-            cat("No functions found in coverage analysis\n")
+            cat("✅ All lines in gwArsenic.R are covered!\n")
           }
           
           # Generate HTML report for gwArsenic.R only
           cat("\n=== Generating gwArsenic.R Coverage Report ===\n")
           covr::report(cov, file = "gwArsenic-coverage.html")
           
-          # Create focused summary
+          # Create a focused summary file
           coverage_summary <- data.frame(
             File = "gwArsenic.R",
             Coverage = sprintf("%.1f%%", coverage_pct),
@@ -258,53 +258,25 @@ jobs:
             Uncovered_Lines = length(uncovered_lines),
             stringsAsFactors = FALSE
           )
-          
           cat("\n=== gwArsenic.R Coverage Summary ===\n")
           print(coverage_summary)
-          
-          # Write summary to file
           write.csv(coverage_summary, "gwArsenic-coverage-summary.csv", row.names = FALSE)
           
-          # Create detailed summary with recommendations
-          cat("\n=== Coverage Assessment ===\n")
-          if (coverage_pct >= 85) {
-            cat("🎉 EXCELLENT: gwArsenic.R has excellent test coverage!\n")
-          } else if (coverage_pct >= 75) {
-            cat("👍 GOOD: gwArsenic.R has good test coverage, but could be improved\n")
-          } else if (coverage_pct >= 65) {
-            cat("⚠️ NEEDS IMPROVEMENT: gwArsenic.R coverage is below recommended levels\n")
-          } else {
-            cat("❌ INSUFFICIENT: gwArsenic.R coverage is critically low\n")
-          }
-          
-          # Recommendations based on coverage
-          if (coverage_pct < 85) {
-            cat("\n📝 Recommendations:\n")
-            cat("1. Add tests for uncovered lines shown above\n")
-            cat("2. Focus on testing edge cases and error conditions\n")
-            cat("3. Ensure all validation functions are tested\n")
-            cat("4. Test both success and failure scenarios\n")
-          }
-          
           # Set quality gates
+          cat("\n=== Quality Gate Assessment ===\n")
           if (coverage_pct < 65) {
-            cat(sprintf("\n❌ FAIL: gwArsenic.R coverage %.1f%% is below minimum threshold (65%%)\n", coverage_pct))
-            cat("Please add more tests before merging.\n")
+            cat(sprintf("❌ FAIL: gwArsenic.R coverage %.1f%% is below minimum threshold (65%%)\n", coverage_pct))
             quit(status = 1)
           } else if (coverage_pct < 75) {
-            cat(sprintf("\n⚠️ WARNING: gwArsenic.R coverage %.1f%% is below recommended threshold (75%%)\n", coverage_pct))
-            cat("Consider adding more tests to improve coverage.\n")
+            cat(sprintf("⚠️ WARNING: gwArsenic.R coverage %.1f%% is below recommended threshold (75%%)\n", coverage_pct))
           } else {
-            cat(sprintf("\n✅ SUCCESS: gwArsenic.R coverage %.1f%% meets quality standards\n", coverage_pct))
+            cat(sprintf("✅ SUCCESS: gwArsenic.R coverage %.1f%% meets quality standards\n", coverage_pct))
           }
           
-          # Upload to codecov with custom flags for gwArsenic.R
+          # Upload to codecov
           if (Sys.getenv("CODECOV_TOKEN") != "") {
-            cat("Uploading gwArsenic.R coverage to codecov...\n")
-            covr::codecov(
-              coverage = cov,
-              flags = "gwArsenic"
-            )
+            cat("\nUploading gwArsenic.R coverage to codecov...\n")
+            covr::codecov(coverage = cov, flags = "gwArsenic")
           }
         shell: Rscript {0}
 
