@@ -181,49 +181,31 @@ jobs:
 
       - name: Test coverage
         run: |
-          # Load package first
+          # Load package first to make its functions available
           devtools::load_all(".", quiet = FALSE)
           
-          # Generate coverage for the entire package. This is the correct way to
-          # ensure the testthat environment and helper files are loaded properly.
-          cat("Generating package coverage...\n")
-          full_cov <- covr::package_coverage(
-            type = "tests",
-            path = ".",
-            clean = TRUE
-          )
+          # Directly generate coverage for the specific source file R/gwArsenic.R.
+          # covr will run the tests in tests/testthat to calculate coverage for this file.
+          cat("Generating coverage for R/gwArsenic.R...\n")
           
-          # Print overall coverage for debugging purposes
-          cat("\n=== Overall Package Coverage ===\n")
-          print(full_cov)
+          source_file <- "R/gwArsenic.R"
+          test_file <- "tests/testthat/test-gwArsenic.R"
           
-          # Safely filter the coverage object for the SOURCE file gwArsenic.R
-          cat("\nFiltering for gwArsenic.R specifically...\n")
-          
-          # A coverage object is a list; we filter it based on the filename attribute
-          # of the SOURCE file (in R/), not the TEST file (in tests/).
-          gwarsenic_cov_list <- Filter(function(x) {
-            !is.null(x$filename) && grepl("gwArsenic\\.R", x$filename)
-          }, full_cov)
-          
-          if (length(gwarsenic_cov_list) == 0) {
-            cat("❌ ERROR: gwArsenic.R not found in coverage results.\n")
-            cat("This means the tests did not generate any coverage for this file.\n")
-            cat("Available files in coverage report:\n")
-            all_files <- unique(sapply(full_cov, function(x) x$filename))
-            print(all_files)
+          if (!file.exists(source_file)) {
+            cat("❌ ERROR: Source file '", source_file, "' not found.\n")
             quit(status = 1)
           }
           
-          # Re-create a valid coverage object from the filtered list.
-          # This is crucial for other covr functions to work correctly.
-          cov <- gwarsenic_cov_list
-          class(cov) <- class(full_cov)
-          attr(cov, "package") <- attr(full_cov, "package")
-          attr(cov, "relative") <- attr(full_cov, "relative")
+          # Use file_coverage to target the specific source file.
+          # It will automatically run the tests in tests/testthat.
+          cov <- covr::file_coverage(
+            source_files = source_file,
+            test_files = test_file
+          )
           
-          # Now, 'cov' is a valid coverage object containing only gwArsenic.R data
-          cat("Successfully filtered coverage for gwArsenic.R\n")
+          # Print the resulting coverage object for debugging
+          cat("\n=== Coverage Object for gwArsenic.R ===\n")
+          print(cov)
           
           # Calculate and print coverage percentage
           coverage_pct <- covr::percent_coverage(cov)
