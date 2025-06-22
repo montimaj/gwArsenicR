@@ -383,7 +383,7 @@ $OEGEST
 -----------------------------
 ✅[ FAIL 0 | WARN 0 | SKIP 0 | PASS 5 ][1] "Checking results for target: BWT"
 ✅[ FAIL 0 | WARN 0 | SKIP 0 | PASS 14 ][1] "Checking results for target: OEGEST"
-✅[ FAIL 0 | WARN 0 | SKIP 0 | PASS 123 ] Done!
+✅[ FAIL 0 | WARN 0 | SKIP 0 | PASS 138 ] Done!
 ```
 
 ### Continuous Integration

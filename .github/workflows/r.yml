@@ -313,6 +313,52 @@ jobs:
         with:
           name: gwArsenic-coverage-report
           path: coverage/gwArsenic-coverage.html
+      
+      - name: Generate coverage badge
+        run: |          
+          # Get coverage percentage from summary file
+          summary <- read.csv("coverage/gwArsenic-coverage-summary.csv")
+          coverage_pct <- as.numeric(gsub("%", "", summary$Coverage[1]))
+          # Determine badge color
+          if (coverage_pct >= 90) {
+            color <- "brightgreen"
+          } else if (coverage_pct >= 80) {
+            color <- "green" 
+          } else if (coverage_pct >= 70) {
+            color <- "yellow"
+          } else if (coverage_pct >= 60) {
+            color <- "orange"
+          } else {
+            color <- "red"
+          }
+          
+          # Create badge URL
+          badge_url <- sprintf("https://img.shields.io/badge/coverage-%.1f%%25-%s.svg", 
+                              coverage_pct, color)
+          
+          # Write to environment file for use in subsequent steps
+          cat(sprintf("COVERAGE_BADGE=%s\n", badge_url), file = Sys.getenv("GITHUB_ENV"), append = TRUE)
+          cat(sprintf("COVERAGE_PCT=%.1f\n", coverage_pct), file = Sys.getenv("GITHUB_ENV"), append = TRUE)
+          
+          cat(sprintf("Generated coverage badge: %s\n", badge_url))
+        shell: Rscript {0}
+
+      - name: Update README badge
+        run: |
+          # Update the coverage badge in README.md
+          sed -i 's|!\[Test Coverage\](.*)|![Test Coverage](${{ env.COVERAGE_BADGE }})|' README.md
+          
+          # Commit changes if there are any
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          if git diff --quiet; then
+            echo "No changes to commit"
+          else
+            git add README.md
+            git commit -m "Auto-update coverage badge to ${{ env.COVERAGE_PCT }}%" || exit 0
+            git push
+          fi
 
   # Enhanced documentation validation
   docs:
@@ -333,12 +379,14 @@ jobs:
             any::devtools
             any::pkgdown
 
-      - name: Check documentation
+      - name: Set git config
         run: |
           # Set git config for potential commits
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          
+
+      - name: Check documentation
+        run: |          
           # Check that documentation is up to date
           cat("Generating documentation...\n")
           devtools::document()
