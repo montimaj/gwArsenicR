@@ -34,8 +34,8 @@ We are committed to providing a welcoming and inclusive environment for all cont
 ## Getting Started
 
 ### Prerequisites
-- R (≥ 4.1.0)
-- RStudio (recommended)
+- R (≥ 4.4.0)
+- VS Code (recommended)
 - Git
 - [Pandoc](https://pandoc.org/installing.html) for building vignettes
 
