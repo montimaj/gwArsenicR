@@ -1,38 +1,66 @@
 url: https://montimaj.github.io/gwArsenicR
+
 template:
   bootstrap: 5
-  bootswatch: flatly  # Changed from 'theme' to 'bootswatch'
+  bootswatch: flatly
   
+home:
+  title: "gwArsenicR: Groundwater Arsenic Exposure Modeling"
+  description: "An R package for modeling and estimating arsenic exposure from groundwater"
+  strip_header: false  # Keep the README header with badges
+  
+  # Custom sidebar with badges
+  sidebar:
+    structure: [links, license, community, citation, authors, dev]
+    
+  links:
+  - text: Browse source code
+    href: https://github.com/montimaj/gwArsenicR
+  - text: Report a bug
+    href: https://github.com/montimaj/gwArsenicR/issues
+
 navbar:
   structure:
-    left: [home, reference, articles, tutorials, news]
+    left: [home, reference, articles, news]
     right: [search, github]
   components:
+    home:
+      icon: fas-home
+      href: index.html
+    reference:
+      text: Reference
+      href: reference/
+    articles:
+      text: Articles
+      href: articles/
+    news:
+      text: Changelog
+      href: news/
     github:
       icon: fab-github
       href: https://github.com/montimaj/gwArsenicR
+      aria-label: GitHub
 
+# Configure reference documentation
 reference:
   - title: "Main Functions"
     desc: "Core functions for arsenic exposure analysis"
     contents:
     - perform_sensitivity_analysis
-  
-  - title: "Utility Functions"
-    desc: "Helper functions and data processing"
-    contents:
-    - starts_with("util")
-    - starts_with("helper")
 
 articles:
   - title: "Getting Started"
-    navbar: ~
+    navbar: "Getting Started"
     contents:
     - gwArsenicR-vignette
 
 authors:
   Sayantan Majumdar:
     href: https://www.dri.edu/directory/sayantan-majumdar/
+  Scott M. Bartell:
+    href: https://publichealth.uci.edu/faculty/bartell-scott/
+  Melissa A. Lombard:
+    href: https://www.usgs.gov/staff-profiles/melissa-a-lombard
   Matthew O. Gribble:
     href: https://profiles.ucsf.edu/matthew.gribble
   Ryan G. Smith:
@@ -40,3 +68,20 @@ authors:
 
 development:
   mode: auto
+
+# Add custom footer with institutional logos
+footer:
+  structure:
+    left: dev
+    right: [built_with, institutions]
+  components:
+    institutions:
+      text: |
+        <div class="institutional-logos text-center">
+          <img src="man/figures/UCSF_Logo_21_Navy_300dpi_RGB.png" height="35" alt="UCSF"/> 
+          <img src="man/figures/DRITaglineLogoTransparentBackground.png" height="35" alt="DRI"/> 
+          <img src="man/figures/CSU-Signature-C-357.png" height="45" alt="CSU"/> 
+          <img src="man/figures/USGS_logo.png" height="35" alt="USGS"/> 
+          <img src="man/figures/brand-uci-edu-primarylogo-UC-Irvine.svg" height="35" alt="UC Irvine"/> 
+          <img src="man/figures/NIH_Master_Logo_Vertical_2Color.png" height="35" alt="NIH"/>
+        </div>

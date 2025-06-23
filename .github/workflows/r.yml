@@ -421,6 +421,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
   
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
@@ -435,7 +438,17 @@ jobs:
           needs: website
   
       - name: Build pkgdown site
-        run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
+        run: |
+          # Ensure all figures are available
+          if [ -d "man/figures" ]; then
+            echo "Found man/figures directory with:"
+            ls -la man/figures/
+            # Copy figures to docs directory for pkgdown
+            mkdir -p docs/
+            cp -r man/figures docs/ 2>/dev/null || true
+          fi
+          
+          pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
   
       - name: Upload pages artifact
