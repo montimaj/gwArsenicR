@@ -439,11 +439,17 @@ jobs:
   
       - name: Copy figures
         run: |
+          # Ensure figures directory exists for pkgdown
           if [ -d "man/figures" ]; then
             echo "Found man/figures directory"
-            mkdir -p docs/
-            cp -r man/figures docs/ 2>/dev/null || true
+            ls -la man/figures/
           fi
+          
+      - name: Clean pkgdown site
+        run: |
+          # Force clean any existing pkgdown artifacts
+          pkgdown::clean_site(force = TRUE)
+        shell: Rscript {0}
           
       - name: Build pkgdown site
         run: |
