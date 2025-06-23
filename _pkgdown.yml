@@ -3,6 +3,15 @@ url: https://montimaj.github.io/gwArsenicR
 template:
   bootstrap: 5
   bootswatch: flatly
+  includes:
+    in_header: |
+      <style>
+      /* README logos in main content - but NOT build badges */
+      .contents img[src*="man/figures/"]:not([src*="actions/workflows"]):not([src*="badge.svg"]) {
+        max-height: 25px !important;
+        margin: 0 5px !important;
+      }
+      </style>
   
 home:
   title: "gwArsenicR: Groundwater Arsenic Exposure Modeling"
@@ -68,20 +77,3 @@ authors:
 
 development:
   mode: auto
-
-# Add custom footer with institutional logos
-footer:
-  structure:
-    left: dev
-    right: [built_with, institutions]
-  components:
-    institutions:
-      text: |
-        <div class="institutional-logos text-center">
-          <img src="man/figures/UCSF_Logo_21_Navy_300dpi_RGB.png" height="35" alt="UCSF"/> 
-          <img src="man/figures/DRITaglineLogoTransparentBackground.png" height="35" alt="DRI"/> 
-          <img src="man/figures/CSU-Signature-C-357.png" height="45" alt="CSU"/> 
-          <img src="man/figures/USGS_logo.png" height="35" alt="USGS"/> 
-          <img src="man/figures/brand-uci-edu-primarylogo-UC-Irvine.svg" height="35" alt="UC Irvine"/> 
-          <img src="man/figures/NIH_Master_Logo_Vertical_2Color.png" height="35" alt="NIH"/>
-        </div>
