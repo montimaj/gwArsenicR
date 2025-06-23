@@ -45,6 +45,7 @@ An R package for modeling and estimating arsenic exposure from groundwater, base
 - [Running Tests](#running-tests)
 - [Modifying the R Package](#modifying-the-r-package)
 - [Contributing](#contributing)
+- [Troubleshooting](#troubleshooting)
 - [Citation](#citation)
 - [License](#license)
 

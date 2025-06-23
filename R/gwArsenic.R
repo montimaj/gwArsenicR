@@ -77,7 +77,7 @@
 #'   output_dir = "results/",
 #'   targets = c("birth_weight", "gestational_age")
 #' )
-#' 
+#'
 #' # Advanced usage with custom parameters and MICE imputation
 #' results <- perform_sensitivity_analysis(
 #'   ndraws = 100,
