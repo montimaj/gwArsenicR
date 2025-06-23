@@ -59,6 +59,7 @@ Existing methods from studies like _Bulka et al. (2022)_ and _Lombard et al. (20
 - Mixed-effects regression with proper pooling of results
 
 **gwArsenicR solves this** by packaging these sophisticated methods into a single, user-friendly function. This enables researchers to:
+
 - 🔬 **Focus on science**, not statistical programming
 - 📊 **Ensure reproducibility** across studies  
 - ⚡ **Accelerate research** on arsenic health effects
