@@ -191,7 +191,7 @@ pool_single_estimate <- function(estimates, std_errors, df) {
   # Degrees of freedom for t-distribution (if finite)
   if (is.finite(df) && b > 0) {
     r <- (1 + 1 / m) * b / u_bar
-    df_adjusted <- (m - 1) * (1 + 1/r)^2
+    df_adjusted <- (m - 1) * (1 + 1 / r)^2
     df_final <- min(df, df_adjusted)
   } else {
     df_final <- df
