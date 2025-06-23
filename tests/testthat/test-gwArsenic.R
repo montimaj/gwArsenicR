@@ -568,7 +568,7 @@ test_that("validate_inputs validates targets parameter", {
 test_that("validate_inputs validates impute_vars parameter", {
   temp_dir <- tempfile(pattern = "test_impute_vars_")
   dir.create(temp_dir)
-  
+
   # Create temporary files
   birth_file <- file.path(temp_dir, "birth.txt")
   usgs_file <- file.path(temp_dir, "usgs.csv")

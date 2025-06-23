@@ -484,7 +484,7 @@ If you use gwArsenicR in your research, please cite:
 
 ## License
 
-This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache 2.0 License - see the [LICENSE](https://github.com/montimaj/gwArsenicR/blob/main/LICENSE) file for details.
 
 **Version:** 0.1.0 | **Status:** Under active development
 
