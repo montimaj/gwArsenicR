@@ -160,7 +160,6 @@ gwArsenicR/
 ├── R/
 │   └── gwArsenic.R           # Main exported function and all package code
 ├── man/
-│   ├── figures/              # Package logos and institutional branding
 │   ├── perform_sensitivity_analysis.Rd
 │   └── [other function documentation]
 ├── tests/
@@ -482,8 +481,6 @@ If you use gwArsenicR in your research, please cite:
 ```
 
 **DOI:** *Coming soon upon publication*
-
-<img src="man/figures/UCSF_Logo_21_Navy_300dpi_RGB.png" height="35"/> &nbsp; <img src="man/figures/DRITaglineLogoTransparentBackground.png" height="35"/> &nbsp; <img src="man/figures/CSU-Signature-C-357.png" height="45"/> &nbsp;  <img src="man/figures/USGS_logo.png" height="35"/> &nbsp; <img src="man/figures/brand-uci-edu-primarylogo-UC-Irvine.svg" height="35"/> &nbsp; <img src="man/figures/NIH_Master_Logo_Vertical_2Color.png" height="35"/>
 
 ## License
 

@@ -3,35 +3,6 @@ url: https://montimaj.github.io/gwArsenicR
 template:
   bootstrap: 5
   bootswatch: flatly
-  in_header: |
-      <style>
-      /* Resize all images in README content */
-      .contents img {
-        max-height: 2px !important;
-        margin: 0 5px !important;
-        vertical-align: middle;
-      }
-      
-      /* Keep badges at normal size */
-      .contents img[src*="github.com"],
-      .contents img[src*="shields.io"],
-      .contents img[src*="badge"],
-      .contents img[src*="actions/workflows"],
-      .contents img[src*="repostatus.org"],
-      .contents img[src*="lifecycle"] {
-        max-height: none !important;
-        height: auto !important;
-        margin: 0 2px !important;
-      }
-      
-      /* Mobile responsive */
-      @media (max-width: 768px) {
-        .contents img {
-          max-height: 2px !important;
-          margin: 0 3px !important;
-        }
-      }
-      </style>
 
 home:
   title: "gwArsenicR: Groundwater Arsenic Exposure Modeling"
