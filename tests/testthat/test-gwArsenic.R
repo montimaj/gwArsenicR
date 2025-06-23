@@ -317,7 +317,7 @@ test_that("validate_inputs validates file existence", {
 test_that("validate_inputs validates ndraws parameter", {
   temp_dir <- tempfile(pattern = "test_ndraws_")
   dir.create(temp_dir)
-  
+
   # Create temporary files
   birth_file <- file.path(temp_dir, "birth.txt")
   usgs_file <- file.path(temp_dir, "usgs.csv")
