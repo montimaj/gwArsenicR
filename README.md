@@ -460,6 +460,76 @@ cd gwArsenicR
 Rscript -e "devtools::load_all(); devtools::test()"
 ```
 
+## Troubleshooting
+
+### RStudio Installation Issues
+
+Some users may encounter missing dependency errors when installing or using gwArsenicR in RStudio, even after successful installation. This typically manifests as errors like:
+
+```
+Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) :
+  there is no package called 'R6'
+```
+
+**Common missing packages:**
+- R6
+- digest  
+- purrr
+- vctrs
+- glue
+
+**Solution:**
+Install these core dependencies manually before installing gwArsenicR:
+
+```r
+# Install missing dependencies
+install.packages(c("R6", "digest", "purrr", "vctrs", "glue"))
+
+# Then install gwArsenicR
+devtools::install_github("montimaj/gwArsenicR")
+```
+
+**Why this happens:**
+This issue typically occurs when:
+- RStudio's package installation doesn't properly resolve all transitive dependencies
+- System-level R and RStudio R installations differ
+- Package library paths are misconfigured
+- Previous incomplete installations left corrupted package states
+
+**Alternative solutions:**
+
+1. **Restart R session and try again:**
+   ```r
+   # In RStudio: Session -> Restart R
+   .rs.restartR()
+   ```
+
+2. **Update all packages first:**
+   ```r
+   update.packages(ask = FALSE)
+   ```
+
+3. **Install from a clean state:**
+   ```r
+   # Remove any partial installations
+   remove.packages("gwArsenicR")
+   
+   # Clear package cache
+   .libPaths()  # Check library paths
+   
+   # Reinstall dependencies and package
+   install.packages(c("devtools", "R6", "digest", "purrr", "vctrs", "glue"))
+   devtools::install_github("montimaj/gwArsenicR")
+   ```
+
+4. **Check R version compatibility:**
+   ```r
+   # Ensure you're running R >= 4.4.0
+   R.version.string
+   ```
+
+If issues persist, please [report them](https://github.com/montimaj/gwArsenicR/issues) with your R version and sessionInfo().
+
 ## Citation
 
 If you use gwArsenicR in your research, please cite:
