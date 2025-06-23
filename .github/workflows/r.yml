@@ -436,15 +436,7 @@ jobs:
           cache-version: 2
           extra-packages: any::pkgdown
           needs: website
-  
-      - name: Copy figures
-        run: |
-          # Ensure figures directory exists for pkgdown
-          if [ -d "man/figures" ]; then
-            echo "Found man/figures directory"
-            ls -la man/figures/
-          fi
-          
+
       - name: Clean pkgdown site
         run: |
           # Force clean any existing pkgdown artifacts

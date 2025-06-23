@@ -3,16 +3,7 @@ url: https://montimaj.github.io/gwArsenicR
 template:
   bootstrap: 5
   bootswatch: flatly
-  includes:
-    in_header: |
-      <style>
-      /* README logos in main content - but NOT build badges */
-      .contents img[src*="man/figures/"]:not([src*="actions/workflows"]):not([src*="badge.svg"]) {
-        max-height: 25px !important;
-        margin: 0 5px !important;
-      }
-      </style>
-  
+    
 home:
   title: "gwArsenicR: Groundwater Arsenic Exposure Modeling"
   description: "An R package for modeling and estimating arsenic exposure from groundwater"
