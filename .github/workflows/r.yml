@@ -437,20 +437,19 @@ jobs:
           extra-packages: any::pkgdown
           needs: website
   
-      - name: Build pkgdown site
+      - name: Copy figures
         run: |
-          # Ensure all figures are available
           if [ -d "man/figures" ]; then
-            echo "Found man/figures directory with:"
-            ls -la man/figures/
-            # Copy figures to docs directory for pkgdown
+            echo "Found man/figures directory"
             mkdir -p docs/
             cp -r man/figures docs/ 2>/dev/null || true
           fi
           
+      - name: Build pkgdown site
+        run: |
           pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
-  
+
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
