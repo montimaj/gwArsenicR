@@ -11,9 +11,10 @@ impute_arsenic_exposure(
   births,
   ndraws,
   as_cat_label,
-  geod_col,
+  geoid_col,
   birth_county_col,
-  as_level_col
+  as_level_col,
+  apply_imputation_fallback
 )
 }
 \arguments{
@@ -30,11 +31,18 @@ identifiers}
 
 \item{as_cat_label}{Character vector of arsenic category labels}
 
-\item{geod_col}{Column name for geographic identifier in USGS data}
+\item{geoid_col}{Column name for geographic identifier in USGS data}
 
 \item{birth_county_col}{Column name for county identifier in birth data}
 
 \item{as_level_col}{Column name for arsenic level variable}
+
+\item{apply_imputation_fallback}{Logical indicating whether to apply fallback
+imputation for missing arsenic levels. The fallback fills missing
+values with the most common category in the respective dataset. If
+enabled, this fallback will be applied to any missing arsenic levels
+after the initial imputation step. Otherwise, it will remove any rows
+with missing arsenic levels.}
 }
 \value{
 List of imputed datasets

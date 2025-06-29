@@ -4,17 +4,29 @@
 \alias{convert_epa_to_multinomial}
 \title{Convert EPA Lognormal to Multinomial}
 \usage{
-convert_epa_to_multinomial(datmatx_epa, epa_as_col, epa_lognormal_sdlog)
+convert_epa_to_multinomial(
+  datmatx_epa,
+  epa_as_mean_col,
+  epa_as_sd_col,
+  cutoff_config,
+  return_prob_matrix = TRUE
+)
 }
 \arguments{
 \item{datmatx_epa}{EPA data frame}
 
+\item{cutoff_config}{List with cutoff values and number of categories}
+
+\item{return_prob_matrix}{Whether to return the probability matrix. Default
+TRUE. If FALSE, returns the modified data frame.}
+
 \item{epa_as_col}{Column name for EPA arsenic meanlog}
 
-\item{epa_lognormal_sdlog}{Standard deviation for lognormal distribution}
+\item{epa_lognormal_sdlog}{Standard deviation for lognormal
+distribution (single numeric)}
 }
 \value{
-Matrix of multinomial probabilities
+Probability matrix or modified data frame
 }
 \description{
 Convert EPA Lognormal to Multinomial

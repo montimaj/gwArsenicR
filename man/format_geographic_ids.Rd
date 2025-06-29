@@ -4,12 +4,12 @@
 \alias{format_geographic_ids}
 \title{Format Geographic Identifiers}
 \usage{
-format_geographic_ids(data_frame, geod_col)
+format_geographic_ids(data_frame, geoid_col)
 }
 \arguments{
 \item{data_frame}{Data frame to format}
 
-\item{geod_col}{Column name for geographic identifier}
+\item{geoid_col}{Column name for geographic identifier}
 }
 \value{
 Data frame with formatted geographic IDs

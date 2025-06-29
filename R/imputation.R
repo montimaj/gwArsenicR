@@ -10,9 +10,15 @@
 #' @param births Data frame containing birth records
 #' @param ndraws Number of imputed datasets to create
 #' @param as_cat_label Character vector of arsenic category labels
-#' @param geod_col Column name for geographic identifier in USGS data
+#' @param geoid_col Column name for geographic identifier in USGS data
 #' @param birth_county_col Column name for county identifier in birth data
 #' @param as_level_col Column name for arsenic level variable
+#' @param apply_imputation_fallback Logical indicating whether to apply fallback
+#' imputation for missing arsenic levels. The fallback fills missing
+#' values with the most common category in the respective dataset. If
+#' enabled, this fallback will be applied to any missing arsenic levels
+#' after the initial imputation step. Otherwise, it will remove any rows
+#' with missing arsenic levels.
 #' @return List of imputed datasets
 #'
 #' @keywords internal
@@ -23,12 +29,13 @@ impute_arsenic_exposure <- function(
   births,
   ndraws,
   as_cat_label,
-  geod_col,
+  geoid_col,
   birth_county_col,
-  as_level_col
+  as_level_col,
+  apply_imputation_fallback
 ) {
   # Get unique counties and setup
-  county_id_list <- na.omit(unique(datmatx_usgs[[geod_col]]))
+  county_id_list <- na.omit(unique(datmatx_usgs[[geoid_col]]))
   n_counties <- length(county_id_list)
   ncats <- length(as_cat_label)
   # Pre-allocate matrix with appropriate type
@@ -36,7 +43,7 @@ impute_arsenic_exposure <- function(
   # Create efficient county lookup using split()
   county_lookup <- split(
     seq_len(nrow(datmatx_usgs)),
-    datmatx_usgs[[geod_col]]
+    datmatx_usgs[[geoid_col]]
   )
   # Vectorized probability calculation and sampling
   for (i in seq_len(n_counties)) {
@@ -98,6 +105,45 @@ impute_arsenic_exposure <- function(
       sort = FALSE
     )
   }
+  # Check if fallback imputation is needed
+  if (apply_imputation_fallback) {
+    if (
+      any(
+        sapply(
+          imputed_datasets,
+          function(x) any(is.na(x[[as_level_col]]))
+        )
+      )
+    ) {
+      message(
+        "Some arsenic levels are NA after initial imputation, ",
+        "filling with most common category"
+      )
+      # fill missing arsenic levels with most common category
+      for (j in seq_along(imputed_datasets)) {
+        # Find the most common category in the current dataset
+        most_common_cat <- names(
+          sort(
+            table(imputed_datasets[[j]][[as_level_col]]),
+            decreasing = TRUE
+          )
+        )[1]
+        # Fill NAs with the most common category
+        na_idx <- is.na(imputed_datasets[[j]][[as_level_col]])
+        imputed_datasets[[j]][[as_level_col]][na_idx] <- most_common_cat
+      }
+      # Validate that arsenic levels are now filled
+    }
+  } else {
+    # Remove rows with missing arsenic levels
+    for (j in seq_along(imputed_datasets)) {
+      imputed_datasets[[j]] <- imputed_datasets[[j]][
+        !is.na(imputed_datasets[[j]][[as_level_col]]),
+        ,
+        drop = FALSE
+      ]
+    }
+  }
   return(imputed_datasets)
 }
 
@@ -115,6 +161,8 @@ impute_arsenic_exposure <- function(
 #' @param mice_maxit Maximum MICE iterations
 #' @param mice_method MICE imputation method
 #' @param seed Random seed
+#' @param check_birth_cols Logical indicating whether to check if
+#'   impute_vars exist in the birth data
 #' @return List of datasets with additional variables imputed
 #'
 #' @keywords internal
@@ -126,15 +174,18 @@ impute_additional_variables <- function(
   mice_m,
   mice_maxit,
   mice_method,
-  seed
+  seed,
+  check_birth_cols = TRUE
 ) {
-  # Validate input variables
-  missing_vars <- setdiff(impute_vars, names(births))
-  if (length(missing_vars) > 0) {
-    stop(
-      "Variables not found in birth data: ",
-      paste(missing_vars, collapse = ", ")
-    )
+  if (check_birth_cols) {
+    # Validate input variables
+    missing_vars <- setdiff(impute_vars, names(births))
+    if (length(missing_vars) > 0) {
+      stop(
+        "Variables not found in birth data: ",
+        paste(missing_vars, collapse = ", ")
+      )
+    }
   }
 
   # Process each variable to impute

@@ -107,8 +107,8 @@ table.table-condensed {
       </ul>
       <div class="tab-content" data-tabsetid="covr">
         <div class="tab-pane active" title="Files" data-value="Files" id="tab-covr-1">
-          <div class="datatables html-widget html-fill-item" id="htmlwidget-9f0e8475f65cdbff165b" style="width:100%;height:500px;"></div>
-          <script type="application/json" data-for="htmlwidget-9f0e8475f65cdbff165b">{"x":{"filter":"none","vertical":false,"fillContainer":false,"data":[["<a href=\"#\">R/gwArsenic.R<\/a>"],[217],[68],[68],[0],["17"],["100.00%"]],"container":"<table class=\"row-border\">\n  <thead>\n    <tr>\n      <th>File<\/th>\n      <th>Lines<\/th>\n      <th>Relevant<\/th>\n      <th>Covered<\/th>\n      <th>Missed<\/th>\n      <th>Hits / Line<\/th>\n      <th>Coverage<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"dom":"t","paging":false,"columnDefs":[{"targets":6,"createdCell":"function(td, cellData, rowData, row, col) {\n  var percent = cellData.replace(\"%\", \"\");\n  if (percent > 90) {\n    var grad = \"linear-gradient(90deg, #edfde7 \" + cellData + \", white \" + cellData + \")\";\n  } else if (percent > 75) {\n    var grad = \"linear-gradient(90deg, #f9ffe5 \" + cellData + \", white \" + cellData + \")\";\n  } else {\n    var grad = \"linear-gradient(90deg, #fcece9 \" + cellData + \", white \" + cellData + \")\";\n  }\n  $(td).css(\"background\", grad);\n}\n"},{"className":"dt-right","targets":[1,2,3,4]},{"name":"File","targets":0},{"name":"Lines","targets":1},{"name":"Relevant","targets":2},{"name":"Covered","targets":3},{"name":"Missed","targets":4},{"name":"Hits / Line","targets":5},{"name":"Coverage","targets":6}],"order":[],"autoWidth":false,"orderClasses":false},"callback":"function(table) {\ntable.on('click.dt', 'a', function() {\n  files = $('div#files div');\n  files.not('div.hidden').addClass('hidden');\n  id = $(this).text();\n  files.filter('div[id=\\'' + id + '\\']').removeClass('hidden');\n  $('ul.nav a[data-value=Source]').text(id).tab('show');\n});\n}","selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":["options.columnDefs.0.createdCell","callback"],"jsHooks":[]}</script>
+          <div class="datatables html-widget html-fill-item" id="htmlwidget-83ca69675c3252aa24e9" style="width:100%;height:500px;"></div>
+          <script type="application/json" data-for="htmlwidget-83ca69675c3252aa24e9">{"x":{"filter":"none","vertical":false,"fillContainer":false,"data":[["<a href=\"#\">R/gwArsenic.R<\/a>"],[241],[81],[81],[0],["30"],["100.00%"]],"container":"<table class=\"row-border\">\n  <thead>\n    <tr>\n      <th>File<\/th>\n      <th>Lines<\/th>\n      <th>Relevant<\/th>\n      <th>Covered<\/th>\n      <th>Missed<\/th>\n      <th>Hits / Line<\/th>\n      <th>Coverage<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"dom":"t","paging":false,"columnDefs":[{"targets":6,"createdCell":"function(td, cellData, rowData, row, col) {\n  var percent = cellData.replace(\"%\", \"\");\n  if (percent > 90) {\n    var grad = \"linear-gradient(90deg, #edfde7 \" + cellData + \", white \" + cellData + \")\";\n  } else if (percent > 75) {\n    var grad = \"linear-gradient(90deg, #f9ffe5 \" + cellData + \", white \" + cellData + \")\";\n  } else {\n    var grad = \"linear-gradient(90deg, #fcece9 \" + cellData + \", white \" + cellData + \")\";\n  }\n  $(td).css(\"background\", grad);\n}\n"},{"className":"dt-right","targets":[1,2,3,4]},{"name":"File","targets":0},{"name":"Lines","targets":1},{"name":"Relevant","targets":2},{"name":"Covered","targets":3},{"name":"Missed","targets":4},{"name":"Hits / Line","targets":5},{"name":"Coverage","targets":6}],"order":[],"autoWidth":false,"orderClasses":false},"callback":"function(table) {\ntable.on('click.dt', 'a', function() {\n  files = $('div#files div');\n  files.not('div.hidden').addClass('hidden');\n  id = $(this).text();\n  files.filter('div[id=\\'' + id + '\\']').removeClass('hidden');\n  $('ul.nav a[data-value=Source]').text(id).tab('show');\n});\n}","selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":["options.columnDefs.0.createdCell","callback"],"jsHooks":[]}</script>
         </div>
         <div class="tab-pane" title="Source" data-value="Source" id="tab-covr-2">
           <div id="files">
@@ -357,7 +357,7 @@ table.table-condensed {
                     <td class="num">35</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param geod_col A character string specifying the column name for the</pre>
+                      <pre class="language-r">#' @param geoid_col A character string specifying the column name for the</pre>
                     </td>
                   </tr>
                   <tr class="never">
@@ -385,7 +385,7 @@ table.table-condensed {
                     <td class="num">39</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   for the arsenic concentration probabilities. Defaults to </pre>
+                      <pre class="language-r">#'   for the arsenic concentration probabilities. Defaults to</pre>
                     </td>
                   </tr>
                   <tr class="never">
@@ -399,1236 +399,1404 @@ table.table-condensed {
                     <td class="num">41</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param pop_well_col A character string specifying the column name from the</pre>
+                      <pre class="language-r">#' @param epa_cutoffs A numeric vector of cutoffs for categorizing arsenic</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">42</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   USGS data for the population of well users. Defaults to "Wells_2010".</pre>
+                      <pre class="language-r">#' levels based on EPA data. If NULL, will be automatically determined based</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">43</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param birth_county_col A character string specifying the column name for</pre>
+                      <pre class="language-r">#' on number of USGS columns. Defaults to c(5, 10)</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">44</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   the birth county FIPS code in the birth data. Defaults to "FIPS".</pre>
+                      <pre class="language-r">#' @param pop_well_col A character string specifying the column name from the</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">45</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param as_level_col A character string for the name of the imputed arsenic</pre>
+                      <pre class="language-r">#'   USGS data for the population of well users. Defaults to "Wells_2010".</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">46</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   level column. Defaults to "AsLevel".</pre>
+                      <pre class="language-r">#' @param birth_county_col A character string specifying the column name for</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">47</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param epa_as_col A character string for the column name of the EPA arsenic</pre>
+                      <pre class="language-r">#'   the birth county FIPS code in the birth data. Defaults to "FIPS".</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">48</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   lognormal meanlog parameter. Defaults to "EPA_AS_meanlog".</pre>
+                      <pre class="language-r">#' @param as_level_col A character string for the name of the imputed arsenic</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">49</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param epa_lognormal_sdlog A numeric value for the standard deviation of the</pre>
+                      <pre class="language-r">#'   level column. Defaults to "AsLevel".</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">50</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   lognormal distribution for the EPA data. Defaults to 1.0.</pre>
+                      <pre class="language-r">#' @param epa_as_mean_col A character string for the column name of the EPA</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">51</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param epa_pwell_col A character string for the column name of the</pre>
+                      <pre class="language-r">#' arsenic lognormal meanlog parameter. Defaults to "EPA_AS_meanlog".</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">52</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   percentage of private well users. Defaults to "PWELL_private_pct".</pre>
+                      <pre class="language-r">#' @param epa_as_sd_col A character string for the column name of the EPA</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">53</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param seed An integer for setting the random number generator seed for</pre>
+                      <pre class="language-r">#' arsenic lognormal sdlog parameter. Defaults to "EPA_AS_sdlog".</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">54</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   reproducibility. Defaults to 12345.</pre>
+                      <pre class="language-r">#' @param epa_pwell_col A character string for the column name of the</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">55</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param mice_m An integer for the number of multiple imputations for</pre>
+                      <pre class="language-r">#'   percentage of private well users. Defaults to "PWELL_private_pct".</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">56</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   covariates. Defaults to 1.</pre>
+                      <pre class="language-r">#' @param seed An integer for setting the random number generator seed for</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">57</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param mice_maxit An integer for the maximum number of iterations for mice.</pre>
+                      <pre class="language-r">#'   reproducibility. Defaults to 12345.</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">58</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   Defaults to 5.</pre>
+                      <pre class="language-r">#' @param mice_m An integer for the number of multiple imputations for</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">59</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param mice_method A character string specifying the imputation method for</pre>
+                      <pre class="language-r">#'   covariates. Defaults to 1.</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">60</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   covariates. Defaults to "pmm" (predictive mean matching).</pre>
+                      <pre class="language-r">#' @param mice_maxit An integer for the maximum number of iterations for mice.</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">61</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param mice_covs A character vector of column names to be used as</pre>
+                      <pre class="language-r">#'   Defaults to 5.</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">62</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   covariates in the mice imputation process. Defaults to c("RUCC", "pm").</pre>
+                      <pre class="language-r">#' @param mice_method A character string specifying the imputation method for</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">63</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   Make sure these columns exist in the birth data.</pre>
+                      <pre class="language-r">#'   covariates. Defaults to "pmm" (predictive mean matching).</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">64</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'</pre>
+                      <pre class="language-r">#' @param mice_covs A character vector of column names to be used as</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">65</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @return A list of data frames, each containing the pooled regression results</pre>
+                      <pre class="language-r">#'   covariates in the mice imputation process. Defaults to c("RUCC", "pm").</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">66</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   for a target health outcome.</pre>
+                      <pre class="language-r">#'   Make sure these columns exist in the birth data.</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">67</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'</pre>
+                      <pre class="language-r">#' @param apply_imputation_fallback Logical indicating whether to apply fallback</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">68</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @examples</pre>
+                      <pre class="language-r">#'  imputation for missing arsenic levels. The fallback fills missing</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">69</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' \dontrun{</pre>
+                      <pre class="language-r">#'  values with the most common category in the respective dataset. If</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">70</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' # Basic usage with minimal parameters</pre>
+                      <pre class="language-r">#'  enabled, this fallback will be applied to any missing arsenic levels</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">71</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' results &lt;- perform_sensitivity_analysis(</pre>
+                      <pre class="language-r">#'  after the initial imputation step. Otherwise, it will remove any rows</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">72</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   ndraws = 10,</pre>
+                      <pre class="language-r">#'  with missing arsenic levels.</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">73</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   as_usgs_prob_csv = "usgs_arsenic_probs.csv",</pre>
+                      <pre class="language-r">#'</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">74</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   as_epa_prob_csv = "epa_arsenic_params.csv",</pre>
+                      <pre class="language-r">#' @return A list of data frames, each containing the pooled regression results</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">75</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   birth_data_txt = "birth_outcomes.txt",</pre>
+                      <pre class="language-r">#'   for a target health outcome.</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">76</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   regression_formula = "~ AsLevel + maternal_age + (1|county)",</pre>
+                      <pre class="language-r">#'</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">77</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   output_dir = "results/",</pre>
+                      <pre class="language-r">#' @examples</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">78</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   targets = c("birth_weight", "gestational_age")</pre>
+                      <pre class="language-r">#' \dontrun{</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">79</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' )</pre>
+                      <pre class="language-r">#' # Basic usage with minimal parameters</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">80</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' </pre>
+                      <pre class="language-r">#' results &lt;- perform_sensitivity_analysis(</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">81</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' # Advanced usage with custom parameters and MICE imputation</pre>
+                      <pre class="language-r">#'   ndraws = 10,</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">82</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' results &lt;- perform_sensitivity_analysis(</pre>
+                      <pre class="language-r">#'   as_usgs_prob_csv = "usgs_arsenic_probs.csv",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">83</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   ndraws = 100,</pre>
+                      <pre class="language-r">#'   as_epa_prob_csv = "epa_arsenic_params.csv",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">84</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   as_usgs_prob_csv = "data/usgs_probs.csv",</pre>
+                      <pre class="language-r">#'   birth_data_txt = "birth_outcomes.txt",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">85</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   as_epa_prob_csv = "data/epa_params.csv",</pre>
+                      <pre class="language-r">#'   regression_formula = "~ as.factor(AsLevel) + maternal_age + (1|county)",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">86</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   birth_data_txt = "data/births.txt",</pre>
+                      <pre class="language-r">#'   output_dir = "results/",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">87</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   regression_formula = "~ AsLevel + MAGE_R + rural + (1|FIPS)",</pre>
+                      <pre class="language-r">#'   targets = c("birth_weight", "gestational_age")</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">88</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   output_dir = "sensitivity_results/",</pre>
+                      <pre class="language-r">#' )</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">89</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   targets = c("OEGEST", "BWT"),</pre>
+                      <pre class="language-r">#'</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">90</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   impute_vars = c("MAGE_R", "education"),</pre>
+                      <pre class="language-r">#' # Advanced usage with custom parameters and MICE imputation</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">91</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   mice_m = 5,</pre>
+                      <pre class="language-r">#' results &lt;- perform_sensitivity_analysis(</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">92</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   mice_maxit = 10,</pre>
+                      <pre class="language-r">#'   ndraws = 100,</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">93</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'   seed = 42</pre>
+                      <pre class="language-r">#'   as_usgs_prob_csv = "data/usgs_probs.csv",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">94</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' )</pre>
+                      <pre class="language-r">#'   as_epa_prob_csv = "data/epa_params.csv",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">95</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' }</pre>
+                      <pre class="language-r">#'   birth_data_txt = "data/births.txt",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">96</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'</pre>
+                      <pre class="language-r">#'   regression_formula = "~ as.factor(AsLevel) + MAGE_R + rural + (1|FIPS)",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">97</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @export</pre>
+                      <pre class="language-r">#'   output_dir = "sensitivity_results/",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">98</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">perform_sensitivity_analysis &lt;- function(</pre>
+                      <pre class="language-r">#'   targets = c("OEGEST", "BWT"),</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">99</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  ndraws = 10,</pre>
+                      <pre class="language-r">#'   impute_vars = c("MAGE_R", "education"),</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">100</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  as_usgs_prob_csv = NULL,</pre>
+                      <pre class="language-r">#'   mice_m = 5,</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">101</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  as_epa_prob_csv = NULL,</pre>
+                      <pre class="language-r">#'   mice_maxit = 10,</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">102</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  birth_data_txt = NULL,</pre>
+                      <pre class="language-r">#'   seed = 42</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">103</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  regression_formula = NULL,</pre>
+                      <pre class="language-r">#' )</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">104</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  output_dir = "sensitivity_results/",</pre>
+                      <pre class="language-r">#' }</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">105</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  targets = c("OEGEST", "BWT"),</pre>
+                      <pre class="language-r">#'</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">106</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  impute_vars = NULL,</pre>
+                      <pre class="language-r">#' @export</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">107</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  as_cat_label = c("As&lt;5", "As5-10", "As10+"),</pre>
+                      <pre class="language-r">perform_sensitivity_analysis &lt;- function(</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">108</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  drop_as_cat_label_reg = c("As&lt;5"),</pre>
+                      <pre class="language-r">  ndraws = 10,</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">109</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  columns_to_select = NULL,</pre>
+                      <pre class="language-r">  as_usgs_prob_csv = NULL,</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">110</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  rucc_col = "RUCC",</pre>
+                      <pre class="language-r">  as_epa_prob_csv = NULL,</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">111</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  geod_col = "GEOID10",</pre>
+                      <pre class="language-r">  birth_data_txt = NULL,</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">112</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  as_conc_cols = c("RFC3_C1v2", "RFC3_C2v2", "RFC3_C3v2"),</pre>
+                      <pre class="language-r">  regression_formula = NULL,</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">113</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  pop_well_col = "Wells_2010",</pre>
+                      <pre class="language-r">  output_dir = "sensitivity_results/",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">114</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  birth_county_col = "FIPS",</pre>
+                      <pre class="language-r">  targets = c("OEGEST", "BWT"),</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">115</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  as_level_col = "AsLevel",</pre>
+                      <pre class="language-r">  impute_vars = NULL,</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">116</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  epa_as_col = "EPA_AS_meanlog",</pre>
+                      <pre class="language-r">  as_cat_label = c("As&lt;5", "As5-10", "As10+"),</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">117</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  epa_lognormal_sdlog = 1.0,</pre>
+                      <pre class="language-r">  drop_as_cat_label_reg = c("As&lt;5"),</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">118</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  epa_pwell_col = "PWELL_private_pct",</pre>
+                      <pre class="language-r">  columns_to_select = NULL,</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">119</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  seed = 12345,</pre>
+                      <pre class="language-r">  rucc_col = "RUCC",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">120</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  mice_m = 1,</pre>
+                      <pre class="language-r">  geoid_col = "GEOID10",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">121</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  mice_maxit = 5,</pre>
+                      <pre class="language-r">  as_conc_cols = c("RFC3_C1v2", "RFC3_C2v2", "RFC3_C3v2"),</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">122</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  mice_method = "pmm",</pre>
+                      <pre class="language-r">  epa_cutoffs = c(5, 10),</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">123</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  mice_covs = c("RUCC", "pm")</pre>
+                      <pre class="language-r">  pop_well_col = "Wells_2010",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">124</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">) {</pre>
+                      <pre class="language-r">  birth_county_col = "FIPS",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">125</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r"></pre>
+                      <pre class="language-r">  as_level_col = "AsLevel",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">126</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
+                      <pre class="language-r">  epa_as_mean_col = "EPA_AS_meanlog",</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">127</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">  epa_as_sd_col = "EPA_AS_sdlog",</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">128</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">  epa_pwell_col = "PWELL_private_pct",</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">129</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">  seed = 12345,</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">130</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">  mice_m = 1,</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">131</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">  mice_maxit = 5,</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">132</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">  mice_method = "pmm",</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">133</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">  mice_covs = c("RUCC", "pm"),</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">134</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">  apply_imputation_fallback = TRUE</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">135</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">) {</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">136</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r"></pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">137</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
                       <pre class="language-r">  # --- 0. Validate all input parameters ---</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">127</td>
-                    <td class="coverage">31<em>x</em></td>
+                    <td class="num">138</td>
+                    <td class="coverage">58<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  validate_inputs(</pre>
+                      <pre class="language-r">  validate_all_inputs(</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">128</td>
-                    <td class="coverage">31<em>x</em></td>
+                    <td class="num">139</td>
+                    <td class="coverage">58<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    birth_data_txt = birth_data_txt,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">129</td>
-                    <td class="coverage">31<em>x</em></td>
+                    <td class="num">140</td>
+                    <td class="coverage">58<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    as_usgs_prob_csv = as_usgs_prob_csv,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">130</td>
-                    <td class="coverage">31<em>x</em></td>
+                    <td class="num">141</td>
+                    <td class="coverage">58<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    as_epa_prob_csv = as_epa_prob_csv,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">131</td>
-                    <td class="coverage">31<em>x</em></td>
+                    <td class="num">142</td>
+                    <td class="coverage">58<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    ndraws = ndraws,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">132</td>
-                    <td class="coverage">31<em>x</em></td>
+                    <td class="num">143</td>
+                    <td class="coverage">58<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    regression_formula = regression_formula,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">133</td>
-                    <td class="coverage">31<em>x</em></td>
+                    <td class="num">144</td>
+                    <td class="coverage">58<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    targets = targets,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">134</td>
-                    <td class="coverage">31<em>x</em></td>
+                    <td class="num">145</td>
+                    <td class="coverage">58<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    impute_vars = impute_vars,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">135</td>
-                    <td class="coverage">31<em>x</em></td>
+                    <td class="num">146</td>
+                    <td class="coverage">58<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    output_dir = output_dir,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">136</td>
-                    <td class="coverage">31<em>x</em></td>
+                    <td class="num">147</td>
+                    <td class="coverage">58<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    mice_m = mice_m,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">137</td>
-                    <td class="coverage">31<em>x</em></td>
+                    <td class="num">148</td>
+                    <td class="coverage">58<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    mice_maxit = mice_maxit,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">138</td>
-                    <td class="coverage">31<em>x</em></td>
+                    <td class="num">149</td>
+                    <td class="coverage">58<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    mice_method = mice_method,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">139</td>
-                    <td class="coverage">31<em>x</em></td>
+                    <td class="num">150</td>
+                    <td class="coverage">58<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    epa_lognormal_sdlog = epa_lognormal_sdlog,</pre>
+                      <pre class="language-r">    epa_as_mean_col = epa_as_mean_col,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">140</td>
-                    <td class="coverage">31<em>x</em></td>
+                    <td class="num">151</td>
+                    <td class="coverage">58<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    epa_as_sd_col = epa_as_sd_col,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">152</td>
+                    <td class="coverage">58<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    seed = seed,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">141</td>
-                    <td class="coverage">31<em>x</em></td>
+                    <td class="num">153</td>
+                    <td class="coverage">58<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    as_cat_label = as_cat_label,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">142</td>
-                    <td class="coverage">31<em>x</em></td>
+                    <td class="num">154</td>
+                    <td class="coverage">58<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    as_level_col = as_level_col,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">143</td>
-                    <td class="coverage">31<em>x</em></td>
+                    <td class="num">155</td>
+                    <td class="coverage">58<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    drop_as_cat_label_reg = drop_as_cat_label_reg</pre>
+                      <pre class="language-r">    drop_as_cat_label_reg = drop_as_cat_label_reg,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">156</td>
+                    <td class="coverage">58<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    epa_cutoffs = epa_cutoffs,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">157</td>
+                    <td class="coverage">58<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    columns_to_select = columns_to_select,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">158</td>
+                    <td class="coverage">58<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    rucc_col = rucc_col,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">159</td>
+                    <td class="coverage">58<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    geoid_col = geoid_col,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">160</td>
+                    <td class="coverage">58<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    as_conc_cols = as_conc_cols,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">161</td>
+                    <td class="coverage">58<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    pop_well_col = pop_well_col,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">162</td>
+                    <td class="coverage">58<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    birth_county_col = birth_county_col,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">163</td>
+                    <td class="coverage">58<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    epa_pwell_col = epa_pwell_col,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">164</td>
+                    <td class="coverage">58<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    mice_covs = mice_covs,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">165</td>
+                    <td class="coverage">58<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    apply_imputation_fallback = apply_imputation_fallback</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">144</td>
+                    <td class="num">166</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
                       <pre class="language-r">  )</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">145</td>
+                    <td class="num">167</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
                       <pre class="language-r"></pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">146</td>
-                    <td class="coverage">15<em>x</em></td>
+                    <td class="num">168</td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">  set.seed(seed)</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">147</td>
-                    <td class="coverage">15<em>x</em></td>
+                    <td class="num">169</td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">  if (!dir.exists(output_dir)) {</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">148</td>
+                    <td class="num">170</td>
                     <td class="coverage">1<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    dir.create(output_dir, recursive = TRUE)</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">149</td>
+                    <td class="num">171</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
                       <pre class="language-r">  }</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">150</td>
+                    <td class="num">172</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
                       <pre class="language-r"></pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">151</td>
+                    <td class="num">173</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
                       <pre class="language-r">  # --- 1. Load and Process Arsenic Data ---</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">152</td>
-                    <td class="coverage">15<em>x</em></td>
+                    <td class="num">174</td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">  arsenic_data &lt;- load_and_process_arsenic_data(</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">153</td>
-                    <td class="coverage">15<em>x</em></td>
+                    <td class="num">175</td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    as_usgs_prob_csv = as_usgs_prob_csv,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">154</td>
-                    <td class="coverage">15<em>x</em></td>
+                    <td class="num">176</td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    as_epa_prob_csv = as_epa_prob_csv,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">155</td>
-                    <td class="coverage">15<em>x</em></td>
+                    <td class="num">177</td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    as_conc_cols = as_conc_cols,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">156</td>
-                    <td class="coverage">15<em>x</em></td>
+                    <td class="num">178</td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    pop_well_col = pop_well_col,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">157</td>
-                    <td class="coverage">15<em>x</em></td>
+                    <td class="num">179</td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    epa_as_col = epa_as_col,</pre>
+                      <pre class="language-r">    epa_as_mean_col = epa_as_mean_col,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">158</td>
-                    <td class="coverage">15<em>x</em></td>
+                    <td class="num">180</td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    epa_lognormal_sdlog = epa_lognormal_sdlog,</pre>
+                      <pre class="language-r">    epa_as_sd_col = epa_as_sd_col,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">159</td>
-                    <td class="coverage">15<em>x</em></td>
+                    <td class="num">181</td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    epa_pwell_col = epa_pwell_col,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">160</td>
-                    <td class="coverage">15<em>x</em></td>
+                    <td class="num">182</td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    geod_col = geod_col</pre>
+                      <pre class="language-r">    geoid_col = geoid_col,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">183</td>
+                    <td class="coverage">18<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    epa_cutoffs = epa_cutoffs</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">161</td>
+                    <td class="num">184</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
                       <pre class="language-r">  )</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">162</td>
+                    <td class="num">185</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
                       <pre class="language-r"></pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">163</td>
+                    <td class="num">186</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
                       <pre class="language-r">  # --- 2. Load and Process Birth Data ---</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">164</td>
-                    <td class="coverage">15<em>x</em></td>
+                    <td class="num">187</td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">  births &lt;- load_and_process_birth_data(</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">165</td>
-                    <td class="coverage">15<em>x</em></td>
+                    <td class="num">188</td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    birth_data_txt = birth_data_txt,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">166</td>
-                    <td class="coverage">15<em>x</em></td>
+                    <td class="num">189</td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    columns_to_select = columns_to_select,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">167</td>
-                    <td class="coverage">15<em>x</em></td>
+                    <td class="num">190</td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    rucc_col = rucc_col,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">168</td>
-                    <td class="coverage">15<em>x</em></td>
+                    <td class="num">191</td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">    birth_county_col = birth_county_col</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">169</td>
+                    <td class="num">192</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
                       <pre class="language-r">  )</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">170</td>
+                    <td class="num">193</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
                       <pre class="language-r"></pre>
-                    </td>
-                  </tr>
-                  <tr class="never">
-                    <td class="num">171</td>
-                    <td class="coverage"></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">  # --- 3. Multiple Imputation ---</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">172</td>
-                    <td class="coverage">14<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">  imputed_datasets &lt;- impute_arsenic_exposure(</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">173</td>
-                    <td class="coverage">14<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">    datmatx_usgs = arsenic_data$datmatx_usgs,</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">174</td>
-                    <td class="coverage">14<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">    rasterprob_combined = arsenic_data$rasterprob_combined,</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">175</td>
-                    <td class="coverage">14<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">    cellpop = arsenic_data$cellpop,</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">176</td>
-                    <td class="coverage">14<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">    births = births,</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">177</td>
-                    <td class="coverage">14<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">    ndraws = ndraws,</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">178</td>
-                    <td class="coverage">14<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">    as_cat_label = as_cat_label,</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">179</td>
-                    <td class="coverage">14<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">    geod_col = geod_col,</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">180</td>
-                    <td class="coverage">14<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">    birth_county_col = birth_county_col,</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">181</td>
-                    <td class="coverage">14<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">    as_level_col = as_level_col</pre>
-                    </td>
-                  </tr>
-                  <tr class="never">
-                    <td class="num">182</td>
-                    <td class="coverage"></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">  )</pre>
-                    </td>
-                  </tr>
-                  <tr class="never">
-                    <td class="num">183</td>
-                    <td class="coverage"></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">  # Impute additional variables if specified</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">184</td>
-                    <td class="coverage">13<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">  if (!is.null(impute_vars)) {</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">185</td>
-                    <td class="coverage">3<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">    imputed_datasets &lt;- impute_additional_variables(</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">186</td>
-                    <td class="coverage">3<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">      imputed_datasets = imputed_datasets,</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">187</td>
-                    <td class="coverage">3<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">      impute_vars = impute_vars,</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">188</td>
-                    <td class="coverage">3<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">      births = births,</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">189</td>
-                    <td class="coverage">3<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">      mice_covs = mice_covs,</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">190</td>
-                    <td class="coverage">3<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">      mice_m = mice_m,</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">191</td>
-                    <td class="coverage">3<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">      mice_maxit = mice_maxit,</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">192</td>
-                    <td class="coverage">3<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">      mice_method = mice_method,</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">193</td>
-                    <td class="coverage">3<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">      seed = seed</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">194</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    )</pre>
+                      <pre class="language-r">  # --- 3. Multiple Imputation ---</pre>
                     </td>
                   </tr>
-                  <tr class="never">
+                  <tr class="covered">
                     <td class="num">195</td>
-                    <td class="coverage"></td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  }</pre>
+                      <pre class="language-r">  imputed_datasets &lt;- impute_arsenic_exposure(</pre>
                     </td>
                   </tr>
-                  <tr class="never">
+                  <tr class="covered">
                     <td class="num">196</td>
-                    <td class="coverage"></td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  # Validate imputed datasets</pre>
+                      <pre class="language-r">    datmatx_usgs = arsenic_data$datmatx_usgs,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
                     <td class="num">197</td>
-                    <td class="coverage">13<em>x</em></td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  validate_imputed_datasets(imputed_datasets, as_level_col, as_cat_label)</pre>
+                      <pre class="language-r">    rasterprob_combined = arsenic_data$rasterprob_combined,</pre>
                     </td>
                   </tr>
-                  <tr class="never">
+                  <tr class="covered">
                     <td class="num">198</td>
-                    <td class="coverage"></td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r"></pre>
+                      <pre class="language-r">    cellpop = arsenic_data$cellpop,</pre>
                     </td>
                   </tr>
-                  <tr class="never">
+                  <tr class="covered">
                     <td class="num">199</td>
-                    <td class="coverage"></td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  # --- 4. Regression and Pooling ---</pre>
+                      <pre class="language-r">    births = births,</pre>
                     </td>
                   </tr>
-                  <tr class="never">
+                  <tr class="covered">
                     <td class="num">200</td>
-                    <td class="coverage"></td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r"></pre>
+                      <pre class="language-r">    ndraws = ndraws,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
                     <td class="num">201</td>
-                    <td class="coverage">13<em>x</em></td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  combined_births &lt;- data.table::rbindlist(imputed_datasets, idcol = ".id")</pre>
+                      <pre class="language-r">    as_cat_label = as_cat_label,</pre>
                     </td>
                   </tr>
-                  <tr class="never">
+                  <tr class="covered">
                     <td class="num">202</td>
-                    <td class="coverage"></td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  # Ensure the reference level is set correctly</pre>
+                      <pre class="language-r">    geoid_col = geoid_col,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
                     <td class="num">203</td>
-                    <td class="coverage">13<em>x</em></td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  filtered_as_cat_label &lt;- base::setdiff(as_cat_label, drop_as_cat_label_reg)</pre>
+                      <pre class="language-r">    birth_county_col = birth_county_col,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
                     <td class="num">204</td>
-                    <td class="coverage">13<em>x</em></td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  combined_births[[as_level_col]] &lt;- stats::relevel(</pre>
+                      <pre class="language-r">    as_level_col = as_level_col,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
                     <td class="num">205</td>
-                    <td class="coverage">13<em>x</em></td>
+                    <td class="coverage">18<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    combined_births[[as_level_col]],</pre>
+                      <pre class="language-r">    apply_imputation_fallback = apply_imputation_fallback</pre>
                     </td>
                   </tr>
-                  <tr class="covered">
+                  <tr class="never">
                     <td class="num">206</td>
-                    <td class="coverage">13<em>x</em></td>
+                    <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    ref = drop_as_cat_label_reg</pre>
+                      <pre class="language-r">  )</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">207</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  )</pre>
+                      <pre class="language-r">  # Impute additional variables if specified</pre>
                     </td>
                   </tr>
                   <tr class="covered">
                     <td class="num">208</td>
-                    <td class="coverage">13<em>x</em></td>
+                    <td class="coverage">17<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">  res &lt;- regression_analysis(</pre>
+                      <pre class="language-r">  if (!is.null(impute_vars)) {</pre>
                     </td>
                   </tr>
                   <tr class="covered">
                     <td class="num">209</td>
-                    <td class="coverage">13<em>x</em></td>
+                    <td class="coverage">3<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    births = combined_births,</pre>
+                      <pre class="language-r">    imputed_datasets &lt;- impute_additional_variables(</pre>
                     </td>
                   </tr>
                   <tr class="covered">
                     <td class="num">210</td>
-                    <td class="coverage">13<em>x</em></td>
+                    <td class="coverage">3<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    targets = targets,</pre>
+                      <pre class="language-r">      imputed_datasets = imputed_datasets,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
                     <td class="num">211</td>
-                    <td class="coverage">13<em>x</em></td>
+                    <td class="coverage">3<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    as_cat_label = filtered_as_cat_label,</pre>
+                      <pre class="language-r">      impute_vars = impute_vars,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
                     <td class="num">212</td>
-                    <td class="coverage">13<em>x</em></td>
+                    <td class="coverage">3<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    as_level_col = as_level_col,</pre>
+                      <pre class="language-r">      births = births,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
                     <td class="num">213</td>
-                    <td class="coverage">13<em>x</em></td>
+                    <td class="coverage">3<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    regression_formula = regression_formula,</pre>
+                      <pre class="language-r">      mice_covs = mice_covs,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
                     <td class="num">214</td>
-                    <td class="coverage">13<em>x</em></td>
+                    <td class="coverage">3<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    output_dir = output_dir</pre>
+                      <pre class="language-r">      mice_m = mice_m,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">215</td>
+                    <td class="coverage">3<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">      mice_maxit = mice_maxit,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">216</td>
+                    <td class="coverage">3<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">      mice_method = mice_method,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">217</td>
+                    <td class="coverage">3<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">      seed = seed</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">215</td>
+                    <td class="num">218</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    )</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">219</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">  }</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">220</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">  # Validate imputed datasets</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">221</td>
+                    <td class="coverage">17<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">  validate_imputed_datasets(imputed_datasets, as_level_col, as_cat_label)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">222</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r"></pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">223</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">  # --- 4. Regression and Pooling ---</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">224</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r"></pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">225</td>
+                    <td class="coverage">17<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">  combined_births &lt;- data.table::rbindlist(imputed_datasets, idcol = ".id")</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">226</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">  # Ensure the reference level is set correctly</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">227</td>
+                    <td class="coverage">17<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">  filtered_as_cat_label &lt;- base::setdiff(as_cat_label, drop_as_cat_label_reg)</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">228</td>
+                    <td class="coverage">17<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">  combined_births[[as_level_col]] &lt;- stats::relevel(</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">229</td>
+                    <td class="coverage">17<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    combined_births[[as_level_col]],</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">230</td>
+                    <td class="coverage">17<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    ref = drop_as_cat_label_reg</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">231</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
                       <pre class="language-r">  )</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">216</td>
-                    <td class="coverage">13<em>x</em></td>
+                    <td class="num">232</td>
+                    <td class="coverage">17<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">  res &lt;- regression_analysis(</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">233</td>
+                    <td class="coverage">17<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    births = combined_births,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">234</td>
+                    <td class="coverage">17<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    targets = targets,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">235</td>
+                    <td class="coverage">17<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    as_cat_label = filtered_as_cat_label,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">236</td>
+                    <td class="coverage">17<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    as_level_col = as_level_col,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">237</td>
+                    <td class="coverage">17<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    regression_formula = regression_formula,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">238</td>
+                    <td class="coverage">17<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    output_dir = output_dir</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">239</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">  )</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">240</td>
+                    <td class="coverage">17<em>x</em></td>
                     <td class="col-sm-12">
                       <pre class="language-r">  return(res)</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">217</td>
+                    <td class="num">241</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
                       <pre class="language-r">}</pre>

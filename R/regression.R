@@ -184,7 +184,7 @@ pool_single_estimate <- function(estimates, std_errors, df) {
   # Between-imputation variance
   b <- sum((estimates - q_bar)^2) / (m - 1)
   # Total variance
-  t_var <- u_bar + (1 + 1/m) * b
+  t_var <- u_bar + (1 + 1 / m) * b
   se_pooled <- sqrt(t_var)
   # Test statistic
   t_stat <- q_bar / se_pooled

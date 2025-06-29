@@ -56,3 +56,6 @@ test_output/
 scripts/lib/
 lib/
 paper.html
+sensitivity_analysis/
+scripts/*.csv
+scripts/*.html

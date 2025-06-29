@@ -17,19 +17,21 @@ perform_sensitivity_analysis(
   drop_as_cat_label_reg = c("As<5"),
   columns_to_select = NULL,
   rucc_col = "RUCC",
-  geod_col = "GEOID10",
+  geoid_col = "GEOID10",
   as_conc_cols = c("RFC3_C1v2", "RFC3_C2v2", "RFC3_C3v2"),
+  epa_cutoffs = c(5, 10),
   pop_well_col = "Wells_2010",
   birth_county_col = "FIPS",
   as_level_col = "AsLevel",
-  epa_as_col = "EPA_AS_meanlog",
-  epa_lognormal_sdlog = 1,
+  epa_as_mean_col = "EPA_AS_meanlog",
+  epa_as_sd_col = "EPA_AS_sdlog",
   epa_pwell_col = "PWELL_private_pct",
   seed = 12345,
   mice_m = 1,
   mice_maxit = 5,
   mice_method = "pmm",
-  mice_covs = c("RUCC", "pm")
+  mice_covs = c("RUCC", "pm"),
+  apply_imputation_fallback = TRUE
 )
 }
 \arguments{
@@ -69,13 +71,17 @@ from the birth data. If NULL, all columns are used.}
 \item{rucc_col}{A character string specifying the column name for the
 Rural-Urban Continuum Code. Defaults to "RUCC".}
 
-\item{geod_col}{A character string specifying the column name for the
+\item{geoid_col}{A character string specifying the column name for the
 Geographic Identifier (e.g., county FIPS code) in the arsenic data.
 Defaults to "GEOID10".}
 
 \item{as_conc_cols}{A character vector of column names from the USGS data
 for the arsenic concentration probabilities. Defaults to
 c("RFC3_C1v2", "RFC3_C2v2", "RFC3_C3v2").}
+
+\item{epa_cutoffs}{A numeric vector of cutoffs for categorizing arsenic
+levels based on EPA data. If NULL, will be automatically determined based
+on number of USGS columns. Defaults to c(5, 10)}
 
 \item{pop_well_col}{A character string specifying the column name from the
 USGS data for the population of well users. Defaults to "Wells_2010".}
@@ -86,11 +92,11 @@ the birth county FIPS code in the birth data. Defaults to "FIPS".}
 \item{as_level_col}{A character string for the name of the imputed arsenic
 level column. Defaults to "AsLevel".}
 
-\item{epa_as_col}{A character string for the column name of the EPA arsenic
-lognormal meanlog parameter. Defaults to "EPA_AS_meanlog".}
+\item{epa_as_mean_col}{A character string for the column name of the EPA
+arsenic lognormal meanlog parameter. Defaults to "EPA_AS_meanlog".}
 
-\item{epa_lognormal_sdlog}{A numeric value for the standard deviation of the
-lognormal distribution for the EPA data. Defaults to 1.0.}
+\item{epa_as_sd_col}{A character string for the column name of the EPA
+arsenic lognormal sdlog parameter. Defaults to "EPA_AS_sdlog".}
 
 \item{epa_pwell_col}{A character string for the column name of the
 percentage of private well users. Defaults to "PWELL_private_pct".}
@@ -110,6 +116,13 @@ covariates. Defaults to "pmm" (predictive mean matching).}
 \item{mice_covs}{A character vector of column names to be used as
 covariates in the mice imputation process. Defaults to c("RUCC", "pm").
 Make sure these columns exist in the birth data.}
+
+\item{apply_imputation_fallback}{Logical indicating whether to apply fallback
+imputation for missing arsenic levels. The fallback fills missing
+values with the most common category in the respective dataset. If
+enabled, this fallback will be applied to any missing arsenic levels
+after the initial imputation step. Otherwise, it will remove any rows
+with missing arsenic levels.}
 }
 \value{
 A list of data frames, each containing the pooled regression results
@@ -131,7 +144,7 @@ results <- perform_sensitivity_analysis(
   as_usgs_prob_csv = "usgs_arsenic_probs.csv",
   as_epa_prob_csv = "epa_arsenic_params.csv",
   birth_data_txt = "birth_outcomes.txt",
-  regression_formula = "~ AsLevel + maternal_age + (1|county)",
+  regression_formula = "~ as.factor(AsLevel) + maternal_age + (1|county)",
   output_dir = "results/",
   targets = c("birth_weight", "gestational_age")
 )
@@ -142,7 +155,7 @@ results <- perform_sensitivity_analysis(
   as_usgs_prob_csv = "data/usgs_probs.csv",
   as_epa_prob_csv = "data/epa_params.csv",
   birth_data_txt = "data/births.txt",
-  regression_formula = "~ AsLevel + MAGE_R + rural + (1|FIPS)",
+  regression_formula = "~ as.factor(AsLevel) + MAGE_R + rural + (1|FIPS)",
   output_dir = "sensitivity_results/",
   targets = c("OEGEST", "BWT"),
   impute_vars = c("MAGE_R", "education"),
