@@ -238,7 +238,7 @@ While users primarily interact with `perform_sensitivity_analysis()`, the packag
 - `pool_single_estimate()`: Applies Rubin's Rules to individual parameters
 
 **Utilities:**
-- `validate_inputs()`: Input validation and error checking
+- `validate_all_inputs()`: Input validation and error checking
 - `format_geographic_ids()`: Formats FIPS codes and geographic identifiers
 - Additional helper functions for data validation and formatting
 
@@ -558,6 +558,10 @@ If you use gwArsenicR in your research, please cite:
 ```
 
 **DOI:** *Coming soon upon publication*
+
+## Acknowledgments
+
+This work was supported by the National Heart, Lung, and Blood Institute (R21HL159574) and funding from the United States Geological Survey’s John Wesley Powell Center for Analysis and Synthesis.
 
 ## License
 
