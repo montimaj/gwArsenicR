@@ -32,22 +32,25 @@
 #'   from the birth data. If NULL, all columns are used.
 #' @param rucc_col A character string specifying the column name for the
 #'   Rural-Urban Continuum Code. Defaults to "RUCC".
-#' @param geod_col A character string specifying the column name for the
+#' @param geoid_col A character string specifying the column name for the
 #'   Geographic Identifier (e.g., county FIPS code) in the arsenic data.
 #'   Defaults to "GEOID10".
 #' @param as_conc_cols A character vector of column names from the USGS data
-#'   for the arsenic concentration probabilities. Defaults to 
+#'   for the arsenic concentration probabilities. Defaults to
 #'   c("RFC3_C1v2", "RFC3_C2v2", "RFC3_C3v2").
+#' @param epa_cutoffs A numeric vector of cutoffs for categorizing arsenic
+#' levels based on EPA data. If NULL, will be automatically determined based
+#' on number of USGS columns. Defaults to c(5, 10)
 #' @param pop_well_col A character string specifying the column name from the
 #'   USGS data for the population of well users. Defaults to "Wells_2010".
 #' @param birth_county_col A character string specifying the column name for
 #'   the birth county FIPS code in the birth data. Defaults to "FIPS".
 #' @param as_level_col A character string for the name of the imputed arsenic
 #'   level column. Defaults to "AsLevel".
-#' @param epa_as_col A character string for the column name of the EPA arsenic
-#'   lognormal meanlog parameter. Defaults to "EPA_AS_meanlog".
-#' @param epa_lognormal_sdlog A numeric value for the standard deviation of the
-#'   lognormal distribution for the EPA data. Defaults to 1.0.
+#' @param epa_as_mean_col A character string for the column name of the EPA
+#' arsenic lognormal meanlog parameter. Defaults to "EPA_AS_meanlog".
+#' @param epa_as_sd_col A character string for the column name of the EPA
+#' arsenic lognormal sdlog parameter. Defaults to "EPA_AS_sdlog".
 #' @param epa_pwell_col A character string for the column name of the
 #'   percentage of private well users. Defaults to "PWELL_private_pct".
 #' @param seed An integer for setting the random number generator seed for
@@ -61,6 +64,12 @@
 #' @param mice_covs A character vector of column names to be used as
 #'   covariates in the mice imputation process. Defaults to c("RUCC", "pm").
 #'   Make sure these columns exist in the birth data.
+#' @param apply_imputation_fallback Logical indicating whether to apply fallback
+#'  imputation for missing arsenic levels. The fallback fills missing
+#'  values with the most common category in the respective dataset. If
+#'  enabled, this fallback will be applied to any missing arsenic levels
+#'  after the initial imputation step. Otherwise, it will remove any rows
+#'  with missing arsenic levels.
 #'
 #' @return A list of data frames, each containing the pooled regression results
 #'   for a target health outcome.
@@ -73,7 +82,7 @@
 #'   as_usgs_prob_csv = "usgs_arsenic_probs.csv",
 #'   as_epa_prob_csv = "epa_arsenic_params.csv",
 #'   birth_data_txt = "birth_outcomes.txt",
-#'   regression_formula = "~ AsLevel + maternal_age + (1|county)",
+#'   regression_formula = "~ as.factor(AsLevel) + maternal_age + (1|county)",
 #'   output_dir = "results/",
 #'   targets = c("birth_weight", "gestational_age")
 #' )
@@ -84,7 +93,7 @@
 #'   as_usgs_prob_csv = "data/usgs_probs.csv",
 #'   as_epa_prob_csv = "data/epa_params.csv",
 #'   birth_data_txt = "data/births.txt",
-#'   regression_formula = "~ AsLevel + MAGE_R + rural + (1|FIPS)",
+#'   regression_formula = "~ as.factor(AsLevel) + MAGE_R + rural + (1|FIPS)",
 #'   output_dir = "sensitivity_results/",
 #'   targets = c("OEGEST", "BWT"),
 #'   impute_vars = c("MAGE_R", "education"),
@@ -108,23 +117,25 @@ perform_sensitivity_analysis <- function(
   drop_as_cat_label_reg = c("As<5"),
   columns_to_select = NULL,
   rucc_col = "RUCC",
-  geod_col = "GEOID10",
+  geoid_col = "GEOID10",
   as_conc_cols = c("RFC3_C1v2", "RFC3_C2v2", "RFC3_C3v2"),
+  epa_cutoffs = c(5, 10),
   pop_well_col = "Wells_2010",
   birth_county_col = "FIPS",
   as_level_col = "AsLevel",
-  epa_as_col = "EPA_AS_meanlog",
-  epa_lognormal_sdlog = 1.0,
+  epa_as_mean_col = "EPA_AS_meanlog",
+  epa_as_sd_col = "EPA_AS_sdlog",
   epa_pwell_col = "PWELL_private_pct",
   seed = 12345,
   mice_m = 1,
   mice_maxit = 5,
   mice_method = "pmm",
-  mice_covs = c("RUCC", "pm")
+  mice_covs = c("RUCC", "pm"),
+  apply_imputation_fallback = TRUE
 ) {
 
   # --- 0. Validate all input parameters ---
-  validate_inputs(
+  validate_all_inputs(
     birth_data_txt = birth_data_txt,
     as_usgs_prob_csv = as_usgs_prob_csv,
     as_epa_prob_csv = as_epa_prob_csv,
@@ -136,11 +147,22 @@ perform_sensitivity_analysis <- function(
     mice_m = mice_m,
     mice_maxit = mice_maxit,
     mice_method = mice_method,
-    epa_lognormal_sdlog = epa_lognormal_sdlog,
+    epa_as_mean_col = epa_as_mean_col,
+    epa_as_sd_col = epa_as_sd_col,
     seed = seed,
     as_cat_label = as_cat_label,
     as_level_col = as_level_col,
-    drop_as_cat_label_reg = drop_as_cat_label_reg
+    drop_as_cat_label_reg = drop_as_cat_label_reg,
+    epa_cutoffs = epa_cutoffs,
+    columns_to_select = columns_to_select,
+    rucc_col = rucc_col,
+    geoid_col = geoid_col,
+    as_conc_cols = as_conc_cols,
+    pop_well_col = pop_well_col,
+    birth_county_col = birth_county_col,
+    epa_pwell_col = epa_pwell_col,
+    mice_covs = mice_covs,
+    apply_imputation_fallback = apply_imputation_fallback
   )
 
   set.seed(seed)
@@ -154,10 +176,11 @@ perform_sensitivity_analysis <- function(
     as_epa_prob_csv = as_epa_prob_csv,
     as_conc_cols = as_conc_cols,
     pop_well_col = pop_well_col,
-    epa_as_col = epa_as_col,
-    epa_lognormal_sdlog = epa_lognormal_sdlog,
+    epa_as_mean_col = epa_as_mean_col,
+    epa_as_sd_col = epa_as_sd_col,
     epa_pwell_col = epa_pwell_col,
-    geod_col = geod_col
+    geoid_col = geoid_col,
+    epa_cutoffs = epa_cutoffs
   )
 
   # --- 2. Load and Process Birth Data ---
@@ -176,9 +199,10 @@ perform_sensitivity_analysis <- function(
     births = births,
     ndraws = ndraws,
     as_cat_label = as_cat_label,
-    geod_col = geod_col,
+    geoid_col = geoid_col,
     birth_county_col = birth_county_col,
-    as_level_col = as_level_col
+    as_level_col = as_level_col,
+    apply_imputation_fallback = apply_imputation_fallback
   )
   # Impute additional variables if specified
   if (!is.null(impute_vars)) {

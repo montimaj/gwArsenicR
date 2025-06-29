@@ -60,9 +60,13 @@ create_dummy_data <- function(
 
   # --- 2. EPA Arsenic Data (Public Wells) ---
   epa_lognormal_meanlog <- stats::runif(num_rows, 0.5, 1.5)
+  epa_lognormal_sdlog <- stats::runif(num_rows, 0.1, 0.5)
+  # You can use a constant value for epa_lognormal_sdlog if desired
+  # For example, epa_lognormal_sdlog <- 1.2
   private_well_percent <- stats::runif(num_rows, min = 1, max = 99)
   dummy_epa_df <- data.frame(
     EPA_AS_meanlog = epa_lognormal_meanlog,
+    EPA_AS_sdlog = epa_lognormal_sdlog,
     PWELL_private_pct = private_well_percent,
     GEOID10 = geoid10
   )

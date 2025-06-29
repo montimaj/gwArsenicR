@@ -184,7 +184,7 @@ test_that("Function handles single target variable", {
 test_that("validate_inputs validates required parameters correctly", {
   # Test missing birth_data_txt
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = NULL,
       as_usgs_prob_csv = "usgs.csv",
       as_epa_prob_csv = "epa.csv"
@@ -194,7 +194,7 @@ test_that("validate_inputs validates required parameters correctly", {
 
   # Test missing as_usgs_prob_csv
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = "birth.txt",
       as_usgs_prob_csv = NULL,
       as_epa_prob_csv = "epa.csv"
@@ -204,7 +204,7 @@ test_that("validate_inputs validates required parameters correctly", {
 
   # Test missing as_epa_prob_csv
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = "birth.txt",
       as_usgs_prob_csv = "usgs.csv",
       as_epa_prob_csv = NULL
@@ -216,7 +216,7 @@ test_that("validate_inputs validates required parameters correctly", {
 test_that("validate_inputs validates file path formats", {
   # Test non-character birth_data_txt
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = 123,
       as_usgs_prob_csv = "usgs.csv",
       as_epa_prob_csv = "epa.csv"
@@ -226,7 +226,7 @@ test_that("validate_inputs validates file path formats", {
 
   # Test multiple values for birth_data_txt
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = c("file1.txt", "file2.txt"),
       as_usgs_prob_csv = "usgs.csv",
       as_epa_prob_csv = "epa.csv"
@@ -236,7 +236,7 @@ test_that("validate_inputs validates file path formats", {
 
   # Test non-character as_usgs_prob_csv
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = "birth.txt",
       as_usgs_prob_csv = 123,
       as_epa_prob_csv = "epa.csv"
@@ -246,7 +246,7 @@ test_that("validate_inputs validates file path formats", {
 
   # Test non-character as_epa_prob_csv
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = "birth.txt",
       as_usgs_prob_csv = "usgs.csv",
       as_epa_prob_csv = 123
@@ -258,7 +258,7 @@ test_that("validate_inputs validates file path formats", {
 test_that("validate_inputs validates file existence", {
   # Test non-existent files
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = "nonexistent_birth.txt",
       as_usgs_prob_csv = "usgs.csv",
       as_epa_prob_csv = "epa.csv"
@@ -281,7 +281,7 @@ test_that("validate_inputs validates file existence", {
 
   # Test with existing files (should not error)
   expect_no_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file
@@ -291,7 +291,7 @@ test_that("validate_inputs validates file existence", {
   # Test when the EPA file does not exist
   unlink(epa_file)  # Remove EPA file
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file
@@ -303,7 +303,7 @@ test_that("validate_inputs validates file existence", {
   writeLines("test", epa_file)  # Restore EPA file
   unlink(usgs_file)  # Remove USGS file
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file
@@ -328,7 +328,7 @@ test_that("validate_inputs validates ndraws parameter", {
 
   # Test non-numeric ndraws
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -339,7 +339,7 @@ test_that("validate_inputs validates ndraws parameter", {
 
   # Test multiple values for ndraws
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -350,7 +350,7 @@ test_that("validate_inputs validates ndraws parameter", {
 
   # Test zero ndraws
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -361,7 +361,7 @@ test_that("validate_inputs validates ndraws parameter", {
 
   # Test negative ndraws
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -372,7 +372,7 @@ test_that("validate_inputs validates ndraws parameter", {
 
   # Test decimal ndraws
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -383,7 +383,7 @@ test_that("validate_inputs validates ndraws parameter", {
 
   # Test very large ndraws (should warn)
   expect_warning(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -409,7 +409,7 @@ test_that("validate_inputs validates regression_formula parameter", {
 
   # Test non-character, non-formula regression_formula
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -420,7 +420,7 @@ test_that("validate_inputs validates regression_formula parameter", {
 
   # Test multiple character values
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -431,7 +431,7 @@ test_that("validate_inputs validates regression_formula parameter", {
 
   # Test empty regression_formula
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -442,7 +442,7 @@ test_that("validate_inputs validates regression_formula parameter", {
 
   # Test whitespace-only regression_formula
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -453,7 +453,7 @@ test_that("validate_inputs validates regression_formula parameter", {
 
   # Test invalid formula syntax
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -464,7 +464,7 @@ test_that("validate_inputs validates regression_formula parameter", {
 
   # Test valid character formula
   expect_no_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -474,7 +474,7 @@ test_that("validate_inputs validates regression_formula parameter", {
 
   # Test valid formula object
   expect_no_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -499,7 +499,7 @@ test_that("validate_inputs validates targets parameter", {
 
   # Test non-character targets
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -510,7 +510,7 @@ test_that("validate_inputs validates targets parameter", {
 
   # Test empty targets
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -521,7 +521,7 @@ test_that("validate_inputs validates targets parameter", {
 
   # Test targets with NA
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -532,7 +532,7 @@ test_that("validate_inputs validates targets parameter", {
 
   # Test targets with empty string
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -543,7 +543,7 @@ test_that("validate_inputs validates targets parameter", {
 
   # Test duplicate targets
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -554,7 +554,7 @@ test_that("validate_inputs validates targets parameter", {
 
   # Test valid targets
   expect_no_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -579,7 +579,7 @@ test_that("validate_inputs validates impute_vars parameter", {
 
   # Test non-character impute_vars
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -590,7 +590,7 @@ test_that("validate_inputs validates impute_vars parameter", {
 
   # Test empty impute_vars (should suggest NULL)
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -601,7 +601,7 @@ test_that("validate_inputs validates impute_vars parameter", {
 
   # Test impute_vars with NA
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -612,7 +612,7 @@ test_that("validate_inputs validates impute_vars parameter", {
 
   # Test valid impute_vars
   expect_no_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -622,7 +622,7 @@ test_that("validate_inputs validates impute_vars parameter", {
 
   # Test NULL impute_vars (should be valid)
   expect_no_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -647,7 +647,7 @@ test_that("validate_inputs validates output_dir parameter", {
 
   # Test non-character output_dir
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -658,7 +658,7 @@ test_that("validate_inputs validates output_dir parameter", {
 
   # Test empty output_dir
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -669,7 +669,7 @@ test_that("validate_inputs validates output_dir parameter", {
 
   # Test output_dir with non-existent parent
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -681,7 +681,7 @@ test_that("validate_inputs validates output_dir parameter", {
   # Test valid output_dir
   valid_output_dir <- file.path(temp_dir, "output")
   expect_no_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -706,7 +706,7 @@ test_that("validate_inputs validates MICE parameters", {
 
   # Test invalid mice_m
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -716,7 +716,7 @@ test_that("validate_inputs validates MICE parameters", {
   )
 
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -727,7 +727,7 @@ test_that("validate_inputs validates MICE parameters", {
 
   # Test non-numeric mice_m
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -738,7 +738,7 @@ test_that("validate_inputs validates MICE parameters", {
 
   # Test large mice_m (should warn)
   expect_warning(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -749,7 +749,7 @@ test_that("validate_inputs validates MICE parameters", {
 
   # Test invalid mice_maxit
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -759,7 +759,7 @@ test_that("validate_inputs validates MICE parameters", {
   )
 
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -770,7 +770,7 @@ test_that("validate_inputs validates MICE parameters", {
 
   # Test invalid mice_method
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -781,7 +781,7 @@ test_that("validate_inputs validates MICE parameters", {
 
   # Test non-character mice_method
   expect_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -792,7 +792,7 @@ test_that("validate_inputs validates MICE parameters", {
 
   # Test valid mice_method
   expect_no_error(
-    gwArsenicR:::validate_inputs(
+    gwArsenicR:::validate_all_inputs(
       birth_data_txt = birth_file,
       as_usgs_prob_csv = usgs_file,
       as_epa_prob_csv = epa_file,
@@ -808,72 +808,66 @@ test_that("validate_inputs validates numeric parameters", {
   dir.create(temp_dir)
 
   # Create temporary files
-  birth_file <- file.path(temp_dir, "birth.txt")
-  usgs_file <- file.path(temp_dir, "usgs.csv")
-  epa_file <- file.path(temp_dir, "epa.csv")
-  writeLines("test", birth_file)
-  writeLines("test", usgs_file)
-  writeLines("test", epa_file)
+  dummy_files <- create_dummy_data(file_dir = temp_dir)
 
   # Test invalid epa_lognormal_sdlog
-  expect_error(
-    gwArsenicR:::validate_inputs(
-      birth_data_txt = birth_file,
-      as_usgs_prob_csv = usgs_file,
-      as_epa_prob_csv = epa_file,
-      epa_lognormal_sdlog = -1.0
-    ),
-    "epa_lognormal_sdlog must be positive"
-  )
+  # create a dummy epa_lognormal_sdlog
+  dummy_epa_df <- data.table::fread(dummy_files$epa, header = TRUE)
+  dummy_epa_df$EPA_AS_sdlog <- -1.0
+  dummy_epa_csv <- file.path(temp_dir, "invalid_epa_arsenic.csv")
+  data.table::fwrite(dummy_epa_df, dummy_epa_csv)
 
   expect_error(
-    gwArsenicR:::validate_inputs(
-      birth_data_txt = birth_file,
-      as_usgs_prob_csv = usgs_file,
-      as_epa_prob_csv = epa_file,
-      epa_lognormal_sdlog = 0
+    gwArsenicR:::perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_epa_csv
     ),
-    "epa_lognormal_sdlog must be positive"
+    "epa_as_sd_col must contain only positive values.*"
   )
 
+  dummy_epa_df$EPA_AS_sdlog1 <- "one"
+  data.table::fwrite(dummy_epa_df, dummy_epa_csv)
   expect_error(
-    gwArsenicR:::validate_inputs(
-      birth_data_txt = birth_file,
-      as_usgs_prob_csv = usgs_file,
-      as_epa_prob_csv = epa_file,
-      epa_lognormal_sdlog = "one"
+    gwArsenicR:::perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_epa_csv,
+      epa_as_sd_col = "EPA_AS_sdlog1"
     ),
-    "epa_lognormal_sdlog must be a single numeric value"
+    "epa_as_sd_col must contain only finite numeric values.*"
   )
 
   # Test large epa_lognormal_sdlog (should warn)
+  dummy_epa_df$EPA_AS_sdlog <- 15.0
+  data.table::fwrite(dummy_epa_df, dummy_epa_csv)
   expect_warning(
-    gwArsenicR:::validate_inputs(
-      birth_data_txt = birth_file,
-      as_usgs_prob_csv = usgs_file,
-      as_epa_prob_csv = epa_file,
-      epa_lognormal_sdlog = 15.0
+    gwArsenicR:::perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_epa_csv,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)"
     ),
-    "epa_lognormal_sdlog is very large.*Check if this is correct"
+    "epa_as_sd_col contains very large values.*"
   )
 
   # Test invalid seed
   expect_error(
-    gwArsenicR:::validate_inputs(
-      birth_data_txt = birth_file,
-      as_usgs_prob_csv = usgs_file,
-      as_epa_prob_csv = epa_file,
+    gwArsenicR:::perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_epa_csv,
       seed = 123.45
     ),
     "seed must be an integer"
   )
 
   expect_error(
-    gwArsenicR:::validate_inputs(
-      birth_data_txt = birth_file,
-      as_usgs_prob_csv = usgs_file,
-      as_epa_prob_csv = epa_file,
-      seed = "forty-two"
+    gwArsenicR:::perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_epa_csv,
+      seed = c(1, 2, 3)
     ),
     "seed must be a single numeric value"
   )
@@ -884,54 +878,53 @@ test_that("validate_inputs validates numeric parameters", {
 test_that("validate_inputs validates arsenic category labels", {
   temp_dir <- tempfile(pattern = "test_arsenic_labels_")
   dir.create(temp_dir)
-  
+
   # Create temporary files
-  birth_file <- file.path(temp_dir, "birth.txt")
-  usgs_file <- file.path(temp_dir, "usgs.csv")
-  epa_file <- file.path(temp_dir, "epa.csv")
-  writeLines("test", birth_file)
-  writeLines("test", usgs_file)
-  writeLines("test", epa_file)
+  dummy_files <- create_dummy_data(file_dir = temp_dir)
 
   # Test non-character as_cat_label
   expect_error(
-    gwArsenicR:::validate_inputs(
-      birth_data_txt = birth_file,
-      as_usgs_prob_csv = usgs_file,
-      as_epa_prob_csv = epa_file,
-      as_cat_label = 123
+    gwArsenicR:::perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      as_cat_label = 123,
+      drop_as_cat_label_reg = c("Low"),
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)"
     ),
     "as_cat_label must be a character vector"
   )
 
   # Test empty as_cat_label
   expect_error(
-    gwArsenicR:::validate_inputs(
-      birth_data_txt = birth_file,
-      as_usgs_prob_csv = usgs_file,
-      as_epa_prob_csv = epa_file,
-      as_cat_label = character(0)
+    gwArsenicR:::perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      as_cat_label = character(0),
+      drop_as_cat_label_reg = c("Low")
     ),
     "as_cat_label cannot be empty"
   )
 
   # Test as_cat_label with duplicates
   expect_error(
-    gwArsenicR:::validate_inputs(
-      birth_data_txt = birth_file,
-      as_usgs_prob_csv = usgs_file,
-      as_epa_prob_csv = epa_file,
-      as_cat_label = c("Low", "Medium", "Low")
+    gwArsenicR:::perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      as_cat_label = c("Low", "Medium", "Low"),
+      drop_as_cat_label_reg = c("Low")
     ),
     "as_cat_label cannot contain duplicate values"
   )
 
   # Test drop_as_cat_label_reg not in as_cat_label
   expect_error(
-    gwArsenicR:::validate_inputs(
-      birth_data_txt = birth_file,
-      as_usgs_prob_csv = usgs_file,
-      as_epa_prob_csv = epa_file,
+    gwArsenicR:::perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
       as_cat_label = c("Low", "Medium", "High"),
       drop_as_cat_label_reg = c("VeryLow")
     ),
@@ -940,10 +933,10 @@ test_that("validate_inputs validates arsenic category labels", {
 
   # Test dropping all categories
   expect_error(
-    gwArsenicR:::validate_inputs(
-      birth_data_txt = birth_file,
-      as_usgs_prob_csv = usgs_file,
-      as_epa_prob_csv = epa_file,
+    gwArsenicR:::perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
       as_cat_label = c("Low", "Medium"),
       drop_as_cat_label_reg = c("Low", "Medium")
     ),
@@ -952,12 +945,13 @@ test_that("validate_inputs validates arsenic category labels", {
 
   # Test valid category configuration
   expect_no_error(
-    gwArsenicR:::validate_inputs(
-      birth_data_txt = birth_file,
-      as_usgs_prob_csv = usgs_file,
-      as_epa_prob_csv = epa_file,
+    gwArsenicR:::perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
       as_cat_label = c("Low", "Medium", "High"),
-      drop_as_cat_label_reg = c("Low")
+      drop_as_cat_label_reg = c("Low"),
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)"
     )
   )
 
@@ -999,7 +993,8 @@ test_that("Function validates parameter values through main interface", {
       birth_data_txt = dummy_files$births,
       as_usgs_prob_csv = dummy_files$usgs,
       as_epa_prob_csv = dummy_files$epa,
-      ndraws = 0
+      ndraws = 0,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)"
     ),
     "ndraws must be a positive integer"
   )
@@ -1009,7 +1004,8 @@ test_that("Function validates parameter values through main interface", {
       birth_data_txt = dummy_files$births,
       as_usgs_prob_csv = dummy_files$usgs,
       as_epa_prob_csv = dummy_files$epa,
-      ndraws = -5
+      ndraws = -5,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)"
     ),
     "ndraws must be a positive integer"
   )
@@ -1263,35 +1259,6 @@ test_that("Function handles seed setting for reproducibility", {
     results1[["BWT"]]$q.mi,
     results2[["BWT"]]$q.mi,
     tolerance = 1e-6
-  )
-
-  unlink(temp_dir, recursive = TRUE)
-})
-
-# ===== Tests for Internal Helper Functions =====
-
-test_that("validate_inputs function validates all input parameters", {
-  # Test with valid inputs (but no file existence checking for this test)
-  temp_dir <- tempfile(pattern = "test_validate_inputs_")
-  dir.create(temp_dir)
-
-  # Create temporary files
-  birth_file <- file.path(temp_dir, "birth.txt")
-  usgs_file <- file.path(temp_dir, "usgs.csv")
-  epa_file <- file.path(temp_dir, "epa.csv")
-  writeLines("test", birth_file)
-  writeLines("test", usgs_file)
-  writeLines("test", epa_file)
-
-  expect_no_error(
-    gwArsenicR:::validate_inputs(
-      birth_data_txt = birth_file,
-      as_usgs_prob_csv = usgs_file,
-      as_epa_prob_csv = epa_file,
-      ndraws = 5,
-      regression_formula = "~ as.factor(AsLevel)",
-      targets = "BWT"
-    )
   )
 
   unlink(temp_dir, recursive = TRUE)
@@ -1559,6 +1526,531 @@ test_that("Function validates arsenic category data consistency", {
       as_cat_label = c("Low", NA, "High"),  # Contains NA
       output_dir = tempdir()
     ),    "as_cat_label cannot contain NA or empty values"
+  )
+
+  unlink(temp_dir, recursive = TRUE)
+})
+
+
+test_that("Function validates column names in input files", {
+  temp_dir <- tempfile(pattern = "test_column_names_")
+  dir.create(temp_dir)
+  dummy_files <- create_dummy_data(file_dir = temp_dir)
+
+  # Test missing columns in USGS data
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      output_dir = tempdir(),
+      as_conc_cols = c(
+        "NonExistentColumn1", "NonExistentColumn2",
+        "NonExistentColumn3"
+      )
+    ),
+    "The following columns are missing in.*"
+  )
+
+  # Test incorrect file format (e.g., non-CSV for EPA)
+  dummy_files <- create_dummy_data(file_dir = temp_dir)
+  dummy_epa_df <- data.table::fread(dummy_files$epa, header = TRUE)
+  invalid_epa_file <- file.path(temp_dir, "invalid_epa.bin")
+  data.table::fwrite(
+    dummy_epa_df,
+    file = invalid_epa_file,
+    sep = "\t"
+  )
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = invalid_epa_file,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      output_dir = tempdir()
+    ),
+    "Unsupported file format for.*"
+  )
+
+  # Test non-character other column names
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      output_dir = tempdir(),
+      geoid_col = 123  # Invalid type
+    ),
+    "geoid_col must be a single character string"
+  )
+
+  # Test empty other column names
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      output_dir = tempdir(),
+      geoid_col = ""  # Empty string
+    ),
+    "geoid_col cannot be empty"
+  )
+
+  # Test incorrect character vectors for other column names
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      output_dir = tempdir(),
+      as_conc_cols = c(1, 2, 3)  # Mixed types
+    ),
+    "as_conc_cols must be a character vector.*"
+  )
+
+  # Test NA values in other column names
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      output_dir = tempdir(),
+      as_conc_cols = c("Col1", NA)  # NA value
+    ),
+    "as_conc_cols cannot contain NA or empty values"
+  )
+
+  # Test duplicate values in other column names
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      output_dir = tempdir(),
+      as_conc_cols = c("Col1", "Col1")  # Duplicate values
+    ),
+    "as_conc_cols cannot contain duplicate values"
+  )
+
+  unlink(temp_dir, recursive = TRUE)
+})
+
+
+test_that("Function validates epa_cutoff parameter", {
+  temp_dir <- tempfile(pattern = "test_epa_cutoff_")
+  dir.create(temp_dir)
+  dummy_files <- create_dummy_data(file_dir = temp_dir)
+
+  # Test negative epa_cutoffs
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      output_dir = tempdir(),
+      epa_cutoffs = -1  # Invalid negative value
+    ),
+    "epa_cutoffs must contain only positive values"
+  )
+
+  # Test non-numeric epa_cutoffs
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      output_dir = tempdir(),
+      epa_cutoffs = "high"  # Invalid non-numeric value
+    ),
+    "epa_cutoffs must be a numeric vector"
+  )
+
+  # Test NA in epa_cutoffs
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      output_dir = tempdir(),
+      epa_cutoffs = c(5, NA)  # Contains NA
+    ),
+    "epa_cutoffs cannot contain NA values"
+  )
+
+  # Test duplicate values in epa_cutoffs
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      output_dir = tempdir(),
+      epa_cutoffs = c(5, 5)  # Duplicate values
+    ),
+    "epa_cutoffs cannot contain duplicate values"
+  )
+
+  # Test valid epa_cutoffs with 4 categories
+  # Create a dummy USGS file with 4 arsenic categories
+  # Ensure the dummy USGS data has appropriate columns
+  # and realistic probability distributions
+
+  num_rows <- 500
+  county_ids <- sprintf("%05d", 1:100)
+  geoid10 <- sample(county_ids, num_rows, replace = TRUE)
+  # Generate random probabilities for 4 categories that sum to 1
+  usgs_prob_values <- t(apply(
+    matrix(stats::runif(num_rows * 4), ncol = 4),
+    1,
+    function(x) x / sum(x)
+  ))
+  wells_2010 <- sample(50:500, num_rows, replace = TRUE)
+  dummy_usgs_df <- data.frame(
+    AS_C1 = usgs_prob_values[, 1],
+    AS_C2 = usgs_prob_values[, 2],
+    AS_C3 = usgs_prob_values[, 3],
+    AS_C4 = usgs_prob_values[, 4],
+    Wells_2010 = wells_2010,
+    GEOID10 = geoid10
+  )
+  # Write the dummy USGS data to a CSV fil
+  dummy_usgs_csv <- file.path(temp_dir, "dummy_usgs_4cats_arsenic.csv")
+  data.table::fwrite(dummy_usgs_df, dummy_usgs_csv)
+
+  # Create a dummy EPA file with 4 categories
+  dummy_epa_df <- data.frame(
+    EPA_AS_meanlog = runif(num_rows, 0.5, 1.5),  # Log-normal mean
+    EPA_AS_sdlog = runif(num_rows, 0.1, 0.5),  # Log-normal sd
+    PWELL_private_pct = runif(num_rows, 1, 99),  # Private well percentage
+    GEOID10 = geoid10
+  )
+  dummy_epa_csv <- file.path(temp_dir, "dummy_epa_4cats.csv")
+  data.table::fwrite(dummy_epa_df, dummy_epa_csv)
+  dummy_files <- create_dummy_data(file_dir = temp_dir)
+
+  # this tests the default fallback imputation as well
+  expect_no_error({
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_usgs_csv,
+      as_epa_prob_csv = dummy_epa_csv,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      output_dir = tempdir(),
+      as_conc_cols = c("AS_C1", "AS_C2", "AS_C3", "AS_C4"),
+      drop_as_cat_label_reg = "AS<5",  # Drop one category
+      as_cat_label = c("AS<5", "AS5-10", "AS10-15", "AS>15"),
+      epa_cutoffs = c(5, 10, 15)  # Valid ascending cutoffs
+    )
+  })
+
+  expect_no_error({
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_usgs_csv,
+      as_epa_prob_csv = dummy_epa_csv,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      output_dir = tempdir(),
+      as_conc_cols = c("AS_C1", "AS_C2", "AS_C3", "AS_C4"),
+      drop_as_cat_label_reg = "AS<5",  # Drop one category
+      as_cat_label = c("AS<5", "AS5-10", "AS10-15", "AS>15"),
+      epa_cutoffs = c(5, 10, 15),  # Valid ascending cutoffs
+      apply_imputation_fallback = FALSE # removes NA values
+    )
+  })
+
+  # Test descending order epa_cutoffs
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      output_dir = tempdir(),
+      epa_cutoffs = c(15, 10, 5)  # Descending order
+    ),
+    "epa_cutoffs must be in ascending order"
+  )
+
+  # Test if epa_cutoffs have categories not matching USGS data
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      output_dir = tempdir(),
+      epa_cutoffs = c(5, 10, 20)  # Assuming USGS has only 3 categories
+    ),
+    "as_conc_cols must have length equal to.*"
+  )
+
+  unlink(temp_dir, recursive = TRUE)
+})
+
+
+# ===================================================================
+# Tests for Dynamic EPA Cutoffs Functionality
+# ===================================================================
+
+test_that("validate_epa_cutoffs works correctly", {
+  as_conc_cols <- c("AS_C1", "AS_C2", "AS_C3", "AS_C4")
+  # Test valid cutoffs
+  valid_cutoffs <- c(5, 10, 15)
+  expect_no_error(
+    validate_epa_cutoff_params(valid_cutoffs, as_conc_cols)
+  )
+
+  # Test empty cutoffs similar to no cutoffs provided
+  expect_no_error(
+    validate_epa_cutoff_params(c(), as_conc_cols)
+  )
+
+  # Test non-numeric cutoffs
+  expect_error(
+    validate_epa_cutoff_params(c("5", "10"), as_conc_cols),
+    "epa_cutoffs must be a numeric vector"
+  )
+
+  # Test unsorted cutoffs
+  expect_error(
+    validate_epa_cutoff_params(c(10, 5, 2.5), as_conc_cols),
+    "epa_cutoffs must be in ascending order"
+  )
+
+  # Test negative cutoffs
+  expect_error(
+    validate_epa_cutoff_params(c(-1, 5, 10), as_conc_cols),
+    "epa_cutoffs must contain.*"
+  )
+})
+
+test_that("convert_epa_to_multinomial creates correct probabilities", {
+  # Create test EPA data
+  epa_data <- data.frame(
+    FIPS = c(1001, 1002, 1003),
+    EPA_AS_meanlog = c(log(1), log(5), log(15)),
+    EPA_AS_sdlog = c(0.5, 1.0, 1.5)
+  )
+
+  # Test 3 categories (2 cutoffs)
+  cutoff_config <- list(cutoffs = c(5, 10), n_categories = 3)
+  result <- convert_epa_to_multinomial(
+    epa_data, epa_as_mean_col = "EPA_AS_meanlog",
+    epa_as_sd_col = "EPA_AS_sdlog",
+    cutoff_config = cutoff_config,
+    return_prob_matrix = FALSE
+  )
+
+  # Check that correct columns were created
+  expected_cols <- c("EPA_C1v2", "EPA_C2v2", "EPA_C3v2")
+  expect_true(all(expected_cols %in% names(result)))
+
+  # Check that probabilities are between 0 and 1
+  prob_cols <- expected_cols
+  prob_matrix <- as.matrix(result[, prob_cols, with = FALSE])
+  expect_true(all(prob_matrix >= 0))
+  expect_true(all(prob_matrix <= 1))
+
+  # Check that rows sum to 1 (within tolerance)
+  row_sums <- rowSums(prob_matrix)
+  expect_true(all(abs(row_sums - 1) < 1e-10))
+
+  # Test specific probability calculations for known values
+  # For meanlog = log(5), sdlog = 1, cutoffs at 5, 10
+  # P(X < 5) should be close to 0.5 for lognormal with median 5
+  row2_probs <- as.numeric(result[2, ..prob_cols])
+  expect_true(row2_probs[1] > 0.4 && row2_probs[1] < 0.6)  # Around 0.5
+})
+
+test_that("convert_epa_to_multinomial handles different categories", {
+  epa_data <- data.frame(
+    FIPS = 1001,
+    EPA_AS_meanlog = log(5),
+    EPA_AS_sdlog = 1.0
+  )
+
+  # Test 2 categories
+  cutoff_config_2 <- list(cutoffs = c(5), n_categories = 2)
+  result_2 <- convert_epa_to_multinomial(
+    epa_data,
+    epa_as_mean_col = "EPA_AS_meanlog",
+    epa_as_sd_col = "EPA_AS_sdlog",
+    cutoff_config = cutoff_config_2,
+    return_prob_matrix = FALSE
+  )
+  prob_cols_2 <- c("EPA_C1v2", "EPA_C2v2")
+  expect_true(all(prob_cols_2 %in% names(result_2)))
+  expect_true(abs(sum(result_2[, ..prob_cols_2]) - 1) < 1e-10)
+
+  # Test 5 categories
+  cutoff_config_5 <- list(cutoffs = c(1, 5, 10, 20), n_categories = 5)
+  result_5 <- convert_epa_to_multinomial(
+    epa_data,
+    epa_as_mean_col = "EPA_AS_meanlog",
+    epa_as_sd_col = "EPA_AS_sdlog",
+    cutoff_config = cutoff_config_5,
+    return_prob_matrix = FALSE
+  )
+  expected_cols_5 <- paste0("EPA_C", 1:5, "v2")
+  expect_true(all(expected_cols_5 %in% names(result_5)))
+  expect_true(abs(sum(result_5[, ..expected_cols_5]) - 1) < 1e-10)
+})
+
+test_that("generate_default_epa_cutoffs produces correct schemes", {
+  # Test standard predefined schemes
+  expect_equal(generate_default_epa_cutoffs(2), c(5))
+  expect_equal(generate_default_epa_cutoffs(3), c(5, 10))
+  expect_equal(generate_default_epa_cutoffs(4), c(2.5, 5, 10))
+  expect_equal(generate_default_epa_cutoffs(5), c(1, 5, 10, 20))
+  expect_equal(generate_default_epa_cutoffs(6), c(1, 3, 5, 10, 20))
+
+  # Test logarithmic generation for unusual numbers
+  cutoffs_8 <- generate_default_epa_cutoffs(8)
+  expect_equal(length(cutoffs_8), 7)  # n-1 cutoffs for n categories
+  expect_true(all(cutoffs_8 > 0))
+  expect_true(all(diff(cutoffs_8) > 0))  # Should be increasing
+
+  # Test error for invalid input
+  expect_error(
+    generate_default_epa_cutoffs(1),
+    "Must have at least 2 categories"
+  )
+  expect_error(
+    generate_default_epa_cutoffs(0),
+    "Must have at least 2 categories"
+  )
+})
+
+test_that("generate_logarithmic_cutoffs works correctly", {
+  # Test normal case
+  cutoffs_5 <- generate_logarithmic_cutoffs(5)
+  expect_equal(length(cutoffs_5), 4)  # n-1 cutoffs
+  expect_true(all(cutoffs_5 > 0))
+  expect_true(all(diff(cutoffs_5) > 0))  # Increasing
+
+  # Test boundary cases
+  cutoffs_2 <- generate_logarithmic_cutoffs(2)
+  expect_equal(length(cutoffs_2), 1)
+
+  # Test error for invalid input
+  expect_error(
+    generate_logarithmic_cutoffs(1),
+    "Must have at least 2 categories"
+  )
+})
+
+test_that("validate_category_alignment catches mismatches", {
+  # Valid alignment
+  expect_true(validate_category_alignment(3, c(5, 10)))
+  expect_true(validate_category_alignment(4, c(2.5, 5, 10)))
+  expect_true(validate_category_alignment(2, c(5)))
+
+  # Invalid alignments
+  expect_error(
+    validate_category_alignment(3, c(5)),
+    paste0(
+      "Category mismatch: USGS has 3 categories but EPA cutoffs define ",
+      "2 categories"
+    )
+  )
+
+  expect_error(
+    validate_category_alignment(2, c(5, 10)),
+    paste0(
+      "Category mismatch: USGS has 2 categories but EPA cutoffs define ",
+      "3 categories"
+    )
+  )
+})
+
+test_that("edge cases in EPA probability calculations", {
+  # Test extreme values
+  epa_extreme <- data.frame(
+    FIPS = c(1001, 1002, 1003),
+    EPA_AS_meanlog_extreme = c(log(0.1), log(100), log(1000)),
+    EPA_AS_sdlog_extreme = c(0.1, 0.5, 1.0)
+  )
+
+  cutoff_config <- list(cutoffs = c(5, 10), n_categories = 3)
+  result <- convert_epa_to_multinomial(
+    datmatx_epa = epa_extreme,
+    epa_as_mean_col = "EPA_AS_meanlog_extreme",
+    epa_as_sd_col = "EPA_AS_sdlog_extreme",
+    return_prob_matrix = FALSE,
+    cutoff_config = cutoff_config
+  )
+
+  # Check row sums still equal 1
+  prob_cols <- c("EPA_C1v2", "EPA_C2v2", "EPA_C3v2")
+  # convert to matrix for row sums
+  prob_matrix <- as.matrix(result[, prob_cols, with = FALSE])
+  row_sums <- rowSums(prob_matrix)
+  expect_true(all(abs(row_sums - 1) < 1e-10))
+
+  # Very low mean should have most probability in first category
+  expect_true(prob_matrix[1, "EPA_C1v2"] > 0.5)
+
+  # Very high mean should have most probability in last category
+  expect_true(prob_matrix[3, "EPA_C3v2"] > 0.5)
+})
+
+# test apply_fallback_imputation functionality
+test_that("Fallback imputation works when EPA data is missing", {
+  temp_dir <- tempfile(pattern = "test_fallback_imputation_")
+  dir.create(temp_dir)
+
+  dummy_files <- create_dummy_data(file_dir = temp_dir)
+
+  expect_error(
+    perform_sensitivity_analysis(
+      birth_data_txt = dummy_files$births,
+      as_usgs_prob_csv = dummy_files$usgs,
+      as_epa_prob_csv = dummy_files$epa,
+      ndraws = 2,
+      regression_formula = "~ as.factor(AsLevel) + (1 | MRSTATE)",
+      targets = "BWT",
+      output_dir = tempdir(),
+      apply_imputation_fallback = "FOO"  # Enable fallback imputation
+    ), "apply_imputation_fallback must be.*"
   )
 
   unlink(temp_dir, recursive = TRUE)

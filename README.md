@@ -367,23 +367,28 @@ Tests are configured for speed and reliability:
 
 A successful test run will show:
 ```
-══ Testing test-gwArsenic.R ══════════════════════════════════════════════════════════════════
-✅[ FAIL 0 | WARN 0 | SKIP 0 | PASS 3 ]
+✅ | F W  S  OK | Context
+⠹ |          3 | Test perform_sensitivity_analysis with comprehensive coverage                                                                                                                                  
 --- Pooled Analysis Results ---
 $BWT
-    term      q.mi    se.mi  statistic  conf.low conf.high   p.value
-1 As5-10 13.555199 43.50701  0.3115636 -86.29198 113.40237 0.7631215
-2  As10+ -8.176346 37.90346 -0.2157150 -89.49962  73.14693 0.8323325
+    term      q.mi    se.mi statistic  conf.low conf.high   p.value
+1 As5-10  6.675316 32.49704 0.2054131 -60.42082  73.77145 0.8389941
+2  As10+ 19.148237 32.77495 0.5842339 -45.79132  84.08780 0.5602382
 
 $OEGEST
-    term       q.mi     se.mi statistic   conf.low conf.high   p.value
-1 As5-10 0.08924988 0.1643782 0.5429544 -0.2702451 0.4487449 0.5974323
-2  As10+ 0.07891698 0.1640922 0.4809308 -0.2709718 0.4288058 0.6375356
+    term          q.mi     se.mi     statistic   conf.low conf.high   p.value
+1 As5-10  3.618142e-02 0.1502064  0.2408779292 -0.2780558 0.3504186 0.8122120
+2  As10+ -5.288651e-05 0.1693747 -0.0003122457 -0.3491999 0.3490941 0.9997534
 
 -----------------------------
-✅[ FAIL 0 | WARN 0 | SKIP 0 | PASS 5 ][1] "Checking results for target: BWT"
-✅[ FAIL 0 | WARN 0 | SKIP 0 | PASS 14 ][1] "Checking results for target: OEGEST"
-✅[ FAIL 0 | WARN 0 | SKIP 0 | PASS 138 ] Done!
+[1] "Checking results for target: BWT"
+[1] "Checking results for target: OEGEST"
+✅ |        189 | Test perform_sensitivity_analysis with comprehensive coverage [5.6s]                                                                                                                           
+
+══ Results═══════════════════════════════════════════════════════════════════
+Duration: 5.6 s
+
+✅ [ FAIL 0 | WARN 0 | SKIP 0 | PASS 189 ]
 ```
 
 ### Continuous Integration

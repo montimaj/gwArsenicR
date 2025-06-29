@@ -12,7 +12,8 @@ impute_additional_variables(
   mice_m,
   mice_maxit,
   mice_method,
-  seed
+  seed,
+  check_birth_cols = TRUE
 )
 }
 \arguments{
@@ -32,6 +33,9 @@ imputed}
 \item{mice_method}{MICE imputation method}
 
 \item{seed}{Random seed}
+
+\item{check_birth_cols}{Logical indicating whether to check if
+impute_vars exist in the birth data}
 }
 \value{
 List of datasets with additional variables imputed

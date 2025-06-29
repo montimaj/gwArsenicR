@@ -9,10 +9,11 @@ load_and_process_arsenic_data(
   as_epa_prob_csv,
   as_conc_cols,
   pop_well_col,
-  epa_as_col,
-  epa_lognormal_sdlog,
+  epa_as_mean_col,
+  epa_as_sd_col,
   epa_pwell_col,
-  geod_col
+  geoid_col,
+  epa_cutoffs
 )
 }
 \arguments{
@@ -24,13 +25,16 @@ load_and_process_arsenic_data(
 
 \item{pop_well_col}{Column name for population weights}
 
-\item{epa_as_col}{Column name for EPA arsenic meanlog parameter}
+\item{epa_as_mean_col}{Column name for EPA arsenic meanlog}
 
-\item{epa_lognormal_sdlog}{Standard deviation for lognormal distribution}
+\item{epa_as_sd_col}{Column name for EPA arsenic sdlog}
 
 \item{epa_pwell_col}{Column name for private well percentage}
 
-\item{geod_col}{Column name for geographic identifier}
+\item{geoid_col}{Column name for geographic identifier}
+
+\item{epa_cutoffs}{A numeric vector of cutoffs for categorizing arsenic
+levels based on EPA data}
 }
 \value{
 List containing processed arsenic data
