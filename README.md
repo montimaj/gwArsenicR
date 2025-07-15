@@ -557,7 +557,7 @@ If you use gwArsenicR in your research, please cite:
 }
 ```
 
-**DOI:** *Coming soon upon publication*
+**DOI:** *Coming soon upon publication in JOSS*
 
 ## Acknowledgments
 
