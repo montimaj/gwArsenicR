@@ -444,7 +444,7 @@ jobs:
           
       - name: Build pkgdown site
         run: |
-          pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
+          pkgdown::build_site_github_pages(new_process = TRUE, install = TRUE)
         shell: Rscript {0}
 
       - name: Upload pages artifact
