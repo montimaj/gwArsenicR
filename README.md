@@ -76,7 +76,7 @@ If you do not have Pandoc, you can download and install it from the official web
 
 ### R Package Installation
 
-**Prerequisites:** R (≥ 4.1.0) and [Pandoc](https://pandoc.org/installing.html) for building vignettes.
+**Prerequisites:** R (≥ 4.4.0) and [Pandoc](https://pandoc.org/installing.html) for building vignettes.
 
 **Install from GitHub:**
 ```r
@@ -395,7 +395,7 @@ Duration: 5.6 s
 
 The package includes automated testing via GitHub Actions:
 - **R CMD check**: Validates package structure and dependencies
-- **Multiple R versions**: Tests on R 4.1+ across different operating systems
+- **Multiple R versions**: Tests on R 4.4+ across different operating systems
 - **Dependency validation**: Ensures all required packages are properly declared
 - **Documentation checks**: Validates roxygen2 documentation completeness
 
